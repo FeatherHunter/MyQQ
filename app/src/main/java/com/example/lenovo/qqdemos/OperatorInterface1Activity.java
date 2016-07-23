@@ -45,11 +45,20 @@ public class OperatorInterface1Activity extends Activity implements View.OnFocus
             @Override
             public void onClick(View v) {
                 String Text1 = editText1.getText().toString();
+
+                if(Text1.equals(""))
+                {
+                    Toast.makeText(OperatorInterface1Activity.this, "账户名不为空", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                //检查账号密码合法性
                 Pattern p = Pattern.compile("[0-9]*");
                 Matcher m = p.matcher(Text1);
                 if (!m.matches()) {
                     Toast.makeText(OperatorInterface1Activity.this, "账户名请输入0-9的数字", Toast.LENGTH_SHORT).show();
                     editText1.setText("");
+                    return;
                 }
 
                 Intent intent = new Intent();
