@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">QQDemos</string>
+    <string name="log">登陆</string>
+    <string name="question">无法登陆？</string>
+    <string name="reg">新用户注册</string>
+    <string name="info1">账号</string>
+    <string name="info2">密码</string>
+    <string name="title_activity_operator_interface2">OperatorInterface2Activity</string>
+</resources>
