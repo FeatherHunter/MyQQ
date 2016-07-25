@@ -1,14 +1,9 @@
 package com.example.lenovo.qqdemos;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -19,35 +14,34 @@ import java.util.regex.Pattern;
 
 public class OperatorInterface1Activity extends Activity implements View.OnFocusChangeListener {
 
-    private EditText editText1 = null;
-    private EditText editText2 = null;
-    private Button myButton = null;
-    private TextView textView1 = null;
-    private TextView textView2 = null;
+    private EditText userEditText = null;//账号
+    private EditText passwdEditText = null;//密码
+    private Button logButton = null;//登陆
+    private TextView infoTextView = null;//无法登陆
+    private TextView sign_upTextView = null;//新用户注册
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_operator_interface1);
 
-        editText1 = (EditText) findViewById(R.id.textView1);
-        editText2 = (EditText) findViewById(R.id.textView2);
-        myButton = (Button) findViewById(R.id.button);
-        textView1 = (TextView) findViewById(R.id.textView1);
-        textView2 = (TextView) findViewById(R.id.textView2);
+        userEditText = (EditText) findViewById(R.id.user_edittext);
+        passwdEditText = (EditText) findViewById(R.id.passwd_edittext);
+        logButton = (Button) findViewById(R.id.login_button);
+        infoTextView = (TextView) findViewById(R.id.info_textview);
+        sign_upTextView = (TextView) findViewById(R.id.sign_up_textview);
 
-        editText1.setOnFocusChangeListener(this);
-        editText2.setOnFocusChangeListener(this);
+        userEditText.setOnFocusChangeListener(this);
+        passwdEditText.setOnFocusChangeListener(this);
 
-//      editText1.setOnClickListener(new OnClickListener());
+//      userEditText.setOnClickListener(new OnClickListener());
 
-        myButton.setOnClickListener(new View.OnClickListener() {
+        logButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String Text1 = editText1.getText().toString();
+                String Text1 = userEditText.getText().toString();
 
-                if(Text1.equals(""))
-                {
+                if (Text1.equals("")) {
                     Toast.makeText(OperatorInterface1Activity.this, "账户名不为空", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -57,13 +51,14 @@ public class OperatorInterface1Activity extends Activity implements View.OnFocus
                 Matcher m = p.matcher(Text1);
                 if (!m.matches()) {
                     Toast.makeText(OperatorInterface1Activity.this, "账户名请输入0-9的数字", Toast.LENGTH_SHORT).show();
-                    editText1.setText("");
+                    userEditText.setText("");
                     return;
                 }
 
                 Intent intent = new Intent();
-                intent.setClass(OperatorInterface1Activity.this, OperatorInterface2Activity.class);
-                startActivity(intent);
+                intent.setClass(OperatorInterface1Activity.this, QQService.class);
+//              startActivity(intent);
+                startService(intent);
             }
         });
     }
@@ -84,8 +79,8 @@ public class OperatorInterface1Activity extends Activity implements View.OnFocus
 //    private class OnClickListener implements View.OnClickListener {
 //        @Override
 //        public void onClick(View v) {
-//            if(v.getId() == R.id.textView1){
-//                editText1.setVisibility(View.GONE);
+//            if(v.getId() == R.id.infoTextView){
+//                userEditText.setVisibility(View.GONE);
 //            }
 //        }
 //  }
