@@ -2,6 +2,7 @@ package com.example.lenovo.qqdemos;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -19,6 +20,7 @@ public class OperatorInterface1Activity extends Activity implements View.OnFocus
     private Button logButton = null;//登陆
     private TextView infoTextView = null;//无法登陆
     private TextView sign_upTextView = null;//新用户注册
+    private static final String SMG_ACTION = "android.provider.Telephony.SMS_RECEIVER";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,31 +36,43 @@ public class OperatorInterface1Activity extends Activity implements View.OnFocus
         userEditText.setOnFocusChangeListener(this);
         passwdEditText.setOnFocusChangeListener(this);
 
-//      userEditText.setOnClickListener(new OnClickListener());
-
         logButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String Text1 = userEditText.getText().toString();
+                String userText = userEditText.getText().toString();
+                String passwdText = passwdEditText.getText().toString();
 
-                if (Text1.equals("")) {
-                    Toast.makeText(OperatorInterface1Activity.this, "账户名不为空", Toast.LENGTH_SHORT).show();
+                //检查用户名和密码是否为空
+                if (userText.equals("")) {
+                    Toast.makeText(OperatorInterface1Activity.this, "用户名不能为空", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (passwdText.equals("")) {
+                    Toast.makeText(OperatorInterface1Activity.this, "密码不能为空", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 //检查账号密码合法性
                 Pattern p = Pattern.compile("[0-9]*");
-                Matcher m = p.matcher(Text1);
+                Matcher m = p.matcher(userText);
                 if (!m.matches()) {
                     Toast.makeText(OperatorInterface1Activity.this, "账户名请输入0-9的数字", Toast.LENGTH_SHORT).show();
                     userEditText.setText("");
                     return;
                 }
 
-                Intent intent = new Intent();
-                intent.setClass(OperatorInterface1Activity.this, QQService.class);
-//              startActivity(intent);
-                startService(intent);
+                //开启一个服务
+                Intent serviceIntent = new Intent();
+                serviceIntent.putExtra("user", userText);
+                serviceIntent.putExtra("pwd", passwdText);
+                serviceIntent.setClass(OperatorInterface1Activity.this, QQService.class);
+                startService(serviceIntent);
+
+//                QQBroadcastReceiver testSendMsgBroad = new QQBroadcastReceiver();
+//                IntentFilter intentFilter = new IntentFilter();
+//                intentFilter.addAction(SMG_ACTION);
+//                registerReceiver(testSendMsgBroad, intentFilter);
+
             }
         });
     }
@@ -76,12 +90,4 @@ public class OperatorInterface1Activity extends Activity implements View.OnFocus
             textView.setHint(hint);
         }
     }
-//    private class OnClickListener implements View.OnClickListener {
-//        @Override
-//        public void onClick(View v) {
-//            if(v.getId() == R.id.infoTextView){
-//                userEditText.setVisibility(View.GONE);
-//            }
-//        }
-//  }
 }
