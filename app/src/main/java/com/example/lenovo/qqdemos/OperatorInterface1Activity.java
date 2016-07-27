@@ -83,6 +83,10 @@ public class OperatorInterface1Activity extends Activity implements View.OnFocus
 //                intentFilter.addAction(SMG_ACTION);
 //                registerReceiver(testSendMsgBroad, intentFilter);
 
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_EDIT);
+                sendBroadcast(intent);
+
             }
         });
     }

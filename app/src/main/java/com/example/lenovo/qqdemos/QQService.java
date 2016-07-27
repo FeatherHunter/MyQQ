@@ -19,6 +19,7 @@ import java.net.Socket;
 public class QQService extends Service{
 
     private static final String SMG_ACTION = "android.provider.Telephony.SMS_RECEIVER";
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -32,42 +33,42 @@ public class QQService extends Service{
         Thread thread = new Thread(checkUserRunnable);
         thread.start();
 
+        Thread sendMsgThread = new Thread(sendMsgRunnable);
+        sendMsgThread.start();
+
     }
 
     public Runnable checkUserRunnable = new Runnable() {
         @Override
         public void run() {
 
-//            try {
-//                Log.i("QQService", "runnable");
-//                Socket socket = new Socket("192.168.1.114", 8080);
-//                Log.i("QQService", "socket");
-//                OutputStream outputstream = socket.getOutputStream();
-//                String userMsg = "wenwen is pig";
-//                byte userBuffer[] = userMsg.getBytes();
-//                outputstream.write(userBuffer, 0, userBuffer.length);
-//                outputstream.flush();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-            QQBroadcastReceiver testSendMsgBroad = new QQBroadcastReceiver();
-            IntentFilter intentFilter = new IntentFilter();
-            intentFilter.addAction(SMG_ACTION);
-            registerReceiver(testSendMsgBroad, intentFilter);
+//            QQBroadcastReceiver testSendMsgBroad = new QQBroadcastReceiver();
+//            IntentFilter intentFilter = new IntentFilter();
+//            intentFilter.addAction(SMG_ACTION);
+//            registerReceiver(testSendMsgBroad, intentFilter);
 
-            /*---------------------------------------------------------------
-             *                  发送广播：android.intent.action.ANSWER
-             * --------------------------------------------------------*/
-            Intent intent = new Intent();
-            intent.setAction(intent.ACTION_ANSWER); //指定动作
-            intent.putExtra("message", "文文是猪");  //信息
-            sendBroadcast(intent);//发送
+//            Intent intent = new Intent();
+//            intent.setAction(Intent.ACTION_EDIT);
+//            sendBroadcast(intent);
+
         }
     };
 
-    public Runnable startActivityRunnable = new Runnable() {
+    public Runnable sendMsgRunnable = new Runnable() {
         @Override
         public void run() {
+            try {
+                Log.i("QQService", "runnable");
+                Socket socket = new Socket("192.168.1.114", 8080);
+                Log.i("QQService", "socket");
+                OutputStream outputstream = socket.getOutputStream();
+                String userMsg = "wenwen is pig";
+                byte userBuffer[] = userMsg.getBytes();
+                outputstream.write(userBuffer, 0, userBuffer.length);
+                outputstream.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
         }
     };

@@ -29,6 +29,13 @@
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
         <service android:name=".QQService"></service>
+
+        <receiver android:name=".QQBroadcastReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.EDIT" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>
