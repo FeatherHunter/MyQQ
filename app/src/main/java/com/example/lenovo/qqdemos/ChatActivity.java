@@ -58,10 +58,12 @@ public class ChatActivity extends AppCompatActivity  {
                 Socket socket = new Socket("192.168.43.91", 8880);
                 Log.i("QQService", "socket");
                 String sendmsg = sendEditText.getText().toString();
+
                 // 向服务器发送数据
                 PrintWriter out = new PrintWriter( new BufferedWriter( new OutputStreamWriter(socket.getOutputStream())),true);
                 out.println(sendmsg);
                 out.flush();
+
                 // 接收来自服务器的消息
                 BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 revmsg = br.readLine();
