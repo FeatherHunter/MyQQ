@@ -36,15 +36,14 @@
                 <action android:name="android.intent.action.EDIT" />
             </intent-filter>
         </receiver>
-
-        <activity
-            android:name=".ChatPersonActivity"
-            android:label="@string/title_activity_chat_person"
-            android:theme="@style/AppTheme.NoActionBar" >
-        </activity>
         <activity
             android:name=".ChatActivity"
             android:label="@string/title_activity_chat"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".LoadingActivity"
+            android:label="@string/title_activity_loading"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
     </application>

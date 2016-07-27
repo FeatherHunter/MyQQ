@@ -82,11 +82,6 @@ public class OperatorInterface1Activity extends Activity implements View.OnFocus
                 intent.putExtra("pwd", passwdText);
                 intent.setAction(Intent.ACTION_EDIT);
                 sendBroadcast(intent);
-
-                Intent chatIntent = new Intent();
-                chatIntent.setClass(OperatorInterface1Activity.this, ChatActivity.class);
-                startActivity(chatIntent);
-
             }
         });
     }

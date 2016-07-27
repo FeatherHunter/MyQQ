@@ -9,4 +9,6 @@
     <string name="title_activity_operator_interface2">OperatorInterface2Activity</string>
     <string name="title_activity_chat_person">ChatPersonActivity</string>
     <string name="title_activity_chat">ChatActivity</string>
+    <string name="title_activity_loading">LoadingActivity</string>
+
 </resources>

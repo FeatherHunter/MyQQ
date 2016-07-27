@@ -8,8 +8,7 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_chat" tools:context="com.example.lenovo.qqdemos.ChatActivity"
-    android:orientation="vertical"
-    android:weightSum="5">
+    android:orientation="vertical">
 
         <TextView
             android:id="@+id/showId"
@@ -19,15 +18,17 @@
             android:background="@android:color/holo_blue_light"
             android:gravity="center" />
 
-    <RelativeLayout
-        android:gravity="bottom"
+    <TextView
+        android:id="@+id/revTextView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="50dp"
+        android:text="hello"/>
 
-        <TextView
-            android:id="@+id/revTextView"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"/>
+    <RelativeLayout
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
 
         <EditText
             android:id="@+id/sendEditText"

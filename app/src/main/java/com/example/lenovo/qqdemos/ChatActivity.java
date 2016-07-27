@@ -45,7 +45,7 @@ public class ChatActivity extends AppCompatActivity  {
                 sendMsgThread.start();
 
                 revTextView.setText(sendEditText.getText().toString());
-                sendEditText.setText("");
+//                sendEditText.setText("");
             }
         });
 
@@ -80,5 +80,4 @@ public class ChatActivity extends AppCompatActivity  {
             }
         }
     };
-
 }
