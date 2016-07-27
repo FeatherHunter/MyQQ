@@ -1,6 +1,8 @@
 package com.example.lenovo.qqdemos;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -35,6 +37,14 @@ public class OperatorInterface1Activity extends Activity implements View.OnFocus
 
         userEditText.setOnFocusChangeListener(this);
         passwdEditText.setOnFocusChangeListener(this);
+
+        /*---------------------------------------------------------------
+         *                  动态注册receiver
+         * --------------------------------------------------------*/
+        MsgReceiver msgReceiver = new MsgReceiver();    //创建消息接收广播
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("android.intent.action.ANSWER"); //指定Action
+        registerReceiver(msgReceiver, filter);//注册
 
         logButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,6 +98,21 @@ public class OperatorInterface1Activity extends Activity implements View.OnFocus
         }else{
             hint = textView.getTag().toString();
             textView.setHint(hint);
+        }
+    }
+
+    /**-------------------------------------------------------------------
+     * @class MsgReceiver
+     * @描述： 接收广播
+     * -------------------------------------------------------------------*/
+    private class MsgReceiver extends BroadcastReceiver{
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            //通过intent获得广播来的信息
+            String msg = intent.getStringExtra("message");
+            //显示
+            Toast.makeText(OperatorInterface1Activity.this, "接收到广播:"+msg, Toast.LENGTH_SHORT).show();
         }
     }
 }

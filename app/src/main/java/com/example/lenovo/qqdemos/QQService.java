@@ -54,6 +54,14 @@ public class QQService extends Service{
             IntentFilter intentFilter = new IntentFilter();
             intentFilter.addAction(SMG_ACTION);
             registerReceiver(testSendMsgBroad, intentFilter);
+
+            /*---------------------------------------------------------------
+             *                  发送广播：android.intent.action.ANSWER
+             * --------------------------------------------------------*/
+            Intent intent = new Intent();
+            intent.setAction(intent.ACTION_ANSWER); //指定动作
+            intent.putExtra("message", "文文是猪");  //信息
+            sendBroadcast(intent);//发送
         }
     };
 
