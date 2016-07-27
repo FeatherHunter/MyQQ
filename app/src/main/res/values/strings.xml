@@ -5,5 +5,8 @@
     <string name="reg">新用户注册</string>
     <string name="info1">账号</string>
     <string name="info2">密码</string>
+    <string name="sendButton">发送</string>
     <string name="title_activity_operator_interface2">OperatorInterface2Activity</string>
+    <string name="title_activity_chat_person">ChatPersonActivity</string>
+    <string name="title_activity_chat">ChatActivity</string>
 </resources>

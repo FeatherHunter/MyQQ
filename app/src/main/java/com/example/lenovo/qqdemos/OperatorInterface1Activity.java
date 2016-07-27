@@ -29,28 +29,20 @@ public class OperatorInterface1Activity extends Activity implements View.OnFocus
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_operator_interface1);
 
-        userEditText = (EditText) findViewById(R.id.user_edittext);
-        passwdEditText = (EditText) findViewById(R.id.passwd_edittext);
-        logButton = (Button) findViewById(R.id.login_button);
+        userEditText = (EditText) findViewById(R.id.user_edittext); //账号
+        passwdEditText = (EditText) findViewById(R.id.passwd_edittext); //密码
+        logButton = (Button) findViewById(R.id.login_button);  //登陆
         infoTextView = (TextView) findViewById(R.id.info_textview);
         sign_upTextView = (TextView) findViewById(R.id.sign_up_textview);
 
         userEditText.setOnFocusChangeListener(this);
         passwdEditText.setOnFocusChangeListener(this);
 
-        /*---------------------------------------------------------------
-         *                  动态注册receiver
-         * --------------------------------------------------------*/
-        MsgReceiver msgReceiver = new MsgReceiver();    //创建消息接收广播
-        IntentFilter filter = new IntentFilter();
-        filter.addAction("android.intent.action.ANSWER"); //指定Action
-        registerReceiver(msgReceiver, filter);//注册
-
         logButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String userText = userEditText.getText().toString();
-                String passwdText = passwdEditText.getText().toString();
+                String userText = userEditText.getText().toString(); //读取账号信息
+                String passwdText = passwdEditText.getText().toString(); //读取密码信息
 
                 //检查用户名和密码是否为空
                 if (userText.equals("")) {
@@ -73,19 +65,27 @@ public class OperatorInterface1Activity extends Activity implements View.OnFocus
 
                 //开启一个服务
                 Intent serviceIntent = new Intent();
-                serviceIntent.putExtra("user", userText);
-                serviceIntent.putExtra("pwd", passwdText);
                 serviceIntent.setClass(OperatorInterface1Activity.this, QQService.class);
                 startService(serviceIntent);
 
-//                QQBroadcastReceiver testSendMsgBroad = new QQBroadcastReceiver();
-//                IntentFilter intentFilter = new IntentFilter();
-//                intentFilter.addAction(SMG_ACTION);
-//                registerReceiver(testSendMsgBroad, intentFilter);
+//        /*---------------------------------------------------------------
+//         *                  动态注册receiver
+//         * --------------------------------------------------------*/
+//                MsgReceiver msgReceiver = new MsgReceiver();    //创建消息接收广播
+//                IntentFilter filter = new IntentFilter();
+//                filter.addAction("android.intent.action.ANSWER"); //指定Action
+//                registerReceiver(msgReceiver, filter);//注册
 
+                // 静态启动广播，传入账户密码的值
                 Intent intent = new Intent();
+                intent.putExtra("user", userText);
+                intent.putExtra("pwd", passwdText);
                 intent.setAction(Intent.ACTION_EDIT);
                 sendBroadcast(intent);
+
+                Intent chatIntent = new Intent();
+                chatIntent.setClass(OperatorInterface1Activity.this, ChatActivity.class);
+                startActivity(chatIntent);
 
             }
         });
