@@ -10,13 +10,13 @@
     tools:showIn="@layout/activity_chat" tools:context="com.example.lenovo.qqdemos.ChatActivity"
     android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/showId"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:text="Tom"
-            android:background="@android:color/holo_blue_light"
-            android:gravity="center" />
+    <TextView
+        android:id="@+id/showId"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="Tom"
+        android:background="@android:color/holo_blue_light"
+        android:gravity="center" />
 
     <TextView
         android:id="@+id/revTextView"
