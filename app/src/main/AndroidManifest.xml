@@ -16,7 +16,7 @@
             android:name=".OperatorInterface1Activity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar"> </activity>
+            android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity
             android:name=".start.StartActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -31,7 +31,7 @@
         <activity
             android:name=".OperatorInterface2Activity"
             android:label="@string/title_activity_operator_interface2"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <service android:name=".QQService" />
 
@@ -44,11 +44,12 @@
         <activity
             android:name=".ChatActivity"
             android:label="@string/title_activity_chat"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".LoadingActivity"
             android:label="@string/title_activity_loading"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".start.PagerActivity"></activity>
     </application>
 
 </manifest>
