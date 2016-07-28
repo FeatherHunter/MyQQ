@@ -18,7 +18,7 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar"> </activity>
         <activity
-            android:name=".StartActivity"
+            android:name=".start.StartActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar">

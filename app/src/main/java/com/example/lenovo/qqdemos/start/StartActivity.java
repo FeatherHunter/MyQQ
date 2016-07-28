@@ -1,13 +1,15 @@
-package com.example.lenovo.qqdemos;
+package com.example.lenovo.qqdemos.start;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
+
+import com.example.lenovo.qqdemos.OperatorInterface1Activity;
+import com.example.lenovo.qqdemos.R;
 
 /**=============================================
  * @描述： 显示logo，延时跳转到主要界面。
