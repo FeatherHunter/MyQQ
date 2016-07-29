@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:Android="http://schemas.android.com/apk/res-auto"
-    package="com.example.lenovo.qqdemos">
+<manifest xmlns:Android="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.lenovo.qqdemos" >
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -11,17 +11,17 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme" >
         <activity
             android:name=".OperatorInterface1Activity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar"></activity>
+            android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name=".start.StartActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar">
+            android:theme="@android:style/Theme.NoTitleBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -35,7 +35,7 @@
 
         <service android:name=".QQService" />
 
-        <receiver android:name=".QQBroadcastReceiver">
+        <receiver android:name=".QQBroadcastReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.EDIT" />
             </intent-filter>
@@ -49,7 +49,16 @@
             android:name=".LoadingActivity"
             android:label="@string/title_activity_loading"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".start.PagerActivity"></activity>
+        <activity android:name=".start.PagerActivity" />
+        <activity
+            android:name=".wenwen.tab.MessageActivity"
+            android:label="@string/title_activity_message"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity android:name=".wenwen.tab.ContactActivity" >
+        </activity>
+        <activity android:name=".wenwen.tab.TrendsActivity" >
+        </activity>
     </application>
 
 </manifest>
