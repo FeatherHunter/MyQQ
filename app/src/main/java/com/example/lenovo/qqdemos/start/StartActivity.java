@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.example.lenovo.qqdemos.OperatorInterface1Activity;
+import com.example.lenovo.qqdemos.LoginActivity;
 import com.example.lenovo.qqdemos.R;
 
 /**=============================================
@@ -36,7 +36,7 @@ public class StartActivity extends Activity {
             @Override
             public void run() {
                 //跳转
-                Intent intent = new Intent(StartActivity.this, OperatorInterface1Activity.class);
+                Intent intent = new Intent(StartActivity.this, LoginActivity.class);
                 startActivity(intent);
                 //销毁该Activity
                 StartActivity.this.finish();

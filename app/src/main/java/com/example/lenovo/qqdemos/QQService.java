@@ -22,7 +22,8 @@ import java.net.Socket;
  */
 public class QQService extends Service{
 
-    @Nullable
+    String account;
+    String password;
     @Override
     public IBinder onBind(Intent intent) {
         return null;
@@ -38,15 +39,43 @@ public class QQService extends Service{
 
     }
 
+    /**
+     * @Function: int onStartCommand();
+     * @Description:
+     *      1. 用于接受登陆界面发送来的账号和密码信息用于登录。
+     **/
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        // TODO Auto-generated method stub
+        if(intent != null)
+        {
+            account = intent.getStringExtra("user");
+            password = intent.getStringExtra("pwd");
+        }
+        return super.onStartCommand(intent, flags, startId);
+    }
+
     public Runnable sendMsgRunnable = new Runnable() {
         @Override
         public void run() {
 
-            // 测试socket代码
+            /*----------------------------------------------
+             *     验证账户密码（暂时省略网络验证部分）
+             *---------------------------------------------*/
+            Intent intent = new Intent();
+            intent.setAction("android.intent.action.ANSWER");
+            if(account.equals("123") && password.equals("aaa")){
+                intent.putExtra("result", "ok");
+            }else{
+                intent.putExtra("result", "error");
+            }
+            sendBroadcast(intent); //发送广播给登录界面
+
+            /*----------------------------------------------
+             * sokcet代码
+             *---------------------------------------------*/
 //            try {
-//                Log.i("QQService", "runnable");
 //                Socket socket = new Socket("192.168.43.91", 8880);
-//                Log.i("QQService", "socket");
 //                OutputStream outputstream = socket.getOutputStream();
 //                String userMsg = "wenwen is pig";
 //                byte userBuffer[] = userMsg.getBytes();
@@ -56,26 +85,6 @@ public class QQService extends Service{
 //                e.printStackTrace();
 //            }
 
-//            //客户端与服务器通信
-//            try {
-//                Log.i("QQService", "runnable");
-//                Socket socket = new Socket("192.168.43.91", 8880);
-//                Log.i("QQService", "socket");
-//                Intent intent = Intent.getIntent("msg");
-//                String sendmsg = intent.getStringExtra("msg");
-//                // 向服务器发送数据
-//                PrintWriter out = new PrintWriter( new BufferedWriter( new OutputStreamWriter(socket.getOutputStream())),true);
-//                out.println("hello");
-//                // 接收来自服务器的消息
-//                BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-//                String revmsg = br.readLine();
-//                if(revmsg != null){
-//                    Log.i("revmsg","receive");
-//                }
-//                out.close();
-//            }catch (Exception e){
-//                e.printStackTrace();
-//            }
         }
     };
 }

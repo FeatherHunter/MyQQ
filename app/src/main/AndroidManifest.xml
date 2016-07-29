@@ -8,12 +8,12 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/qq_icon"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".OperatorInterface1Activity"
+            android:name=".LoginActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
@@ -29,26 +29,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".OperatorInterface2Activity"
+            android:name=".MainActivity"
             android:label="@string/title_activity_operator_interface2"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <service android:name=".QQService" />
 
-        <receiver android:name=".QQBroadcastReceiver" >
-            <intent-filter>
-                <action android:name="android.intent.action.EDIT" />
-            </intent-filter>
-        </receiver>
-
-        <activity
-            android:name=".ChatActivity"
-            android:label="@string/title_activity_chat"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".LoadingActivity"
-            android:label="@string/title_activity_loading"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".start.PagerActivity" />
         <activity
             android:name=".wenwen.tab.MessageActivity"

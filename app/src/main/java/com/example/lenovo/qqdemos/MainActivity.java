@@ -4,29 +4,21 @@ import android.app.TabActivity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TabHost;
 
-import com.example.lenovo.qqdemos.R;
 import com.example.lenovo.qqdemos.wenwen.tab.ContactActivity;
 import com.example.lenovo.qqdemos.wenwen.tab.MessageActivity;
 
-public class OperatorInterface2Activity extends TabActivity {
+public class MainActivity extends TabActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_operator_interface2);
+        setContentView(R.layout.activity_main);
 
         //第一个选项卡（消息）
         TabHost tabHost1 = getTabHost();
-        Intent intent1 = new Intent(OperatorInterface2Activity.this, MessageActivity.class);
+        Intent intent1 = new Intent(MainActivity.this, MessageActivity.class);
         TabHost.TabSpec spec1 = tabHost1.newTabSpec("消息"); //获取这个对象的一页
         Resources resources1 = getResources();    //转换图片
         spec1.setIndicator("消息", resources1.getDrawable(R.drawable.msg)); //设置名字和图片
@@ -35,7 +27,7 @@ public class OperatorInterface2Activity extends TabActivity {
 
         //第二个选项卡（联系人）
         TabHost tabHost2 = getTabHost();
-        Intent intent2 = new Intent(OperatorInterface2Activity.this, ContactActivity.class);
+        Intent intent2 = new Intent(MainActivity.this, ContactActivity.class);
         TabHost.TabSpec spec2 = tabHost2.newTabSpec("联系人"); //获取这个对象的一页
         Resources resources2 = getResources();    //转换图片
         spec2.setIndicator("联系人", resources2.getDrawable(R.drawable.contact)); //设置名字和图片
@@ -44,7 +36,7 @@ public class OperatorInterface2Activity extends TabActivity {
 
         //第三个选项卡（动态）
         TabHost tabHost3 = getTabHost();
-        Intent intent3 = new Intent(OperatorInterface2Activity.this, MessageActivity.class);
+        Intent intent3 = new Intent(MainActivity.this, MessageActivity.class);
         TabHost.TabSpec spec3 = tabHost3.newTabSpec("动态"); //获取这个对象的一页
         Resources resources3 = getResources();    //转换图片
         spec3.setIndicator("动态", resources3.getDrawable(R.drawable.trends)); //设置名字和图片

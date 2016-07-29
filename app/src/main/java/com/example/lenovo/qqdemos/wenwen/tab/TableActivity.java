@@ -17,7 +17,7 @@ public class TableActivity extends TabActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_operator_interface2);
+        setContentView(R.layout.activity_main);
 
         //第一个选项卡（消息）
         TabHost tabHost1 = getTabHost();
