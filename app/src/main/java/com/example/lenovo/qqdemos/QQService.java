@@ -51,6 +51,9 @@ public class QQService extends Service{
         {
             account = intent.getStringExtra("user");
             password = intent.getStringExtra("pwd");
+        }else{
+            account = "";
+            password = "";
         }
         return super.onStartCommand(intent, flags, startId);
     }

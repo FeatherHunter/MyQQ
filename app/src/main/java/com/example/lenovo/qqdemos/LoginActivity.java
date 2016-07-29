@@ -70,6 +70,8 @@ public class LoginActivity extends Activity implements View.OnFocusChangeListene
                     return;
                 }
 
+                dialog.show();//显示“正在登录中....”
+
                 /*---------------------------------------------------------------
                  *                  开启一个服务
                  * --------------------------------------------------------*/
@@ -78,8 +80,6 @@ public class LoginActivity extends Activity implements View.OnFocusChangeListene
                 serviceIntent.putExtra("pwd", passwdText);
                 serviceIntent.setClass(LoginActivity.this, QQService.class);
                 startService(serviceIntent);
-
-                dialog.show();//显示“正在登录中....”
 
             }
         });
@@ -110,11 +110,19 @@ public class LoginActivity extends Activity implements View.OnFocusChangeListene
                         LoginActivity.this.finish();//结束该activity
 
                     }
-                }, 2000);//延时2000ms（2s)
+                }, 1500);//延时2000ms（2s)
 
             }else{
+                dialog.dismiss();
                 //登录失败
-                Toast.makeText(LoginActivity.this, "账号/密码错误"+msg, Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "账号/密码错误", Toast.LENGTH_SHORT).show();
+
+                /*----------------------------------------------------------
+                 *                  关闭服务
+                 * --------------------------------------------------------*/
+                Intent serviceIntent = new Intent();
+                serviceIntent.setClass(LoginActivity.this, QQService.class);
+                stopService(serviceIntent);
             }
         }
     }
