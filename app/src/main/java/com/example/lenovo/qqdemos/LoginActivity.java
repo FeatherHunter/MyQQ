@@ -107,6 +107,13 @@ public class LoginActivity extends Activity implements View.OnFocusChangeListene
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(intent);
 
+                        /*----------------------------------------------------------
+                         *                  关闭服务
+                         * --------------------------------------------------------*/
+                        Intent serviceIntent = new Intent();
+                        serviceIntent.setClass(LoginActivity.this, QQService.class);
+                        stopService(serviceIntent);
+
                         LoginActivity.this.finish();//结束该activity
 
                     }
