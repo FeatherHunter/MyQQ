@@ -33,7 +33,8 @@
             android:label="@string/title_activity_operator_interface2"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <service android:name=".QQService" />
+        <service android:name=".QQService">
+        </service>
 
         <activity android:name=".start.PagerActivity" />
         <activity
@@ -45,6 +46,9 @@
         </activity>
         <activity android:name=".wenwen.tab.TrendsActivity" >
         </activity>
+
     </application>
+    
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
 
 </manifest>

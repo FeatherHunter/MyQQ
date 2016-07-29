@@ -3,18 +3,7 @@ package com.example.lenovo.qqdemos;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-import android.support.annotation.Nullable;
 import android.util.Log;
-import android.widget.Toast;
-
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.net.Socket;
 
 
 /**
@@ -22,8 +11,8 @@ import java.net.Socket;
  */
 public class QQService extends Service{
 
-    String account;
-    String password;
+    String account = null;
+    String password = null;
     @Override
     public IBinder onBind(Intent intent) {
         return null;
@@ -67,7 +56,7 @@ public class QQService extends Service{
              *---------------------------------------------*/
             Intent intent = new Intent();
             intent.setAction("android.intent.action.ANSWER");
-            if(account.equals("123") && password.equals("aaa")){
+            if(account != null && account.equals("123") && password != null && password.equals("aaa")){
                 intent.putExtra("result", "ok");
             }else{
                 intent.putExtra("result", "error");

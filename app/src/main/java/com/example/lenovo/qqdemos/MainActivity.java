@@ -8,6 +8,7 @@ import android.widget.TabHost;
 
 import com.example.lenovo.qqdemos.wenwen.tab.ContactActivity;
 import com.example.lenovo.qqdemos.wenwen.tab.MessageActivity;
+import com.example.lenovo.qqdemos.wenwen.tab.TrendsActivity;
 
 public class MainActivity extends TabActivity {
 
@@ -21,7 +22,7 @@ public class MainActivity extends TabActivity {
         Intent intent1 = new Intent(MainActivity.this, MessageActivity.class);
         TabHost.TabSpec spec1 = tabHost1.newTabSpec("消息"); //获取这个对象的一页
         Resources resources1 = getResources();    //转换图片
-        spec1.setIndicator("消息", resources1.getDrawable(R.drawable.msg)); //设置名字和图片
+        spec1.setIndicator("消息", resources1.getDrawable(R.drawable.user)); //设置名字和图片
         spec1.setContent(intent1);    //加载内容
         tabHost1.addTab(spec1);       //添加到tabHost中去
 
@@ -36,7 +37,7 @@ public class MainActivity extends TabActivity {
 
         //第三个选项卡（动态）
         TabHost tabHost3 = getTabHost();
-        Intent intent3 = new Intent(MainActivity.this, MessageActivity.class);
+        Intent intent3 = new Intent(MainActivity.this, TrendsActivity.class);
         TabHost.TabSpec spec3 = tabHost3.newTabSpec("动态"); //获取这个对象的一页
         Resources resources3 = getResources();    //转换图片
         spec3.setIndicator("动态", resources3.getDrawable(R.drawable.trends)); //设置名字和图片

@@ -27,7 +27,7 @@ public class LoginActivity extends Activity implements View.OnFocusChangeListene
     private TextView sign_upTextView = null;//新用户注册
 
     private Dialog dialog; //显示“正在登陆”的提示框
-//    private static final String SMG_ACTION = "android.provider.Telephony.SMS_RECEIVER";
+//  private static final String SMG_ACTION = "android.provider.Telephony.SMS_RECEIVER";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
