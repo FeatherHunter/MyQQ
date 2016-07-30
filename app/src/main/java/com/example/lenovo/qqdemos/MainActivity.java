@@ -10,8 +10,9 @@ import com.example.lenovo.qqdemos.wenwen.tab.ContactActivity;
 import com.example.lenovo.qqdemos.wenwen.tab.MessageActivity;
 import com.example.lenovo.qqdemos.wenwen.tab.TrendsActivity;
 
-public class MainActivity extends TabActivity {
+import static com.example.lenovo.qqdemos.R.id.radio_button0;
 
+public class MainActivity extends TabActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,7 +23,7 @@ public class MainActivity extends TabActivity {
         Intent intent1 = new Intent(MainActivity.this, MessageActivity.class);
         TabHost.TabSpec spec1 = tabHost1.newTabSpec("消息"); //获取这个对象的一页
         Resources resources1 = getResources();    //转换图片
-        spec1.setIndicator("消息", resources1.getDrawable(R.drawable.user)); //设置名字和图片
+        spec1.setIndicator("消息", resources1.getDrawable(R.drawable.koala)); //设置名字和图片
         spec1.setContent(intent1);    //加载内容
         tabHost1.addTab(spec1);       //添加到tabHost中去
 
@@ -40,8 +41,8 @@ public class MainActivity extends TabActivity {
         Intent intent3 = new Intent(MainActivity.this, TrendsActivity.class);
         TabHost.TabSpec spec3 = tabHost3.newTabSpec("动态"); //获取这个对象的一页
         Resources resources3 = getResources();    //转换图片
-        spec3.setIndicator("动态", resources3.getDrawable(R.drawable.trends)); //设置名字和图片
+        spec3.setIndicator("动态", resources3.getDrawable(R.drawable.feather)); //设置名字和图片
         spec3.setContent(intent3);    //加载内容
-        tabHost3.addTab(spec3);       //添加到tabHost中去
+        tabHost3.addTab(spec3);       //添加到tabHost中
     }
 }

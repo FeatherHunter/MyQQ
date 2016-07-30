@@ -5,6 +5,9 @@
     <string name="reg">新用户注册</string>
     <string name="info1">账号</string>
     <string name="info2">密码</string>
+    <string name="msg">消息</string>
+    <string name="contact">联系人</string>
+    <string name="trends">动态</string>
     <string name="sendButton">发送</string>
     <string name="title_activity_operator_interface2">OperatorInterface2Activity</string>
     <string name="title_activity_chat_person">ChatPersonActivity</string>

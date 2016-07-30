@@ -57,5 +57,13 @@
 //    protected void onPostExecute(String s) {
 //        super.onPostExecute(s);
 //        Log.d("main", "" + s);
+//
+//        try {
+//
+//            Gson gson = new Gson();
+//        }catch (Exception e){
+//
+//        }
+//
 //    }
 //}
