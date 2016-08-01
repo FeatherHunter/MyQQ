@@ -37,6 +37,7 @@
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:text="设置"/>
+
     </RelativeLayout>
 
     <RelativeLayout

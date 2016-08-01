@@ -14,5 +14,6 @@
     <string name="title_activity_chat">ChatActivity</string>
     <string name="title_activity_loading">LoadingActivity</string>
     <string name="title_activity_message">MessageActivity</string>
+    <string name="title_activity_test_pop_window">TestPopWindowActivity</string>
 
 </resources>

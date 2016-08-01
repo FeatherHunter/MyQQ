@@ -47,6 +47,8 @@
         </activity>
         <activity android:name=".wenwen.tab.TrendsActivity" >
         </activity>
+        <activity android:name=".wenwen.tab.TestPopWindowActivity" >
+        </activity>
     </application>
 
 </manifest>

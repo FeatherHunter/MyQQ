@@ -24,7 +24,6 @@ import java.util.Map;
 
 public class MessageActivity extends AppCompatActivity {
 
-    private static ListView listView;
     private Button button = null;
     private PopupWindow popupWindow;
     private ListView lvPopList;
@@ -35,7 +34,6 @@ public class MessageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tab_item_msg);
-        listView = (ListView) findViewById(R.id.listView);
         button = (Button) findViewById(R.id.button);
 
         iniData();
@@ -59,15 +57,15 @@ public class MessageActivity extends AppCompatActivity {
 
     //初始化数据
     private void iniData(){
-        moreList = new ArrayList<Map<String, String>>();
+        moreList = new ArrayList<>();
         Map<String, String> map;
-        map = new HashMap<String,String>();
+        map = new HashMap<>();
         map.put("share_key", "复制");
         moreList.add(map);
-        map = new HashMap<String,String>();
+        map = new HashMap<>();
         map.put("share_key", "删除");
         moreList.add(map);
-        map = new HashMap<String,String>();
+        map = new HashMap<>();
         map.put("share_key", "粘贴");
         moreList.add(map);
     }
@@ -94,7 +92,7 @@ public class MessageActivity extends AppCompatActivity {
                         Toast.LENGTH_SHORT).show();
             }
         });
-        lvPopList.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED); //控制Popu盘Window的宽高自适应
+        lvPopList.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED); //控制PopupWindow的宽高自适应
         popupWindow.setHeight(lvPopList.getHeight() * NUM); //设置高度（要注意有几个PopList）
         popupWindow.setWidth(lvPopList.getWidth());         //设置宽度
 
