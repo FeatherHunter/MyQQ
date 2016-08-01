@@ -21,5 +21,13 @@ public class TrendsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        findViewById(R.id.myButton1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent1 = new Intent(TrendsActivity.this, TestPopWindow1Activity.class);
+                startActivity(intent1);
+            }
+        });
     }
 }

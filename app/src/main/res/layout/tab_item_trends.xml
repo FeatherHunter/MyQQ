@@ -10,6 +10,12 @@
         android:layout_height="wrap_content"
         android:text="hello" />
 
+    <Button
+        android:id="@+id/myButton1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="hello" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

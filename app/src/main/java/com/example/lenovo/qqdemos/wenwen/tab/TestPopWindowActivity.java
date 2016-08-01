@@ -39,30 +39,35 @@ public class TestPopWindowActivity extends Activity {
         });
     }
 
+    //在底部显示PopupWindow
     private void showPopupwindow() {
-        View contentView = LayoutInflater.from(TestPopWindowActivity.this).inflate(R.layout.test_item_popwindow, null);
-        mPopWindow = new PopupWindow(contentView,
-                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
-        mPopWindow.setContentView(contentView);
+        if (mPopWindow == null) {
+            View contentView = LayoutInflater.from(TestPopWindowActivity.this).inflate(R.layout.test_item_popwindow, null);
+            mPopWindow = new PopupWindow(contentView,
+                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
+            mPopWindow.setContentView(contentView);
 
 
-        textView1 = (TextView) findViewById(R.id.textView1);
-        textView2 = (TextView) findViewById(R.id.textView2);
+            textView1 = (TextView) contentView.findViewById(R.id.textView1);
+            textView2 = (TextView) contentView.findViewById(R.id.textView2);
 
-        textView1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(TestPopWindowActivity.this, "复制", Toast.LENGTH_SHORT).show();
-            }
-        });
-        textView2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(TestPopWindowActivity.this, "删除", Toast.LENGTH_SHORT).show();
-            }
-        });
+            textView1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(TestPopWindowActivity.this, "复制", Toast.LENGTH_SHORT).show();
+                    mPopWindow.dismiss();
+                }
+            });
+            textView2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(TestPopWindowActivity.this, "删除", Toast.LENGTH_SHORT).show();
+                    mPopWindow.dismiss();
+                }
+            });
 
-        View rootview = LayoutInflater.from(TestPopWindowActivity.this).inflate(R.layout.activity_test_pop_window, null);
-        mPopWindow.showAtLocation(rootview, Gravity.BOTTOM, 0, 0);
+            View rootview = LayoutInflater.from(TestPopWindowActivity.this).inflate(R.layout.activity_test_pop_window, null);
+            mPopWindow.showAtLocation(rootview, Gravity.BOTTOM, 0, 0);
+        }
     }
 }

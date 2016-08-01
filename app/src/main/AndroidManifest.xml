@@ -49,6 +49,8 @@
         </activity>
         <activity android:name=".wenwen.tab.TestPopWindowActivity" >
         </activity>
+        <activity android:name=".wenwen.tab.TestPopWindow1Activity" >
+        </activity>
     </application>
 
 </manifest>
