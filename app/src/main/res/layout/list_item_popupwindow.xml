@@ -1,30 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="50dp"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:background="@color/white"
     android:gravity="center"
-    android:orientation="vertical"
-    android:background="@color/white">
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textView1"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
         android:gravity="center"
-        android:minHeight="40dp"
-        android:minWidth="140dp"
-        android:text="复制"
-        android:textColor="@drawable/popupwindow_list_item_text_selector"
-        android:textSize="15dp" />
+        android:orientation="horizontal"
+        android:paddingLeft="30dp">
 
-    <TextView
-        android:id="@+id/textView2"
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/add_person"
+            android:gravity="center" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dip"
+            android:minHeight="40dp"
+            android:minWidth="140dp"
+            android:padding="10dp"
+            android:text="加好友"
+            android:textColor="@drawable/popupwindow_list_item_text_selector"
+            android:textSize="15dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
         android:gravity="center"
-        android:minHeight="40dp"
-        android:minWidth="140dp"
-        android:text="粘贴"
-        android:textColor="@drawable/popupwindow_list_item_text_selector"
-        android:textSize="15dp" />
+        android:orientation="horizontal"
+        android:paddingLeft="30dp">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/more_contact" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dip"
+            android:minHeight="40dp"
+            android:minWidth="140dp"
+            android:text="多人聊天"
+            android:textColor="@drawable/popupwindow_list_item_text_selector"
+            android:textSize="15dp" />
+
+    </LinearLayout>
 </LinearLayout>

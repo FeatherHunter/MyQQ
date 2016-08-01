@@ -31,7 +31,6 @@ public class MessageActivity extends AppCompatActivity {
 
     private Button button = null;
     private PopupWindow popupWindow;
-    private int NUM = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,13 +70,13 @@ public class MessageActivity extends AppCompatActivity {
         textView1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MessageActivity.this, "复制", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MessageActivity.this, "加好友", Toast.LENGTH_SHORT).show();
             }
         });
         textView2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MessageActivity.this, "粘贴", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MessageActivity.this, "多人聊天", Toast.LENGTH_SHORT).show();
             }
         });
 
