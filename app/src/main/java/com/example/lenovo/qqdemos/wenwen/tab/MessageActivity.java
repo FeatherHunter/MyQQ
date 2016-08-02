@@ -85,6 +85,8 @@ public class MessageActivity extends AppCompatActivity {
         popupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT); //设置高度
 
         //设置PopWindow点击屏幕其他地方消失
+        popupWindow.setTouchable(true);
+        popupWindow.setFocusable(true);
         popupWindow.setBackgroundDrawable(new BitmapDrawable());
 //       popupWindow.setBackgroundDrawable(this.getResources().getDrawable(R.drawable.tank2));//设置背景图片，不能在布局中设置，要在代码中设置
         popupWindow.setOutsideTouchable(true);  //触摸PopupWindow外部，popupWindow消失
