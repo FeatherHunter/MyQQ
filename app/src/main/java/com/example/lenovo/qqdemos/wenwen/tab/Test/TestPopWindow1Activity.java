@@ -1,4 +1,4 @@
-package com.example.lenovo.qqdemos.wenwen.tab;
+package com.example.lenovo.qqdemos.wenwen.tab.Test;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

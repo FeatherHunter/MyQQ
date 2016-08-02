@@ -137,12 +137,12 @@
         android:background="@color/gray1" />
 
 
-    <ListView
-        android:id="@+id/listView"
+    <ExpandableListView
+        android:id="@+id/expandListView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="65dp"
-        android:background="@color/blueviolet"></ListView>
+        android:layout_height="wrap_content">
+
+    </ExpandableListView>
 
 </LinearLayout>
 

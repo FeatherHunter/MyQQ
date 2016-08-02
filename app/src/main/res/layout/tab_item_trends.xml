@@ -136,13 +136,17 @@
         android:layout_height="7dp"
         android:background="@color/gray1" />
 
+    <Button
+    android:id="@+id/button10"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:text="testExpanlistView"/>
 
-    <ListView
-        android:id="@+id/listView"
+    <Button
+        android:id="@+id/button11"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="65dp"
-        android:background="@color/blueviolet"></ListView>
+        android:layout_height="50dp"
+        android:text="testExpanlistView2"/>
 
 </LinearLayout>
 

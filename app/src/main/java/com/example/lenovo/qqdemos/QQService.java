@@ -9,6 +9,10 @@ import android.util.Log;
 
 import com.example.lenovo.qqdemos.wenwen.tab.SqliteStart;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.Socket;
+
 
 /**
  * Created by lenovo on 2016/7/25.
@@ -79,7 +83,7 @@ public class QQService extends Service {
              * sokcet代码
              *---------------------------------------------*/
 //            try {
-//                Socket socket = new Socket("192.168.43.91", 8880);
+//                Socket socket = new Socket("192.168.155.1", 8880);
 //                OutputStream outputstream = socket.getOutputStream();
 //                String userMsg = "wenwen is pig";
 //                byte userBuffer[] = userMsg.getBytes();

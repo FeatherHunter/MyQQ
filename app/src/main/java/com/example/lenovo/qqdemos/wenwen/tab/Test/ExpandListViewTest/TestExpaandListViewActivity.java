@@ -1,4 +1,4 @@
-package com.example.lenovo.qqdemos.wenwen.tab;
+package com.example.lenovo.qqdemos.wenwen.tab.Test.ExpandListViewTest;
 
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
@@ -9,68 +9,44 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.lenovo.qqdemos.R;
-import com.pkmmte.view.CircularImageView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ContactActivity extends AppCompatActivity {
+public class TestExpaandListViewActivity extends AppCompatActivity {
 
-    private ExpandableListView expandListView;
     private List<String> groupArray;
     private List<List<String>> childArrayy;
-    private List<List<Integer>> childArray2;
-
+    private ExpandableListView expandListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.tab_item_contact);
+        setContentView(R.layout.activity_test_expaand_list_view);
+
         groupArray = new ArrayList<>();
         childArrayy = new ArrayList<List<String>>();
 
-        //列表
-        groupArray.add("我的好友");
-        groupArray.add("男神");
+        groupArray.add("第一行");
+        groupArray.add("第二行");
 
-        //设置用户昵称
         List<String> tempArray = new ArrayList<>();
-        tempArray.add("帅猎羽");
-        tempArray.add("文文");
-        tempArray.add("恐龙");
-
-//        for (int i = 0; i < groupArray.size(); ++i) {
-//            childArrayy.add(tempArray);
-//        }
-
-        //设置头像
-        List<Integer> tmp_list = new ArrayList<Integer>();
-        childArray2 = new ArrayList<List<Integer>>();
-        tmp_list.add(R.drawable.feather);
-        childArray2.add(tmp_list);
-        tmp_list.add(R.drawable.wen);
-        childArray2.add(tmp_list);
-        tmp_list.add(R.drawable.tank1);
-        childArray2.add(tmp_list);
-
-//        childArray2.add(tmp_list);
-//        childArray2.add(tmp_list);
-//        childArray2.add(tmp_list);
+        tempArray.add("first");
+        tempArray.add("second");
+        tempArray.add("third");
 
         for (int i = 0; i < groupArray.size(); ++i) {
             childArrayy.add(tempArray);
         }
-        //设置Adapter
-        expandListView = (ExpandableListView) findViewById(R.id.expandListView);
-        expandListView.setAdapter(new ExpandListViewAdapter(ContactActivity.this));
+
+        expandListView = (ExpandableListView) findViewById(R.id.expandlistView1);
+        expandListView.setAdapter(new ExpandListViewAdapter(TestExpaandListViewActivity.this));
 
     }
 
-    //自定义的Adapter
     class ExpandListViewAdapter extends BaseExpandableListAdapter {
 
         private Context context;
@@ -120,7 +96,6 @@ public class ContactActivity extends AppCompatActivity {
             return getGenericView(string);
         }
 
-        //构造方法，功能：显示出来文本中内容
         public TextView getGenericView(String string) {
             // Layout parameters for the ExpandableListView
             AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(
@@ -137,34 +112,13 @@ public class ContactActivity extends AppCompatActivity {
 
         @Override
         public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-            ItemHolder itemHolder = null;
-            if (convertView == null) {
-                convertView = getLayoutInflater().from(context).inflate(
-                        R.layout.expandlistview_item, null);
-                itemHolder = new ItemHolder();
-                itemHolder.txt = (TextView) convertView.findViewById(R.id.mytextView1);
-                itemHolder.img = (ImageView) convertView.findViewById(R.id.imageView1);
-                convertView.setTag(itemHolder);
-            } else {
-                itemHolder = (ItemHolder) convertView.getTag();
-            }
-            itemHolder.txt.setText(childArrayy.get(groupPosition).get(
-                    childPosition));
-            itemHolder.img.setBackgroundResource(childArray2.get(groupPosition).get(
-                    childPosition));
-            return convertView;
+            String string = childArrayy.get(groupPosition).get(childPosition);
+            return getGenericView(string);
         }
 
         @Override
         public boolean isChildSelectable(int groupPosition, int childPosition) {
             return true;
         }
-
-        class ItemHolder {
-            public ImageView img;
-            public TextView txt;
-        }
     }
 }
-
-
