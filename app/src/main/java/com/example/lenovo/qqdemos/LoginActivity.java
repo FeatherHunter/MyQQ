@@ -65,8 +65,7 @@ public class LoginActivity extends Activity implements View.OnFocusChangeListene
                 String passwdText = passwdEditText.getText().toString(); //读取密码信息
 
                 //检查账户密码合法性 true：验证成功
-                if(checkUserPwd(userText, passwdText) == false)
-                {
+                if (checkUserPwd(userText, passwdText) == false) {
                     return;
                 }
 
@@ -85,18 +84,21 @@ public class LoginActivity extends Activity implements View.OnFocusChangeListene
         });
     }
 
-    /**-------------------------------------------------------------------
+    /**
+     * -------------------------------------------------------------------
+     *
      * @class MsgReceiver
      * @描述： 接收广播
-     * -------------------------------------------------------------------*/
-    private class MsgReceiver extends BroadcastReceiver{
+     * -------------------------------------------------------------------
+     */
+    private class MsgReceiver extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context context, Intent intent) {
             //通过intent获得广播来的信息
             String msg = intent.getStringExtra("result");
             //登陆成功
-            if(msg.equals("ok")){
+            if (msg != null && msg.equals("ok")) {
                 //为了方便观察效果，添加延时。之后完善项目工程中会去除该延时
                 Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
@@ -119,7 +121,7 @@ public class LoginActivity extends Activity implements View.OnFocusChangeListene
                     }
                 }, 1500);//延时2000ms（2s)
 
-            }else{
+            } else {
                 dialog.dismiss();
                 //登录失败
                 Toast.makeText(LoginActivity.this, "账号/密码错误", Toast.LENGTH_SHORT).show();
@@ -137,7 +139,7 @@ public class LoginActivity extends Activity implements View.OnFocusChangeListene
     /*-------------------------------------
      *   确认账号密码合法性
      * -----------------------------------*/
-    public boolean checkUserPwd(String account, String password){
+    public boolean checkUserPwd(String account, String password) {
         //检查用户名和密码是否为空
         if (account.equals("")) {
             Toast.makeText(LoginActivity.this, "用户名不能为空", Toast.LENGTH_SHORT).show();
@@ -161,13 +163,13 @@ public class LoginActivity extends Activity implements View.OnFocusChangeListene
 
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
-        EditText textView = (EditText)v;
+        EditText textView = (EditText) v;
         String hint;
-        if(hasFocus){
+        if (hasFocus) {
             hint = textView.getHint().toString();
             textView.setTag(hint);
             textView.setHint("");
-        }else{
+        } else {
             hint = textView.getTag().toString();
             textView.setHint(hint);
         }
