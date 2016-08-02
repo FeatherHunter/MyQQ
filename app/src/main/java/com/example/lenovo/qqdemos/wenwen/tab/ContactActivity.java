@@ -10,6 +10,7 @@ import android.widget.AbsListView;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import com.example.lenovo.qqdemos.R;
@@ -75,6 +76,7 @@ public class ContactActivity extends AppCompatActivity {
         //设置Adapter
         expandListView = (ExpandableListView) findViewById(R.id.expandListView);
         expandListView.setAdapter(new ExpandListViewAdapter(ContactActivity.this));
+//        fixListViewHeight(expandListView);
 
     }
 
@@ -124,35 +126,59 @@ public class ContactActivity extends AppCompatActivity {
 
         @Override
         public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-            String string = groupArray.get(groupPosition);
-            return getGenericView(string);
-        }
+            String groupName = groupArray.get(groupPosition);
 
-        //构造方法，功能：显示出来文本中内容
-        public TextView getGenericView(String string) {
-            // Layout parameters for the ExpandableListView
-            AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(
-                    ViewGroup.LayoutParams.FILL_PARENT, 64);
-            TextView text = new TextView(context);
-            text.setLayoutParams(layoutParams);
-            // Center the text vertically
-            text.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
-            // Set the text starting position
-            text.setPadding(50, 0, 0, 0);
-            text.setText(string);
-            return text;
+            ContactGroup contactGroup = new ContactGroup();
+            if (convertView == null) { //不存在，第一次进行初始化
+
+                //获取 组 的布局
+                convertView = View.inflate(context, R.layout.contact_group_layout, null);
+
+                /*-------------------------------------------
+                 *    改变每个分组的显示时大小
+                 * ---------------------------------------*/
+                AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT, 140);
+                convertView.setLayoutParams(layoutParams);
+
+                //获取布局中控件
+                TextView nameTextView = (TextView) convertView.findViewById(R.id.contact_group_name_text);
+                TextView onclineTextView  = (TextView) convertView.findViewById(R.id.contact_group_online_text);
+                TextView sumTextView  = (TextView) convertView.findViewById(R.id.contact_group_sum_text);
+
+                contactGroup.setName(nameTextView);
+                contactGroup.setOnlineCount(onclineTextView);
+                contactGroup.setSumCount(sumTextView);
+
+                //保存
+                convertView.setTag(contactGroup);
+            } else {
+                //已经存在，直接取出
+                contactGroup = (ContactGroup) convertView.getTag();
+            }
+
+            //设置“组名”
+            contactGroup.getName().setText(groupName);
+            contactGroup.getOnlineCount().setText("16");
+            contactGroup.getSumCount().setText("61");
+
+            return convertView;
         }
 
         @Override
         public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-            ItemHolder itemHolder = null;
+            ItemHolder itemHolder = new ItemHolder();
             if (convertView == null) {
                 convertView = getLayoutInflater().from(context).inflate(
                         R.layout.expandlistview_item, null);
-                itemHolder = new ItemHolder();
-                itemHolder.txt1 = (TextView) convertView.findViewById(R.id.mytextView1);
-                itemHolder.txt2 = (TextView) convertView.findViewById(R.id.mytextView2);
-                itemHolder.img = (ImageView) convertView.findViewById(R.id.imageView1);
+
+                AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT, 160);
+                convertView.setLayoutParams(layoutParams);
+
+                itemHolder.txt1 = (TextView) convertView.findViewById(R.id.expandlistview_user_name_textview);
+                itemHolder.txt2 = (TextView) convertView.findViewById(R.id.expandlistview_user_sate_textview);
+                itemHolder.userImage = (ImageView) convertView.findViewById(R.id.imageview);
                 convertView.setTag(itemHolder);
             } else {
                 itemHolder = (ItemHolder) convertView.getTag();
@@ -161,8 +187,11 @@ public class ContactActivity extends AppCompatActivity {
                     childPosition));
             itemHolder.txt2.setText(childArrayy1.get(groupPosition).get(
                     childPosition));
-            itemHolder.img.setBackgroundResource(childArray2.get(groupPosition).get(
+
+            //用户头像
+            itemHolder.userImage.setImageResource(childArray2.get(groupPosition).get(
                     childPosition));
+
             return convertView;
         }
 
@@ -172,11 +201,67 @@ public class ContactActivity extends AppCompatActivity {
         }
 
         class ItemHolder {
-            public ImageView img;
+            public ImageView userImage;
             public TextView txt1;
             public TextView txt2;
         }
+
+        class ContactGroup{
+            public TextView name;
+            public TextView onlineCount;
+            public TextView sumCount;
+
+            public TextView getName() {
+                return name;
+            }
+
+            public void setName(TextView name) {
+                this.name = name;
+            }
+
+            public TextView getOnlineCount() {
+                return onlineCount;
+            }
+
+            public void setOnlineCount(TextView onlineCount) {
+                this.onlineCount = onlineCount;
+            }
+
+            public TextView getSumCount() {
+                return sumCount;
+            }
+
+            public void setSumCount(TextView sumCount) {
+                this.sumCount = sumCount;
+            }
+        }
     }
+
+//    public void fixListViewHeight(ExpandableListView listView) {
+//        if(listView == null) return;
+//        // 如果没有设置数据适配器，则ListView没有子项，返回。
+//        ListAdapter listAdapter = listView.getAdapter();
+//        int totalHeight = 0;
+//        if (listAdapter == null) {
+//            return;
+//        }
+//
+//        for (int index = 0, len = listAdapter.getCount(); index < len; index++) {
+//            View listViewItem = listAdapter.getView(index , null, listView);
+//            // 计算子项View 的宽高
+//            listViewItem.measure(0, 0);
+//            // 计算所有子项的高度和
+//            totalHeight += listViewItem.getMeasuredHeight();
+//        }
+//        ViewGroup.LayoutParams params = listView.getLayoutParams();
+//
+//        // listView.getDividerHeight()获取子项间分隔符的高度
+//        // params.height设置ListView完全显示需要的高度
+//        params.height = totalHeight+ (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+//        listView.setLayoutParams(params);
+//    }
 }
+
+
 
 

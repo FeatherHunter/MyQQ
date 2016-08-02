@@ -32,14 +32,12 @@ public class QQService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.i("QQService", "onCreate");
 
         helper = new SqliteStart(this); //创建一个自定义数据库（保存账号密码）
         database = helper.getReadableDatabase();  //打开数据库
 
         Thread sendMsgThread = new Thread(sendMsgRunnable);
         sendMsgThread.start();
-
     }
 
     /**
