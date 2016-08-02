@@ -1,6 +1,7 @@
 package com.example.lenovo.qqdemos.wenwen.tab;
 
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -61,7 +62,7 @@ public class MessageActivity extends AppCompatActivity {
 
 //      View contentView = LayoutInflater.from(MessageActivity.this).inflate(R.layout.list_item_popupwindow, null);
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
-        View contentView = inflater.inflate(R.layout.list_item_popupwindow,null);  //加载一个布局文件
+        View contentView = inflater.inflate(R.layout.list_item_popupwindow, null);  //加载一个布局文件
 
         textView1 = (TextView) contentView.findViewById(R.id.textView1);
         textView2 = (TextView) contentView.findViewById(R.id.textView2);
@@ -83,8 +84,10 @@ public class MessageActivity extends AppCompatActivity {
         popupWindow.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);   //设置宽度
         popupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT); //设置高度
 
-        //设置PopWindow点击屛其他地方消失
-//      popupWindow.setBackgroundDrawable(this.getResources().getDrawable(R.drawable.tank2));//设置背景图片，不能在布局中设置，要在代码中设置
-        popupWindow.setOutsideTouchable(true);  //触摸Popu盘Window外部，popupWindow消失
+        //设置PopWindow点击屏幕其他地方消失
+        popupWindow.setBackgroundDrawable(new BitmapDrawable());
+//       popupWindow.setBackgroundDrawable(this.getResources().getDrawable(R.drawable.tank2));//设置背景图片，不能在布局中设置，要在代码中设置
+        popupWindow.setOutsideTouchable(true);  //触摸PopupWindow外部，popupWindow消失
+
     }
 }

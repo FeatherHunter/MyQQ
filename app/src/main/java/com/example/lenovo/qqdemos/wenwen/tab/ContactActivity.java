@@ -23,6 +23,7 @@ public class ContactActivity extends AppCompatActivity {
     private ExpandableListView expandListView;
     private List<String> groupArray;
     private List<List<String>> childArrayy;
+    private List<List<String>> childArrayy1;
     private List<List<Integer>> childArray2;
 
 
@@ -32,6 +33,7 @@ public class ContactActivity extends AppCompatActivity {
         setContentView(R.layout.tab_item_contact);
         groupArray = new ArrayList<>();
         childArrayy = new ArrayList<List<String>>();
+        childArrayy1 = new ArrayList<List<String>>();
 
         //列表
         groupArray.add("我的好友");
@@ -42,6 +44,11 @@ public class ContactActivity extends AppCompatActivity {
         tempArray.add("帅猎羽");
         tempArray.add("文文");
         tempArray.add("恐龙");
+
+        List<String> tempArray2 = new ArrayList<>();
+        tempArray2.add("最近分享：今日头条");
+        tempArray2.add("创新为你");
+        tempArray2.add("更新了相册");
 
 //        for (int i = 0; i < groupArray.size(); ++i) {
 //            childArrayy.add(tempArray);
@@ -57,13 +64,14 @@ public class ContactActivity extends AppCompatActivity {
         tmp_list.add(R.drawable.tank1);
         childArray2.add(tmp_list);
 
-//        childArray2.add(tmp_list);
-//        childArray2.add(tmp_list);
-//        childArray2.add(tmp_list);
-
         for (int i = 0; i < groupArray.size(); ++i) {
             childArrayy.add(tempArray);
         }
+
+        for (int i = 0; i < groupArray.size(); ++i) {
+            childArrayy1.add(tempArray2);
+        }
+
         //设置Adapter
         expandListView = (ExpandableListView) findViewById(R.id.expandListView);
         expandListView.setAdapter(new ExpandListViewAdapter(ContactActivity.this));
@@ -142,13 +150,16 @@ public class ContactActivity extends AppCompatActivity {
                 convertView = getLayoutInflater().from(context).inflate(
                         R.layout.expandlistview_item, null);
                 itemHolder = new ItemHolder();
-                itemHolder.txt = (TextView) convertView.findViewById(R.id.mytextView1);
+                itemHolder.txt1 = (TextView) convertView.findViewById(R.id.mytextView1);
+                itemHolder.txt2 = (TextView) convertView.findViewById(R.id.mytextView2);
                 itemHolder.img = (ImageView) convertView.findViewById(R.id.imageView1);
                 convertView.setTag(itemHolder);
             } else {
                 itemHolder = (ItemHolder) convertView.getTag();
             }
-            itemHolder.txt.setText(childArrayy.get(groupPosition).get(
+            itemHolder.txt1.setText(childArrayy.get(groupPosition).get(
+                    childPosition));
+            itemHolder.txt2.setText(childArrayy1.get(groupPosition).get(
                     childPosition));
             itemHolder.img.setBackgroundResource(childArray2.get(groupPosition).get(
                     childPosition));
@@ -162,7 +173,8 @@ public class ContactActivity extends AppCompatActivity {
 
         class ItemHolder {
             public ImageView img;
-            public TextView txt;
+            public TextView txt1;
+            public TextView txt2;
         }
     }
 }
