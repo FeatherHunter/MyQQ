@@ -55,6 +55,10 @@
         </activity>
         <activity android:name=".wenwen.tab.Test.ExpandListViewTest.TestExpandListView2Activity" >
         </activity>
+        <activity android:name=".wenwen.tab.ChatPersonalActivity">
+        </activity>
+        <activity android:name=".wenwen.tab.ChatMenuActivity" >
+        </activity>
     </application>
 
 </manifest>

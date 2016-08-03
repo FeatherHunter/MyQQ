@@ -43,13 +43,14 @@ public class MessageActivity extends AppCompatActivity {
             map.put("ItemImage", R.drawable.feather);
             map.put("ItemName", "帅猎羽");
             map.put("ItemChatInfo", "你好");
+            map.put("ItemTime","12:10");
 
             listItem.add(map);
         }
 
         SimpleAdapter simpleAdapter = new SimpleAdapter(this, listItem, R.layout.list_msg_adapter,
-                new String[]{"ItemImage", "ItemName", "ItemChatInfo"},
-                new int[]{R.id.head_image, R.id.msg_name_textView, R.id.msg_chat_textView});
+                new String[]{"ItemImage", "ItemName", "ItemChatInfo", "ItemTime"},
+                new int[]{R.id.head_image, R.id.msg_name_textView, R.id.msg_chat_textView, R.id.msg_time_textView});
 
         msg_listView.setAdapter(simpleAdapter);  //为ListView绑定适配器
 

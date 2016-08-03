@@ -1,6 +1,8 @@
 package com.example.lenovo.qqdemos.wenwen.tab;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -76,6 +78,16 @@ public class ContactActivity extends AppCompatActivity {
         //设置Adapter
         expandListView = (ExpandableListView) findViewById(R.id.expandListView);
         expandListView.setAdapter(new ExpandListViewAdapter(ContactActivity.this));
+
+        expandListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                Intent intent = new Intent(ContactActivity.this, ChatPersonalActivity.class);
+//                intent.setData(Uri.parse(adapter.getList().get(groupPosition).videos.get(childPosition).url));
+                startActivity(intent);
+                return true;
+            }
+        });
 //        fixListViewHeight(expandListView);
 
     }
@@ -197,7 +209,7 @@ public class ContactActivity extends AppCompatActivity {
 
         @Override
         public boolean isChildSelectable(int groupPosition, int childPosition) {
-            return true;
+            return true;   //“true”是子item响应点击事件
         }
 
         class ItemHolder {
