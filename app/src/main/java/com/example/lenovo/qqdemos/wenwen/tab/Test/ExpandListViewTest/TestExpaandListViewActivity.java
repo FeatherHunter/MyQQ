@@ -19,6 +19,7 @@ import java.util.List;
 public class TestExpaandListViewActivity extends AppCompatActivity {
 
     private List<String> groupArray;
+
     private List<List<String>> childArrayy;
     private ExpandableListView expandListView;
 
