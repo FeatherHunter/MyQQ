@@ -5,16 +5,6 @@
     android:layout_height="match_parent"
     android:orientation="horizontal">
 
-    <!--<com.pkmmte.view.CircularImageView-->
-    <!--android:id="@+id/myImageView"-->
-    <!--android:layout_width="50dp"-->
-    <!--android:layout_height="50dp"-->
-    <!--android:src="@drawable/feather"-->
-    <!--app:border="true"-->
-    <!--app:border_color="#EEEEEE"-->
-    <!--app:border_width="1dp"-->
-    <!--app:shadow="true"/>-->
-
     <com.pkmmte.view.CircularImageView
         android:id="@+id/imageview"
         android:layout_width="40dp"

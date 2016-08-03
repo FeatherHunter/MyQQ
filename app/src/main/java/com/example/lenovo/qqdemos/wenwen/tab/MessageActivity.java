@@ -1,16 +1,12 @@
 package com.example.lenovo.qqdemos.wenwen.tab;
 
-import android.content.Intent;
+import android.content.ClipData;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -22,8 +18,7 @@ import com.example.lenovo.qqdemos.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.Objects;
 
 public class MessageActivity extends AppCompatActivity {
 
@@ -32,6 +27,7 @@ public class MessageActivity extends AppCompatActivity {
 
     private Button button = null;
     private PopupWindow popupWindow;
+    private ListView msg_listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +35,23 @@ public class MessageActivity extends AppCompatActivity {
         setContentView(R.layout.tab_item_msg);
 
         button = (Button) findViewById(R.id.button);
+        msg_listView = (ListView) findViewById(R.id.listView_msg);
+
+        ArrayList<HashMap<String, Object>> listItem = new ArrayList<>();  //定义一个动态数组
+        for (int i = 0; i < 10; i++) {
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("ItemImage", R.drawable.feather);
+            map.put("ItemName", "帅猎羽");
+            map.put("ItemChatInfo", "你好");
+
+            listItem.add(map);
+        }
+
+        SimpleAdapter simpleAdapter = new SimpleAdapter(this, listItem, R.layout.list_msg_adapter,
+                new String[]{"ItemImage", "ItemName", "ItemChatInfo"},
+                new int[]{R.id.head_image, R.id.msg_name_textView, R.id.msg_chat_textView});
+
+        msg_listView.setAdapter(simpleAdapter);  //为ListView绑定适配器
 
         iniPopupWindow();
 
@@ -59,7 +72,6 @@ public class MessageActivity extends AppCompatActivity {
     }
 
     private void iniPopupWindow() {
-
 //      View contentView = LayoutInflater.from(MessageActivity.this).inflate(R.layout.list_item_popupwindow, null);
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
         View contentView = inflater.inflate(R.layout.list_item_popupwindow, null);  //加载一个布局文件
