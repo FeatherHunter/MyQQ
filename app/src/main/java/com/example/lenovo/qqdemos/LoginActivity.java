@@ -213,7 +213,7 @@ public class LoginActivity extends Activity implements View.OnFocusChangeListene
         if (checkBox_remember_pwd.isChecked()) {   //记住密码
             passwdEditText.setText(sharedPreferences.getString("edittext_pwd", ""));
         }
-        if (checkBox_auto_login.isChecked()) {    //自动登录
+        if (checkBox_auto_login.isChecked()) {     //自动登录
             Intent autoIntent = new Intent(this, MainActivity.class);
             startActivity(autoIntent);
         }
