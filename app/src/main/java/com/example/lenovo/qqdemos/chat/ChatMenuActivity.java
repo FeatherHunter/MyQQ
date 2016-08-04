@@ -1,13 +1,16 @@
 package com.example.lenovo.qqdemos.chat;
 
 import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
 import com.example.lenovo.qqdemos.R;
 import com.example.lenovo.qqdemos.chat.ChatItem;
 import com.example.lenovo.qqdemos.chat.adapter.ChatListAdapter;
+import com.example.lenovo.qqdemos.wenwen.tab.Testservice;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,6 +38,14 @@ public class ChatMenuActivity extends ListActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_menu);
+
+        findViewById(R.id.send_msg_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent chatIntent = new Intent(ChatMenuActivity.this, Testservice.class);
+                startService(chatIntent);
+            }
+        });
 
         //测试数据
         chatItemList = new ArrayList<>();

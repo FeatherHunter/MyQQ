@@ -13,9 +13,9 @@
         android:text="12:12" />
 
     <LinearLayout
-        android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:orientation="horizontal">
 
         <com.pkmmte.view.CircularImageView
@@ -28,10 +28,12 @@
 
         <TextView
             android:id="@+id/chat_content_text"
-            android:layout_marginLeft="20dp"
-            android:gravity="center_vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="hello world"/>
+            android:layout_marginLeft="20dp"
+            android:gravity="center_vertical"
+            android:text="hello world"
+            android:textColor="@color/black"
+            android:textSize="15dp" />
     </LinearLayout>
 </LinearLayout>

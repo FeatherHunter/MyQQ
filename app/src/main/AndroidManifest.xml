@@ -36,6 +36,7 @@
 
         <service android:name=".QQService" >
         </service>
+        <service android:name=".wenwen.tab.Testservice"></service>
 
         <activity android:name=".start.PagerActivity" />
         <activity
@@ -57,7 +58,8 @@
         </activity>
         <activity android:name=".wenwen.tab.ChatPersonalActivity" >
         </activity>
-        <activity android:name=".chat.ChatMenuActivity" >
+        <activity android:name=".chat.ChatMenuActivity"
+            android:windowSoftInputMode="adjustPan">
         </activity>
         <activity android:name=".wenwen.tab.Test.ChatTest.ChatTestActivity" >
         </activity>
