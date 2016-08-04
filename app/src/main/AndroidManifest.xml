@@ -63,6 +63,8 @@
         </activity>
         <activity android:name=".wenwen.tab.Test.ChatTest.ChatTestActivity" >
         </activity>
+        <activity android:name=".start.PastDoorActivity" >
+        </activity>
     </application>
 
 </manifest>

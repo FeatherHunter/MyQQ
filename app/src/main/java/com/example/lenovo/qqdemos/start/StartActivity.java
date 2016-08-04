@@ -11,6 +11,8 @@ import android.view.WindowManager;
 import com.example.lenovo.qqdemos.LoginActivity;
 import com.example.lenovo.qqdemos.R;
 
+import java.util.Calendar;
+
 /**=============================================
  * @描述： 显示logo，延时跳转到主要界面。
  *=============================================*/
@@ -35,9 +37,19 @@ public class StartActivity extends Activity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                //跳转
-                Intent intent = new Intent(StartActivity.this, LoginActivity.class);
-                startActivity(intent);
+
+                Calendar c = Calendar.getInstance();
+                int day   = c.get(Calendar.DAY_OF_MONTH);
+
+                if(day == 4){
+                    Intent autoIntent = new Intent(StartActivity.this, PagerActivity.class);
+                    startActivity(autoIntent);
+                }else
+                {
+                    //跳转
+                    Intent intent = new Intent(StartActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                }
                 //销毁该Activity
                 StartActivity.this.finish();
             }

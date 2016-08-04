@@ -18,6 +18,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.lenovo.qqdemos.start.PagerActivity;
+
+import java.util.Calendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -214,8 +217,10 @@ public class LoginActivity extends Activity implements View.OnFocusChangeListene
             passwdEditText.setText(sharedPreferences.getString("edittext_pwd", ""));
         }
         if (checkBox_auto_login.isChecked()) {     //自动登录
+
             Intent autoIntent = new Intent(this, MainActivity.class);
             startActivity(autoIntent);
+
         }
 
         checkBox_remember_pwd.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
