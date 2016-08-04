@@ -35,8 +35,8 @@ public class ContactActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tab_item_contact);
         groupArray = new ArrayList<>();
-        childArrayy = new ArrayList<List<String>>();
-        childArrayy1 = new ArrayList<List<String>>();
+        childArrayy = new ArrayList<>();
+        childArrayy1 = new ArrayList<>();
 
         //列表
         groupArray.add("我的好友");
@@ -58,8 +58,8 @@ public class ContactActivity extends AppCompatActivity {
 //        }
 
         //设置头像
-        List<Integer> tmp_list = new ArrayList<Integer>();
-        childArray2 = new ArrayList<List<Integer>>();
+        List<Integer> tmp_list = new ArrayList<>();
+        childArray2 = new ArrayList<>();
         tmp_list.add(R.drawable.feather);
         childArray2.add(tmp_list);
         tmp_list.add(R.drawable.wen);

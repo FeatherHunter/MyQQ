@@ -1,17 +1,30 @@
 package com.example.lenovo.qqdemos.wenwen.tab;
 
+import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 
 import com.example.lenovo.qqdemos.R;
+import com.example.lenovo.qqdemos.chat.ChatMenuActivity;
+import com.example.lenovo.qqdemos.wenwen.tab.Test.ChatTest.ChatTestActivity;
 
-public class ChatPersonalActivity extends AppCompatActivity {
+public class ChatPersonalActivity extends Activity {
 
     private Button send_msg_button = null;
+
+    //监听返回键
+//    @Override
+//    public boolean onKeyDown(int keyCode, KeyEvent event) {
+//
+//        if (keyCode == KeyEvent.KEYCODE_BACK
+//                && event.getRepeatCount() == 0) {
+//            ChatPersonalActivity.this.finish();
+//            return false;
+//        }
+//        return super.onKeyDown(keyCode, event);
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +40,8 @@ public class ChatPersonalActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+
 
     }
 }

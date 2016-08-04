@@ -6,31 +6,32 @@
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/chat_time_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="12:12" />
 
     <LinearLayout
-        android:gravity="center"
+        android:gravity="right"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <com.pkmmte.view.CircularImageView
-            android:id="@+id/chat_to_image"
-            android:layout_width="55dp"
-            android:layout_height="55dp"
-            android:layout_marginLeft="10dp"
-            android:src="@drawable/feather"
-            app:border="false"
-            app:shadow="true" />
-
         <TextView
-            android:layout_marginLeft="20dp"
+            android:id="@+id/chat_content_text"
+            android:layout_marginRight="20dp"
             android:gravity="center_vertical"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="hello world"/>
+
+        <com.pkmmte.view.CircularImageView
+            android:id="@+id/chat_head_image"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_marginRight="20dp"
+            app:border="false"
+            app:shadow="true" />
     </LinearLayout>
 </LinearLayout>

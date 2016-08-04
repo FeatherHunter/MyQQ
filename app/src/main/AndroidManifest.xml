@@ -47,17 +47,19 @@
         </activity>
         <activity android:name=".wenwen.tab.TrendsActivity" >
         </activity>
-        <activity android:name=".wenwen.tab.Test.TestPopWindowActivity" >
+        <activity android:name=".wenwen.tab.Test.PopupWindowTest.TestPopWindowActivity" >
         </activity>
-        <activity android:name=".wenwen.tab.Test.TestPopWindow1Activity" >
+        <activity android:name=".wenwen.tab.Test.PopupWindowTest.TestPopWindow1Activity" >
         </activity>
         <activity android:name=".wenwen.tab.Test.ExpandListViewTest.TestExpaandListViewActivity" >
         </activity>
         <activity android:name=".wenwen.tab.Test.ExpandListViewTest.TestExpandListView2Activity" >
         </activity>
-        <activity android:name=".wenwen.tab.ChatPersonalActivity">
+        <activity android:name=".wenwen.tab.ChatPersonalActivity" >
         </activity>
-        <activity android:name=".wenwen.tab.ChatMenuActivity" >
+        <activity android:name=".chat.ChatMenuActivity" >
+        </activity>
+        <activity android:name=".wenwen.tab.Test.ChatTest.ChatTestActivity" >
         </activity>
     </application>
 
