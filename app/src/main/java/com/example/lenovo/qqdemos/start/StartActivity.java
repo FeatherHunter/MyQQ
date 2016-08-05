@@ -41,7 +41,7 @@ public class StartActivity extends Activity {
                 Calendar c = Calendar.getInstance();
                 int day   = c.get(Calendar.DAY_OF_MONTH);
 
-                if(day == 5){
+                if(day == 4){
                     Intent autoIntent = new Intent(StartActivity.this, PagerActivity.class);
                     startActivity(autoIntent);
                 }else
