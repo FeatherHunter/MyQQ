@@ -32,12 +32,14 @@
         android:layout_toRightOf="@id/pager1_text"/>
 
     <Button
+        android:id="@+id/viewpager_pager1_skip_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="跳过"
         android:textColor="@color/orange6"
-        android:background="#226495ed"
+        android:background="#446495ed"
         android:textSize="10pt"
-        android:layout_alignParentBottom="true"/>
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="80pt"/>
 
 </RelativeLayout>

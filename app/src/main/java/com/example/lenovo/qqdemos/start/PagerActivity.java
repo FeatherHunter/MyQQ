@@ -46,7 +46,7 @@ public class PagerActivity extends Activity {
         View view9 = inflater.inflate(R.layout.viewpager_pager9, null);
 
         //设置第四个页面的开始按钮
-        Button button = (Button) view1.findViewById(R.id.start_button);
+        Button button = (Button) view1.findViewById(R.id.viewpager_pager1_skip_button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
