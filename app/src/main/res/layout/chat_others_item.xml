@@ -31,10 +31,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:gravity="center_vertical"
-            android:text="h"
+            android:gravity="center"
+            android:text="很"
             android:textColor="@color/white"
             android:textSize="15dp"
-            android:background="@drawable/chat_bubble_nor_panda"/>
+            android:background="@drawable/chat_bubble_bg_nor_panda"/>
     </LinearLayout>
 </LinearLayout>
