@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 
+import com.example.lenovo.qqdemos.LoginActivity;
 import com.example.lenovo.qqdemos.R;
 
 import java.util.ArrayList;
@@ -44,9 +45,21 @@ public class PagerActivity extends Activity {
         View view8 = inflater.inflate(R.layout.viewpager_pager8, null);
         View view9 = inflater.inflate(R.layout.viewpager_pager9, null);
 
+        //设置第四个页面的开始按钮
+        Button button = (Button) view1.findViewById(R.id.start_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent();
+                intent.setClass(PagerActivity.this, LoginActivity.class);
+                startActivity(intent);
+                PagerActivity.this.finish();
+            }
+        });
+
         View view20 = inflater.inflate(R.layout.viewpager_pager_last, null);
         //设置第四个页面的开始按钮
-        Button button = (Button) view20.findViewById(R.id.start_button);
+        button = (Button) view20.findViewById(R.id.start_button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

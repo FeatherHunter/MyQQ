@@ -31,4 +31,13 @@
         android:layout_below="@+id/pager1_text"
         android:layout_toRightOf="@id/pager1_text"/>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="跳过"
+        android:textColor="@color/orange6"
+        android:background="#226495ed"
+        android:textSize="10pt"
+        android:layout_alignParentBottom="true"/>
+
 </RelativeLayout>
