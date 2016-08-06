@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.lenovo.qqdemos"
     android:versionCode="100"
-    android:versionName="1.0.0">
+    android:versionName="1.0.0" >
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -17,7 +17,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -26,7 +26,6 @@
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-
 
     <application
         android:name=".QQApplication"
@@ -37,18 +36,23 @@
         android:theme="@style/AppTheme" >
 
         <!-- 设置环信应用的AppKey -->
-        <meta-data android:name="feather#myqq"  android:value="Your AppKey" />
-        <!-- 声明SDK所需的service SDK核心功能-->
-        <service android:name="com.hyphenate.chat.EMChatService" android:exported="true"/>
+        <meta-data
+            android:name="EASEMOB_APPKEY"
+            android:value="feather#myqq" />
+        <!-- 声明SDK所需的service SDK核心功能 -->
+        <service
+            android:name="com.hyphenate.chat.EMChatService"
+            android:exported="true" />
         <!-- 声明SDK所需的receiver -->
-        <receiver android:name="com.hyphenate.chat.EMMonitorReceiver">
+        <receiver android:name="com.hyphenate.chat.EMMonitorReceiver" >
             <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_REMOVED"/>
-                <data android:scheme="package"/>
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+
+                <data android:scheme="package" />
             </intent-filter>
             <!-- 可选filter -->
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.USER_PRESENT" />
             </intent-filter>
         </receiver>
@@ -76,7 +80,7 @@
 
         <service android:name=".QQService" >
         </service>
-        <service android:name=".wenwen.tab.Testservice"></service>
+        <service android:name=".wenwen.tab.Testservice" />
 
         <activity android:name=".start.PagerActivity" />
         <activity
@@ -98,12 +102,15 @@
         </activity>
         <activity android:name=".wenwen.tab.ChatPersonalActivity" >
         </activity>
-        <activity android:name=".chat.ChatMenuActivity"
-            android:windowSoftInputMode="adjustPan">
+        <activity
+            android:name=".chat.ChatMenuActivity"
+            android:windowSoftInputMode="adjustPan" >
         </activity>
         <activity android:name=".wenwen.tab.Test.ChatTest.ChatTestActivity" >
         </activity>
         <activity android:name=".start.PastDoorActivity" >
+        </activity>
+        <activity android:name=".Sign_upActivity" >
         </activity>
     </application>
 

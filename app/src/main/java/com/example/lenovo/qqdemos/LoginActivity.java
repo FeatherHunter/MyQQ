@@ -10,6 +10,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -49,14 +50,30 @@ public class LoginActivity extends Activity implements View.OnFocusChangeListene
         passwdEditText = (EditText) findViewById(R.id.passwd_edittext); //密码
         logButton = (Button) findViewById(R.id.login_button);  //登陆
         infoTextView = (TextView) findViewById(R.id.info_textview);
-        sign_upTextView = (TextView) findViewById(R.id.sign_up_textview);
+        sign_upTextView = (TextView) findViewById(R.id.sign_up_textview); //注册账户
 
         checkBox_remember_pwd = (CheckBox) findViewById(R.id.checkbox_remember_pwd); //记住密码
         checkBox_auto_login = (CheckBox) findViewById(R.id.checkbox_auto_login);   //自动登录
 
 
-        userEditText.setOnFocusChangeListener(this);
-        passwdEditText.setOnFocusChangeListener(this);
+        sign_upTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent regIntent = new Intent(LoginActivity.this, Sign_upActivity.class);
+                startActivityForResult(regIntent, 1);
+            }
+        });
+
+        logButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent startIntent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(startIntent);
+            }
+        });
+
+//        userEditText.setOnFocusChangeListener(this);
+//        passwdEditText.setOnFocusChangeListener(this);
 
         //初始化dialog，用于之后显示“正在登录中....”
         dialog = new ProgressDialog(this);
@@ -64,51 +81,52 @@ public class LoginActivity extends Activity implements View.OnFocusChangeListene
         dialog.setTitle("正在登录中....");
         dialog.setCancelable(false);
 
-        autoLogin();
+//        autoLogin();
 
-        /*---------------------------------------------------------------
-         *                  动态注册receiver
-         * --------------------------------------------------------*/
-        MsgReceiver msgReceiver = new MsgReceiver();    //创建消息接收广播
-        IntentFilter filter = new IntentFilter();
-        filter.addAction("android.intent.action.ANSWER"); //指定Action
-        registerReceiver(msgReceiver, filter);//注册
+//        /*---------------------------------------------------------------
+//         *                  动态注册receiver
+//         * --------------------------------------------------------*/
+//        MsgReceiver msgReceiver = new MsgReceiver();    //创建消息接收广播
+//        IntentFilter filter = new IntentFilter();
+//        filter.addAction("android.intent.action.ANSWER"); //指定Action
+//        registerReceiver(msgReceiver, filter);//注册
+//
+//        //设置登录按键监听器
+//        logButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                String userText = userEditText.getText().toString(); //读取账号信息
+//                String passwdText = passwdEditText.getText().toString(); //读取密码信息
+//
+//                //SharedPreferences完成自动登录
+//                editor.putBoolean("checkbox_pwd", checkBox_remember_pwd.isChecked())
+//                        .putString("edittext_user",
+//                                userEditText.getText().toString().trim())
+//                        .putBoolean("checkbox_auto_login", checkBox_auto_login.isChecked()).commit();//保存“记住密码”和“自动登录”的状态，并默认保存账户信息
+//
+//                if (checkBox_remember_pwd.isChecked()) {    //勾选“记住密码”，保存密码
+//                    editor.putString("edittext_pwd", passwdEditText.getText().toString())
+//                            .commit();
+//                }
+//
+//                //检查账户密码合法性 true：验证成功
+//                if (checkUserPwd(userText, passwdText) == false) {
+//                    return;
+//                }
+//
+//                dialog.show();//显示“正在登录中....”
+//
+//                /*---------------------------------------------------------------
+//                 *                  开启一个服务
+//                 * --------------------------------------------------------*/
+//                Intent serviceIntent = new Intent();
+//                serviceIntent.putExtra("user", userText);
+//                serviceIntent.putExtra("pwd", passwdText);
+//                serviceIntent.setClass(LoginActivity.this, QQService.class);
+//                startService(serviceIntent);
+//            }
+//        });
 
-        //设置登录按键监听器
-        logButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String userText = userEditText.getText().toString(); //读取账号信息
-                String passwdText = passwdEditText.getText().toString(); //读取密码信息
-
-                //SharedPreferences完成自动登录
-                editor.putBoolean("checkbox_pwd", checkBox_remember_pwd.isChecked())
-                        .putString("edittext_user",
-                                userEditText.getText().toString().trim())
-                        .putBoolean("checkbox_auto_login", checkBox_auto_login.isChecked()).commit();//保存“记住密码”和“自动登录”的状态，并默认保存账户信息
-
-                if (checkBox_remember_pwd.isChecked()) {    //勾选“记住密码”，保存密码
-                    editor.putString("edittext_pwd", passwdEditText.getText().toString())
-                            .commit();
-                }
-
-                //检查账户密码合法性 true：验证成功
-                if (checkUserPwd(userText, passwdText) == false) {
-                    return;
-                }
-
-                dialog.show();//显示“正在登录中....”
-
-                /*---------------------------------------------------------------
-                 *                  开启一个服务
-                 * --------------------------------------------------------*/
-                Intent serviceIntent = new Intent();
-                serviceIntent.putExtra("user", userText);
-                serviceIntent.putExtra("pwd", passwdText);
-                serviceIntent.setClass(LoginActivity.this, QQService.class);
-                startService(serviceIntent);
-            }
-        });
     }
 
     /**
@@ -240,5 +258,22 @@ public class LoginActivity extends Activity implements View.OnFocusChangeListene
                 }
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 1) {
+            Toast.makeText(LoginActivity.this, data.getStringExtra("account"), Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginActivity.this, data.getStringExtra("passwd"), Toast.LENGTH_SHORT).show();
+            userEditText.setText(data.getStringExtra("account"));
+            passwdEditText.setText(data.getStringExtra("passwd"));
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return super.onCreateOptionsMenu(menu);
     }
 }
