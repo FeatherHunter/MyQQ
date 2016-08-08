@@ -20,6 +20,7 @@
 
 
         <EditText
+            android:id="@+id/chat_content_edit"
             android:minLines="1"
             android:background="@color/white"
             android:layout_width="270dp"

@@ -10,6 +10,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -20,6 +21,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.lenovo.qqdemos.start.PagerActivity;
+import com.hyphenate.EMCallBack;
+import com.hyphenate.chat.EMClient;
 
 import java.util.Calendar;
 import java.util.regex.Matcher;
@@ -67,8 +70,51 @@ public class LoginActivity extends Activity implements View.OnFocusChangeListene
         logButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent startIntent = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(startIntent);
+
+                String userText = userEditText.getText().toString(); //读取账号信息
+                String passwdText = passwdEditText.getText().toString(); //读取密码信息
+
+                //SharedPreferences完成自动登录
+                editor.putBoolean("checkbox_pwd", checkBox_remember_pwd.isChecked())
+                        .putString("edittext_user",
+                                userEditText.getText().toString().trim())
+                        .putBoolean("checkbox_auto_login", checkBox_auto_login.isChecked()).commit();//保存“记住密码”和“自动登录”的状态，并默认保存账户信息
+
+                if (checkBox_remember_pwd.isChecked()) {    //勾选“记住密码”，保存密码
+                    editor.putString("edittext_pwd", passwdEditText.getText().toString())
+                            .commit();
+                }
+
+                EMClient.getInstance().login(userText, passwdText, new EMCallBack() {
+                    @Override
+                    public void onSuccess() {      //登陆成功
+                        EMClient.getInstance().groupManager().loadAllGroups();
+                        EMClient.getInstance().chatManager().loadAllConversations();
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(LoginActivity.this, "登录聊天服务器成功", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        Intent startIntent = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(startIntent);
+                    }
+
+                    @Override
+                    public void onError(int i, String s) {    //登录失败
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(LoginActivity.this, "登录聊天服务器失败", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onProgress(int i, String s) {
+
+                    }
+                });
             }
         });
 
@@ -77,11 +123,12 @@ public class LoginActivity extends Activity implements View.OnFocusChangeListene
 
         //初始化dialog，用于之后显示“正在登录中....”
         dialog = new ProgressDialog(this);
+
         dialog.setTitle("提示");
         dialog.setTitle("正在登录中....");
         dialog.setCancelable(false);
 
-//        autoLogin();
+        autoLogin();
 
 //        /*---------------------------------------------------------------
 //         *                  动态注册receiver
@@ -185,6 +232,7 @@ public class LoginActivity extends Activity implements View.OnFocusChangeListene
     /*-------------------------------------
      *   确认账号密码合法性
      * -----------------------------------*/
+
     public boolean checkUserPwd(String account, String password) {
         //检查用户名和密码是否为空
         if (account.equals("")) {
@@ -236,8 +284,8 @@ public class LoginActivity extends Activity implements View.OnFocusChangeListene
         }
         if (checkBox_auto_login.isChecked()) {     //自动登录
 
-            Intent autoIntent = new Intent(this, MainActivity.class);
-            startActivity(autoIntent);
+//            Intent autoIntent = new Intent(this, MainActivity.class);
+//            startActivity(autoIntent);
 
         }
 
@@ -260,6 +308,7 @@ public class LoginActivity extends Activity implements View.OnFocusChangeListene
         });
     }
 
+    //利用Activity的回传值，接受从Sign_upActivity中传过来的账户密码
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

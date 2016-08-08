@@ -4,6 +4,7 @@ import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
@@ -11,6 +12,8 @@ import com.example.lenovo.qqdemos.R;
 import com.example.lenovo.qqdemos.chat.ChatItem;
 import com.example.lenovo.qqdemos.chat.adapter.ChatListAdapter;
 import com.example.lenovo.qqdemos.wenwen.tab.Testservice;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMMessage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,6 +22,7 @@ import java.util.Map;
 
 public class ChatMenuActivity extends ListActivity {
 
+    private EditText ChatContentEdit;
     private ListView chatToList;
 
     private ArrayList<ChatItem>  chatItemList; //聊天链表
@@ -39,11 +43,19 @@ public class ChatMenuActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_menu);
 
-        findViewById(R.id.send_msg_button).setOnClickListener(new View.OnClickListener() {
+        ChatContentEdit = (EditText) findViewById(R.id.chat_content_text); //要发送的文本消息
+
+        findViewById(R.id.send_msg_button).setOnClickListener(new View.OnClickListener() {   //点击“发送”按钮
             @Override
             public void onClick(View v) {
-                Intent chatIntent = new Intent(ChatMenuActivity.this, Testservice.class);
-                startService(chatIntent);
+
+                String ChatContent = ChatContentEdit.getText().toString().trim();   //获取要发送的文本消息
+
+                EMMessage message = EMMessage.createTxtSendMessage(ChatContent, "975559549");  //创建一条文本消息
+                EMClient.getInstance().chatManager().sendMessage(message);  //发送消息
+
+//                chatItemList.add(new ChatItem(975559549, R.drawable.feather, "帅猎羽", (String)message, "17:05"));
+
             }
         });
 

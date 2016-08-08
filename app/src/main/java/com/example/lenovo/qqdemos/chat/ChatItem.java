@@ -1,5 +1,7 @@
 package com.example.lenovo.qqdemos.chat;
 
+import com.hyphenate.chat.EMMessage;
+
 /**
  * Created by lenovo on 2016/8/4.
  */
