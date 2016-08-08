@@ -73,8 +73,8 @@ public class ChatMenuActivity extends ListActivity {
                 sendMsgThread.start();
 
                 //获得系统的时间
+                SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
                 Date currentTime = new Date();
-                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 String dateString = formatter.format(currentTime);
 
                 chatItemList.add(new ChatItem("1456593200", R.drawable.feather, "帅猎羽", chatContent, dateString));
@@ -130,9 +130,12 @@ public class ChatMenuActivity extends ListActivity {
             String msg = recMsg.getMessage();
 
             //获得系统的时间
+            SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
             Date currentTime = new Date();
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String dateString = formatter.format(currentTime);
+//            Date currentTime = new Date();
+//            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//            String dateString = formatter.format(currentTime);
 
             chatItemList.add(new ChatItem("975559549", R.drawable.feather, "帅猎羽", msg, dateString));
             adapter.notifyDataSetChanged();
