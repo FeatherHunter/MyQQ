@@ -35,9 +35,9 @@ public class ChatListAdapter extends ArrayAdapter<ChatItem>{
     public View getView(int position, View convertView, ViewGroup parent) {
         ChatItem chatItem = getItem(position);
 
-        if(chatItem.getId() == 1456593200){//自己
+        if(chatItem.getId().equals("1456593200")){       //自己
             convertView = View.inflate(getContext(), my_chat_layout, null);
-        }else{//other
+        }else{            //other
             convertView = View.inflate(getContext(), other_chat_layout, null);
         }
 
