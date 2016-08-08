@@ -129,7 +129,12 @@ public class ChatMenuActivity extends ListActivity {
             EMTextMessageBody recMsg = (EMTextMessageBody) messages.get(0).getBody();
             String msg = recMsg.getMessage();
 
-            chatItemList.add(new ChatItem("975559549", R.drawable.feather,"帅猎羽", msg, "15:13"));
+            //获得系统的时间
+            Date currentTime = new Date();
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String dateString = formatter.format(currentTime);
+
+            chatItemList.add(new ChatItem("975559549", R.drawable.feather, "帅猎羽", msg, dateString));
             adapter.notifyDataSetChanged();
         }
 
@@ -154,4 +159,10 @@ public class ChatMenuActivity extends ListActivity {
         }
     };
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        EMClient.getInstance().chatManager().removeMessageListener(msgListener);  //移除消息监听
+    }
 }
