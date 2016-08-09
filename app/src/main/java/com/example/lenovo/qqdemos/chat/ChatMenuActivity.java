@@ -14,7 +14,9 @@ import com.example.lenovo.qqdemos.chat.ChatItem;
 import com.example.lenovo.qqdemos.chat.adapter.ChatListAdapter;
 import com.example.lenovo.qqdemos.wenwen.tab.Testservice;
 import com.hyphenate.EMMessageListener;
+import com.hyphenate.chat.EMChatManager;
 import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMTextMessageBody;
 import com.hyphenate.chat.adapter.EMAChatManager;
@@ -91,7 +93,6 @@ public class ChatMenuActivity extends ListActivity {
             }
         });
         recMsgThread.start(); //开启接收消息的线程
-
 
         //测试数据
         chatItemList = new ArrayList<>();
