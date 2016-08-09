@@ -34,7 +34,7 @@ import java.util.Map;
 public class ChatMenuActivity extends ListActivity {
 
     private EditText chatContentEdit;
-    private ListView chatToList;
+    private ListView chatToListView;
     private Button sendMsgButton;
 
     ChatListAdapter adapter;
@@ -74,14 +74,14 @@ public class ChatMenuActivity extends ListActivity {
         chatItemList.add(new ChatItem("test123", R.drawable.feather, "帅猎羽", "不在？", "12:31"));
         chatItemList.add(new ChatItem("1456593200", R.drawable.wen, "帅猎羽", "刚才在吃饭的", "13:14"));
 
-        chatToList = getListView();
+        chatToListView = getListView();
 
         adapter = new ChatListAdapter(this,
                 R.layout.chat_me_item,
                 chatItemList, R.layout.
                 chat_others_item);
 
-        chatToList.setAdapter(adapter);
+        chatToListView.setAdapter(adapter);
 
         sendMsgButton.setOnClickListener(new View.OnClickListener() {   //点击“发送”按钮
 
@@ -111,7 +111,10 @@ public class ChatMenuActivity extends ListActivity {
 
                 chatItemList.add(new ChatItem("1456593200", R.drawable.wen, "帅猎羽", chatContent, dateString));
                 adapter.notifyDataSetChanged();
+                //清空输入框
                 chatContentEdit.setText(null);
+                //移动到listview的底部
+                chatToListView.setSelection(chatToListView.getBottom());
             }
         });
 
@@ -126,6 +129,8 @@ public class ChatMenuActivity extends ListActivity {
 
         chatItemList.add(new ChatItem("test123", R.drawable.feather, "帅猎羽", msg, dateString));
         adapter.notifyDataSetChanged();
+        //移动到listview的底部
+        chatToListView.setSelection(chatToListView.getBottom());
     }
 
     //注册消息监听来接收消息
