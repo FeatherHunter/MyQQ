@@ -89,7 +89,7 @@ public class ChatMenuActivity extends ListActivity {
             public void onClick(View v) {
 
                 //输入消息为空，直接忽略发送按钮
-                if(chatContentEdit.getText() == null){
+                if(chatContentEdit.getText().equals("")){
                     return;
                 }
                 final String chatContent = chatContentEdit.getText().toString();   //获取要发送的文本消息
