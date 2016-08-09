@@ -17,6 +17,7 @@ import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMTextMessageBody;
+import com.hyphenate.chat.adapter.EMAChatManager;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -66,7 +67,7 @@ public class ChatMenuActivity extends ListActivity {
                 Thread sendMsgThread = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        EMMessage message = EMMessage.createTxtSendMessage(chatContent, "975559549");  //创建一条文本消息
+                        EMMessage message = EMMessage.createTxtSendMessage(chatContent, "test123");  //创建一条文本消息
                         EMClient.getInstance().chatManager().sendMessage(message);  //发送消息
                     }
                 });
@@ -77,7 +78,7 @@ public class ChatMenuActivity extends ListActivity {
                 Date currentTime = new Date();
                 String dateString = formatter.format(currentTime);
 
-                chatItemList.add(new ChatItem("1456593200", R.drawable.feather, "帅猎羽", chatContent, dateString));
+                chatItemList.add(new ChatItem("1456593200", R.drawable.wen, "帅猎羽", chatContent, dateString));
                 adapter.notifyDataSetChanged();
                 chatContentEdit.setText(null);
             }
@@ -95,18 +96,18 @@ public class ChatMenuActivity extends ListActivity {
         //测试数据
         chatItemList = new ArrayList<>();
 
-        chatItemList.add(new ChatItem("975559549", R.drawable.feather, "帅猎羽", "吃饭了吗？", "12:01"));
-        chatItemList.add(new ChatItem("975559549", R.drawable.feather, "帅猎羽", "不在？", "12:31"));
+        chatItemList.add(new ChatItem("test123", R.drawable.feather, "帅猎羽", "吃饭了吗？", "12:01"));
+        chatItemList.add(new ChatItem("test123", R.drawable.feather, "帅猎羽", "不在？", "12:31"));
         chatItemList.add(new ChatItem("1456593200", R.drawable.wen, "帅猎羽", "刚才在吃饭的", "13:14"));
-        chatItemList.add(new ChatItem("975559549", R.drawable.feather, "帅猎羽", "行", "13:41"));
-        chatItemList.add(new ChatItem("1456593200", R.drawable.wen, "帅猎羽", "你呢？", "13:51"));
-        chatItemList.add(new ChatItem("975559549", R.drawable.feather, "帅猎羽", "吃了", "14:01"));
-        chatItemList.add(new ChatItem("1456593200", R.drawable.wen, "帅猎羽", "enen", "13:51"));
-        chatItemList.add(new ChatItem("975559549", R.drawable.feather, "帅猎羽", "aa", "14:01"));
-        chatItemList.add(new ChatItem("975559549", R.drawable.feather, "帅猎羽", "你sasd呢？", "14:51"));
-        chatItemList.add(new ChatItem("975559549", R.drawable.feather, "帅猎羽", "asdasdasda", "15:01"));
-        chatItemList.add(new ChatItem("1456593200", R.drawable.wen, "帅猎羽", "sdas？", "16:51"));
-        chatItemList.add(new ChatItem("975559549", R.drawable.feather, "帅猎羽", "吃asdasdasdasasd了", "17:01"));
+//        chatItemList.add(new ChatItem("975559549", R.drawable.feather, "帅猎羽", "行", "13:41"));
+//        chatItemList.add(new ChatItem("1456593200", R.drawable.wen, "帅猎羽", "你呢？", "13:51"));
+//        chatItemList.add(new ChatItem("975559549", R.drawable.feather, "帅猎羽", "吃了", "14:01"));
+//        chatItemList.add(new ChatItem("1456593200", R.drawable.wen, "帅猎羽", "enen", "13:51"));
+//        chatItemList.add(new ChatItem("975559549", R.drawable.feather, "帅猎羽", "aa", "14:01"));
+//        chatItemList.add(new ChatItem("975559549", R.drawable.feather, "帅猎羽", "你sasd呢？", "14:51"));
+//        chatItemList.add(new ChatItem("975559549", R.drawable.feather, "帅猎羽", "asdasdasda", "15:01"));
+//        chatItemList.add(new ChatItem("1456593200", R.drawable.wen, "帅猎羽", "sdas？", "16:51"));
+//        chatItemList.add(new ChatItem("975559549", R.drawable.feather, "帅猎羽", "吃asdasdasdasasd了", "17:01"));
 
         chatToList = getListView();
 
@@ -137,7 +138,7 @@ public class ChatMenuActivity extends ListActivity {
 //            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 //            String dateString = formatter.format(currentTime);
 
-            chatItemList.add(new ChatItem("975559549", R.drawable.feather, "帅猎羽", msg, dateString));
+            chatItemList.add(new ChatItem("test123", R.drawable.feather, "帅猎羽", msg, dateString));
             adapter.notifyDataSetChanged();
         }
 
