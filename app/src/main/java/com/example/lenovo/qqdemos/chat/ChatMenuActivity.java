@@ -3,6 +3,7 @@ package com.example.lenovo.qqdemos.chat;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -37,7 +38,7 @@ public class ChatMenuActivity extends ListActivity {
 
     ChatListAdapter adapter;
 
-    private ArrayList<ChatItem> chatItemList; //聊天链表
+    private ArrayList<ChatItem> chatItemList = new ArrayList<>(); //聊天链表
 
 //    //监听返回键
 //    @Override
@@ -58,12 +59,39 @@ public class ChatMenuActivity extends ListActivity {
         chatContentEdit = (EditText) findViewById(R.id.chat_content_edit); //要发送的文本消息
         sendMsgButton = (Button) findViewById(R.id.send_msg_button);
 
+        Thread recMsgThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                EMClient.getInstance().chatManager().addMessageListener(msgListener);  //接受消息
+            }
+        });
+        recMsgThread.start(); //开启接收消息的线程
+//        //测试数据
+//        chatItemList = new ArrayList<>();
+
+        chatItemList.add(new ChatItem("test123", R.drawable.feather, "帅猎羽", "吃饭了吗？", "12:01"));
+        chatItemList.add(new ChatItem("test123", R.drawable.feather, "帅猎羽", "不在？", "12:31"));
+        chatItemList.add(new ChatItem("1456593200", R.drawable.wen, "帅猎羽", "刚才在吃饭的", "13:14"));
+
+        chatToList = getListView();
+
+        adapter = new ChatListAdapter(this,
+                R.layout.chat_me_item,
+                chatItemList, R.layout.
+                chat_others_item);
+
+        chatToList.setAdapter(adapter);
+
         sendMsgButton.setOnClickListener(new View.OnClickListener() {   //点击“发送”按钮
 
             //发送文本消息
             @Override
             public void onClick(View v) {
 
+                //输入消息为空，直接忽略发送按钮
+                if(chatContentEdit.getText() == null){
+                    return;
+                }
                 final String chatContent = chatContentEdit.getText().toString();   //获取要发送的文本消息
 
                 Thread sendMsgThread = new Thread(new Runnable() {
@@ -86,39 +114,17 @@ public class ChatMenuActivity extends ListActivity {
             }
         });
 
-        Thread recMsgThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                EMClient.getInstance().chatManager().addMessageListener(msgListener);  //接受消息
-            }
-        });
-        recMsgThread.start(); //开启接收消息的线程
+    }
 
-        //测试数据
-        chatItemList = new ArrayList<>();
+    //添加接收到的消息到显示中
+    public void addNewMessage(String msg){
+        //获得系统的时间
+        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+        Date currentTime = new Date();
+        String dateString = formatter.format(currentTime);
 
-        chatItemList.add(new ChatItem("test123", R.drawable.feather, "帅猎羽", "吃饭了吗？", "12:01"));
-        chatItemList.add(new ChatItem("test123", R.drawable.feather, "帅猎羽", "不在？", "12:31"));
-        chatItemList.add(new ChatItem("1456593200", R.drawable.wen, "帅猎羽", "刚才在吃饭的", "13:14"));
-//        chatItemList.add(new ChatItem("975559549", R.drawable.feather, "帅猎羽", "行", "13:41"));
-//        chatItemList.add(new ChatItem("1456593200", R.drawable.wen, "帅猎羽", "你呢？", "13:51"));
-//        chatItemList.add(new ChatItem("975559549", R.drawable.feather, "帅猎羽", "吃了", "14:01"));
-//        chatItemList.add(new ChatItem("1456593200", R.drawable.wen, "帅猎羽", "enen", "13:51"));
-//        chatItemList.add(new ChatItem("975559549", R.drawable.feather, "帅猎羽", "aa", "14:01"));
-//        chatItemList.add(new ChatItem("975559549", R.drawable.feather, "帅猎羽", "你sasd呢？", "14:51"));
-//        chatItemList.add(new ChatItem("975559549", R.drawable.feather, "帅猎羽", "asdasdasda", "15:01"));
-//        chatItemList.add(new ChatItem("1456593200", R.drawable.wen, "帅猎羽", "sdas？", "16:51"));
-//        chatItemList.add(new ChatItem("975559549", R.drawable.feather, "帅猎羽", "吃asdasdasdasasd了", "17:01"));
-
-        chatToList = getListView();
-
-        adapter = new ChatListAdapter(this,
-                R.layout.chat_me_item,
-                chatItemList, R.layout.
-                chat_others_item);
-
-        chatToList.setAdapter(adapter);
-
+        chatItemList.add(new ChatItem("test123", R.drawable.feather, "帅猎羽", msg, dateString));
+        adapter.notifyDataSetChanged();
     }
 
     //注册消息监听来接收消息
@@ -129,18 +135,14 @@ public class ChatMenuActivity extends ListActivity {
             //收到消息
 
             EMTextMessageBody recMsg = (EMTextMessageBody) messages.get(0).getBody();
-            String msg = recMsg.getMessage();
-
-            //获得系统的时间
-            SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
-            Date currentTime = new Date();
-            String dateString = formatter.format(currentTime);
-//            Date currentTime = new Date();
-//            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//            String dateString = formatter.format(currentTime);
-
-            chatItemList.add(new ChatItem("test123", R.drawable.feather, "帅猎羽", msg, dateString));
-            adapter.notifyDataSetChanged();
+            final String msg = recMsg.getMessage();
+            //UI线程中显示新内容
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    addNewMessage(msg);
+                }
+            });
         }
 
         @Override
