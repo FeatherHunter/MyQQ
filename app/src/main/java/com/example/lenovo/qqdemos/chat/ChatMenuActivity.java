@@ -4,6 +4,7 @@ import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -89,7 +90,7 @@ public class ChatMenuActivity extends ListActivity {
             public void onClick(View v) {
 
                 //输入消息为空，直接忽略发送按钮
-                if(chatContentEdit.getText().equals("")){
+                if(TextUtils.isEmpty(chatContentEdit.getText())){//这里是Android提供的功能
                     return;
                 }
                 final String chatContent = chatContentEdit.getText().toString();   //获取要发送的文本消息
