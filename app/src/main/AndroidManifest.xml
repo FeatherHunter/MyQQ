@@ -112,6 +112,10 @@
         </activity>
         <activity android:name=".Sign_upActivity" >
         </activity>
+        <activity android:name=".chat.ChatRecordActivity" >
+        </activity>
+        <activity android:name=".wenwen.tab.AddContactActivity" >
+        </activity>
     </application>
 
 </manifest>

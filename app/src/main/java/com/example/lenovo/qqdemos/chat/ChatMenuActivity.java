@@ -36,6 +36,12 @@ public class ChatMenuActivity extends ListActivity {
     private EditText chatContentEdit;
     private ListView chatToListView;
     private Button sendMsgButton;
+    private Button chatRecordButton;
+
+    String otherId = "test123";
+    int otherHead = R.drawable.feather;
+    String myId = "1456593200";
+    int  myHead= R.drawable.wen;
 
     ChatListAdapter adapter;
 
@@ -59,6 +65,17 @@ public class ChatMenuActivity extends ListActivity {
 
         chatContentEdit = (EditText) findViewById(R.id.chat_content_edit); //要发送的文本消息
         sendMsgButton = (Button) findViewById(R.id.send_msg_button);
+        chatRecordButton = (Button) findViewById(R.id.get_chat_record_button);
+
+        //获取聊天记录
+        chatRecordButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent recordIntent = new Intent(ChatMenuActivity.this, ChatRecordActivity.class);
+                startActivity(recordIntent);
+
+            }
+        });
 
         Thread recMsgThread = new Thread(new Runnable() {
             @Override
@@ -70,9 +87,9 @@ public class ChatMenuActivity extends ListActivity {
 //        //测试数据
 //        chatItemList = new ArrayList<>();
 
-        chatItemList.add(new ChatItem("test123", R.drawable.feather, "帅猎羽", "吃饭了吗？", "12:01"));
-        chatItemList.add(new ChatItem("test123", R.drawable.feather, "帅猎羽", "不在？", "12:31"));
-        chatItemList.add(new ChatItem("1456593200", R.drawable.wen, "帅猎羽", "刚才在吃饭的", "13:14"));
+//        chatItemList.add(new ChatItem("test123", R.drawable.feather, "帅猎羽", "吃饭了吗？", "12:01"));
+//        chatItemList.add(new ChatItem("test123", R.drawable.feather, "帅猎羽", "不在？", "12:31"));
+//        chatItemList.add(new ChatItem("1456593200", R.drawable.wen, "帅猎羽", "刚才在吃饭的", "13:14"));
 
         chatToListView = getListView();
 
@@ -98,7 +115,7 @@ public class ChatMenuActivity extends ListActivity {
                 Thread sendMsgThread = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        EMMessage message = EMMessage.createTxtSendMessage(chatContent, "test123");  //创建一条文本消息
+                        EMMessage message = EMMessage.createTxtSendMessage(chatContent, myId);  //创建一条文本消息
                         EMClient.getInstance().chatManager().sendMessage(message);  //发送消息
                     }
                 });
@@ -109,7 +126,7 @@ public class ChatMenuActivity extends ListActivity {
                 Date currentTime = new Date();
                 String dateString = formatter.format(currentTime);
 
-                chatItemList.add(new ChatItem("1456593200", R.drawable.wen, "帅猎羽", chatContent, dateString));
+                chatItemList.add(new ChatItem(otherId, otherHead, "帅猎羽", chatContent, dateString));
                 adapter.notifyDataSetChanged();
                 //清空输入框
                 chatContentEdit.setText(null);
@@ -127,7 +144,7 @@ public class ChatMenuActivity extends ListActivity {
         Date currentTime = new Date();
         String dateString = formatter.format(currentTime);
 
-        chatItemList.add(new ChatItem("test123", R.drawable.feather, "帅猎羽", msg, dateString));
+        chatItemList.add(new ChatItem(myId, myHead, "帅猎羽", msg, dateString));
         adapter.notifyDataSetChanged();
         //移动到listview的底部
         chatToListView.setSelection(chatToListView.getBottom());

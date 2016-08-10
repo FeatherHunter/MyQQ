@@ -15,6 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.lenovo.qqdemos.R;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.exceptions.HyphenateException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -77,14 +79,19 @@ public class MessageActivity extends AppCompatActivity {
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
         View contentView = inflater.inflate(R.layout.list_item_popupwindow, null);  //加载一个布局文件
 
-        textView1 = (TextView) contentView.findViewById(R.id.textView1);
-        textView2 = (TextView) contentView.findViewById(R.id.textView2);
+        textView1 = (TextView) contentView.findViewById(R.id.textView1);  //添加好友
+        textView2 = (TextView) contentView.findViewById(R.id.textView2);  //多人聊天
 
         popupWindow = new PopupWindow(contentView);
         textView1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(MessageActivity.this, "加好友", Toast.LENGTH_SHORT).show();
+                try {
+                    EMClient.getInstance().contactManager().addContact("test123", "get"); // 添加好友
+                } catch (HyphenateException e) {
+                    e.printStackTrace();
+                }
             }
         });
         textView2.setOnClickListener(new View.OnClickListener() {

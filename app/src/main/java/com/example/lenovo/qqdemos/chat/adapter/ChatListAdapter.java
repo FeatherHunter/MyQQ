@@ -23,6 +23,10 @@ public class ChatListAdapter extends ArrayAdapter<ChatItem>{
     int my_chat_layout;
     int other_chat_layout;
 
+    String otherId = "test123";
+    String myId = "1456593200";
+
+
     public ChatListAdapter(Context context, int my_layout, List<ChatItem> objects, int other_layout) {
         super(context, my_layout, objects);
 
@@ -35,7 +39,7 @@ public class ChatListAdapter extends ArrayAdapter<ChatItem>{
     public View getView(int position, View convertView, ViewGroup parent) {
         ChatItem chatItem = getItem(position);
 
-        if(chatItem.getId().equals("1456593200")){       //自己
+        if(chatItem.getId().equals(otherId)){       //自己
             convertView = View.inflate(getContext(), my_chat_layout, null);
         }else{            //other
             convertView = View.inflate(getContext(), other_chat_layout, null);

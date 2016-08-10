@@ -2,6 +2,7 @@ package com.example.lenovo.qqdemos;
 
 import android.app.Application;
 
+import com.hyphenate.chat.EMChatManager;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMOptions;
 
@@ -21,5 +22,6 @@ public class QQApplication extends Application {
         EMClient.getInstance().init(getApplicationContext(), options);
 //在做打包混淆时，关闭debug模式，避免消耗不必要的资源
         EMClient.getInstance().setDebugMode(true);
+
     }
 }

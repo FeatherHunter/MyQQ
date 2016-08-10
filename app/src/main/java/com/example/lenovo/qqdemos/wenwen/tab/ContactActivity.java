@@ -2,21 +2,22 @@ package com.example.lenovo.qqdemos.wenwen.tab;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.lenovo.qqdemos.R;
-import com.pkmmte.view.CircularImageView;
+import com.hyphenate.EMContactListener;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.exceptions.HyphenateException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,33 +30,93 @@ public class ContactActivity extends AppCompatActivity {
     private List<List<String>> childArrayy1;
     private List<List<Integer>> childArray2;
 
+    private Button addFriendButton;
+    List<String> usernames;
+
+    String addUsername;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tab_item_contact);
+
+        addFriendButton = (Button) findViewById(R.id.add_friend_button);
+
         groupArray = new ArrayList<>();
         childArrayy = new ArrayList<>();
         childArrayy1 = new ArrayList<>();
+
+        addFriendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent addIntent = new Intent(ContactActivity.this, AddContactActivity.class);
+                startActivityForResult(addIntent, 2);
+            }
+        });
 
         //列表
         groupArray.add("我的好友");
         groupArray.add("男神");
 
         //设置用户昵称
-        List<String> tempArray = new ArrayList<>();
+        final List<String> tempArray = new ArrayList<>();
         tempArray.add("帅猎羽");
-        tempArray.add("文文");
-        tempArray.add("恐龙");
 
         List<String> tempArray2 = new ArrayList<>();
         tempArray2.add("最近分享：今日头条");
         tempArray2.add("创新为你");
         tempArray2.add("更新了相册");
 
-//        for (int i = 0; i < groupArray.size(); ++i) {
-//            childArrayy.add(tempArray);
-//        }
+
+        //好友列表
+        Thread flushChatContactThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    usernames = EMClient.getInstance().contactManager().getAllContactsFromServer();  //获取好友列表
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+//                            Toast.makeText(ContactActivity.this, usernames.get(0), Toast.LENGTH_SHORT).show(); //显示用户名
+                        }
+                    });
+                } catch (HyphenateException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        flushChatContactThread.start();
+
+        //监听好友状态
+        EMClient.getInstance().contactManager().setContactListener(new EMContactListener() {
+            @Override
+            public void onContactAdded(final String s) {
+                //增加了联系人时回调此方法
+                tempArray.add(s);
+                Toast.makeText(ContactActivity.this, "qu", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ContactActivity.this, s, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onContactDeleted(String s) {
+                //被删除时回调此方法
+            }
+
+            @Override
+            public void onContactInvited(String s, String s1) {
+                //收到好友邀请
+            }
+
+            @Override
+            public void onContactAgreed(String s) {
+                //好友请求被同意
+            }
+
+            @Override
+            public void onContactRefused(String s) {
+                //好友请求被拒绝
+            }
+        });
 
         //设置头像
         List<Integer> tmp_list = new ArrayList<>();
@@ -70,7 +131,6 @@ public class ContactActivity extends AppCompatActivity {
         for (int i = 0; i < groupArray.size(); ++i) {
             childArrayy.add(tempArray);
         }
-
         for (int i = 0; i < groupArray.size(); ++i) {
             childArrayy1.add(tempArray2);
         }
@@ -155,8 +215,8 @@ public class ContactActivity extends AppCompatActivity {
 
                 //获取布局中控件
                 TextView nameTextView = (TextView) convertView.findViewById(R.id.contact_group_name_text);
-                TextView onclineTextView  = (TextView) convertView.findViewById(R.id.contact_group_online_text);
-                TextView sumTextView  = (TextView) convertView.findViewById(R.id.contact_group_sum_text);
+                TextView onclineTextView = (TextView) convertView.findViewById(R.id.contact_group_online_text);
+                TextView sumTextView = (TextView) convertView.findViewById(R.id.contact_group_sum_text);
 
                 contactGroup.setName(nameTextView);
                 contactGroup.setOnlineCount(onclineTextView);
@@ -218,7 +278,7 @@ public class ContactActivity extends AppCompatActivity {
             public TextView txt2;
         }
 
-        class ContactGroup{
+        class ContactGroup {
             public TextView name;
             public TextView onlineCount;
             public TextView sumCount;
@@ -249,7 +309,15 @@ public class ContactActivity extends AppCompatActivity {
         }
     }
 
-//    public void fixListViewHeight(ExpandableListView listView) {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 2) {
+            addUsername = data.getStringExtra("addUserName");
+        }
+    }
+
+    //    public void fixListViewHeight(ExpandableListView listView) {
 //        if(listView == null) return;
 //        // 如果没有设置数据适配器，则ListView没有子项，返回。
 //        ListAdapter listAdapter = listView.getAdapter();

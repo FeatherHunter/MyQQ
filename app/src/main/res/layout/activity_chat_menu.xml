@@ -5,11 +5,17 @@
     android:orientation="vertical"
     android:background="@color/gray1">
 
+    <Button
+        android:id="@+id/get_chat_record_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="获取聊天记录"/>
+
 
     <ListView
         android:id="@android:id/list"
         android:layout_width="match_parent"
-        android:layout_height="530dp"
+        android:layout_height="500dp"
         android:divider="#00000000"
         android:dividerHeight="0dp"></ListView>
 
