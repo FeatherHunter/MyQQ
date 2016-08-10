@@ -34,26 +34,26 @@ public class AddContactActivity extends Activity {
                 final String userName = addFriendEditText.getText().toString();  //获取用户账号
                 if (userName.equals(EMClient.getInstance().getCurrentUser())) {  // 自己的账号
                     Toast.makeText(AddContactActivity.this, "You cannot add yourself", Toast.LENGTH_SHORT).show();
-                }
-
-                //添加好友
-                Thread addFriendThread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            EMClient.getInstance().contactManager().addContact(userName, "get"); // 添加好友
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Toast.makeText(AddContactActivity.this, "添加成功", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        } catch (HyphenateException e) {
-                            e.printStackTrace();
+                } else {
+                    //添加好友
+                    Thread addFriendThread = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                EMClient.getInstance().contactManager().addContact(userName, "get"); // 添加好友
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(AddContactActivity.this, "添加成功", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            } catch (HyphenateException e) {
+                                e.printStackTrace();
+                            }
                         }
-                    }
-                });
-                addFriendThread.start();
+                    });
+                    addFriendThread.start();
+                }
             }
         });
 
@@ -62,6 +62,24 @@ public class AddContactActivity extends Activity {
             @Override
             public void onContactAdded(String s) {
                 Toast.makeText(AddContactActivity.this, "增加联系人", Toast.LENGTH_SHORT).show();
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            final List<String> usernames = EMClient.getInstance().contactManager().getAllContactsFromServer();
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(AddContactActivity.this, "联系人已添加", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(AddContactActivity.this, usernames.get(0), Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        } catch (HyphenateException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
             }
 
             @Override
@@ -82,7 +100,6 @@ public class AddContactActivity extends Activity {
                         }
                     }
                 });
-
             }
 
             @Override
@@ -97,6 +114,5 @@ public class AddContactActivity extends Activity {
             }
         });
         addFriendEditText.setText(null);
-//        AddContactActivity.this.finish();
     }
 }
