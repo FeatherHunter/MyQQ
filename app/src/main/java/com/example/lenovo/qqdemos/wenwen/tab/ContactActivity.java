@@ -1,5 +1,6 @@
 package com.example.lenovo.qqdemos.wenwen.tab;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -22,7 +23,7 @@ import com.hyphenate.exceptions.HyphenateException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ContactActivity extends AppCompatActivity {
+public class ContactActivity extends Activity {
 
     private ExpandableListView expandListView;
     private List<String> groupArray;
@@ -31,9 +32,6 @@ public class ContactActivity extends AppCompatActivity {
     private List<List<Integer>> childArray2;
 
     private Button addFriendButton;
-    List<String> usernames;
-
-    String addUsername;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -50,7 +48,7 @@ public class ContactActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent addIntent = new Intent(ContactActivity.this, AddContactActivity.class);
-                startActivityForResult(addIntent, 2);
+                startActivity(addIntent);
             }
         });
 
@@ -66,57 +64,6 @@ public class ContactActivity extends AppCompatActivity {
         tempArray2.add("最近分享：今日头条");
         tempArray2.add("创新为你");
         tempArray2.add("更新了相册");
-
-
-        //好友列表
-        Thread flushChatContactThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    usernames = EMClient.getInstance().contactManager().getAllContactsFromServer();  //获取好友列表
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-//                            Toast.makeText(ContactActivity.this, usernames.get(0), Toast.LENGTH_SHORT).show(); //显示用户名
-                        }
-                    });
-                } catch (HyphenateException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        flushChatContactThread.start();
-
-        //监听好友状态
-        EMClient.getInstance().contactManager().setContactListener(new EMContactListener() {
-            @Override
-            public void onContactAdded(final String s) {
-                //增加了联系人时回调此方法
-                tempArray.add(s);
-                Toast.makeText(ContactActivity.this, "qu", Toast.LENGTH_SHORT).show();
-                Toast.makeText(ContactActivity.this, s, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onContactDeleted(String s) {
-                //被删除时回调此方法
-            }
-
-            @Override
-            public void onContactInvited(String s, String s1) {
-                //收到好友邀请
-            }
-
-            @Override
-            public void onContactAgreed(String s) {
-                //好友请求被同意
-            }
-
-            @Override
-            public void onContactRefused(String s) {
-                //好友请求被拒绝
-            }
-        });
 
         //设置头像
         List<Integer> tmp_list = new ArrayList<>();
@@ -309,14 +256,6 @@ public class ContactActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 2) {
-            addUsername = data.getStringExtra("addUserName");
-        }
-    }
-
     //    public void fixListViewHeight(ExpandableListView listView) {
 //        if(listView == null) return;
 //        // 如果没有设置数据适配器，则ListView没有子项，返回。
@@ -341,7 +280,3 @@ public class ContactActivity extends AppCompatActivity {
 //        listView.setLayoutParams(params);
 //    }
 }
-
-
-
-

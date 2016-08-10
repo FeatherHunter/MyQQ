@@ -60,7 +60,7 @@ public class ChatRecordActivity extends Activity {
             Date currentTime = new Date();
             String dateString = formatter.format(currentTime);
 
-            if(msgId.equals(myId)){
+            if(myId.equals(msgId)){
                 chatRecordItemList.add(new ChatItem(myId, myHead, "帅猎羽", data, dateString));
             }else {
                 chatRecordItemList.add(new ChatItem(otherId, otherHead, "帅猎羽", data, dateString));

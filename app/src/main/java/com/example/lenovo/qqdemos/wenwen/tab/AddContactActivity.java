@@ -9,8 +9,11 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.lenovo.qqdemos.R;
+import com.hyphenate.EMContactListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.exceptions.HyphenateException;
+
+import java.util.List;
 
 public class AddContactActivity extends Activity {
 
@@ -51,14 +54,49 @@ public class AddContactActivity extends Activity {
                     }
                 });
                 addFriendThread.start();
-
-                Intent addFriendIntent = new Intent();
-                addFriendIntent.putExtra("addUserName", userName);
-                setResult(2, addFriendIntent);
-                addFriendEditText.setText(null);
-                AddContactActivity.this.finish();
             }
         });
 
+        //监听好友状态
+        EMClient.getInstance().contactManager().setContactListener(new EMContactListener() {
+            @Override
+            public void onContactAdded(String s) {
+                Toast.makeText(AddContactActivity.this, "增加联系人", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onContactDeleted(String s) {
+
+            }
+
+            @Override
+            public void onContactInvited(final String s, String s1) {
+                Toast.makeText(AddContactActivity.this, "收到好友邀请", Toast.LENGTH_SHORT).show();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            EMClient.getInstance().contactManager().acceptInvitation(s); //同意好友请求
+                        } catch (HyphenateException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+            }
+
+            @Override
+            public void onContactAgreed(String s) {
+                Toast.makeText(AddContactActivity.this, "好友请求被同意", Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onContactRefused(String s) {
+
+            }
+        });
+        addFriendEditText.setText(null);
+//        AddContactActivity.this.finish();
     }
 }
