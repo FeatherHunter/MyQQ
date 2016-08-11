@@ -1,4 +1,4 @@
-package com.example.lenovo.qqdemos.wenwen.tab.Test.ExpandListViewTest;
+package com.example.lenovo.qqdemos.Test.ExpandListViewTest;
 
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;

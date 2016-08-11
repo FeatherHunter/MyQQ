@@ -1,4 +1,4 @@
-package com.example.lenovo.qqdemos.wenwen.tab.Test.ChatTest.Adapter;
+package com.example.lenovo.qqdemos.Test.ChatTest.Adapter;
 
 import android.content.Context;
 import android.view.View;
@@ -8,10 +8,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.lenovo.qqdemos.R;
-import com.example.lenovo.qqdemos.wenwen.tab.Test.ChatTest.MyChat;
+import com.example.lenovo.qqdemos.Test.ChatTest.MyChat;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 /**

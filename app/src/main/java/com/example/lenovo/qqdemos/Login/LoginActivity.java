@@ -1,4 +1,4 @@
-package com.example.lenovo.qqdemos;
+package com.example.lenovo.qqdemos.Login;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -6,11 +6,9 @@ import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -20,11 +18,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.lenovo.qqdemos.start.PagerActivity;
+import com.example.lenovo.qqdemos.Main.MainActivity;
+import com.example.lenovo.qqdemos.R;
+import com.example.lenovo.qqdemos.Util.ResUtil;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
 
-import java.util.Calendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -62,7 +61,7 @@ public class LoginActivity extends Activity implements View.OnFocusChangeListene
         sign_upTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent regIntent = new Intent(LoginActivity.this, Sign_upActivity.class);
+                Intent regIntent = new Intent(LoginActivity.this, SignUpActivity.class);
                 startActivityForResult(regIntent, 1);
             }
         });
@@ -90,22 +89,17 @@ public class LoginActivity extends Activity implements View.OnFocusChangeListene
                     public void onSuccess() {      //登陆成功
                         EMClient.getInstance().groupManager().loadAllGroups();
                         EMClient.getInstance().chatManager().loadAllConversations();
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(LoginActivity.this, "登录聊天服务器成功", Toast.LENGTH_SHORT).show();
-                            }
-                        });
                         Intent startIntent = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(startIntent);
+                        LoginActivity.this.finish();
                     }
 
                     @Override
-                    public void onError(int i, String s) {    //登录失败
+                    public void onError(final int i, final String msg) {    //登录失败
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(LoginActivity.this, "登录聊天服务器失败", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LoginActivity.this, "登录失败:"+msg+"("+i+")", Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
@@ -129,104 +123,6 @@ public class LoginActivity extends Activity implements View.OnFocusChangeListene
         dialog.setCancelable(false);
 
         autoLogin();
-
-//        /*---------------------------------------------------------------
-//         *                  动态注册receiver
-//         * --------------------------------------------------------*/
-//        MsgReceiver msgReceiver = new MsgReceiver();    //创建消息接收广播
-//        IntentFilter filter = new IntentFilter();
-//        filter.addAction("android.intent.action.ANSWER"); //指定Action
-//        registerReceiver(msgReceiver, filter);//注册
-//
-//        //设置登录按键监听器
-//        logButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                String userText = userEditText.getText().toString(); //读取账号信息
-//                String passwdText = passwdEditText.getText().toString(); //读取密码信息
-//
-//                //SharedPreferences完成自动登录
-//                editor.putBoolean("checkbox_pwd", checkBox_remember_pwd.isChecked())
-//                        .putString("edittext_user",
-//                                userEditText.getText().toString().trim())
-//                        .putBoolean("checkbox_auto_login", checkBox_auto_login.isChecked()).commit();//保存“记住密码”和“自动登录”的状态，并默认保存账户信息
-//
-//                if (checkBox_remember_pwd.isChecked()) {    //勾选“记住密码”，保存密码
-//                    editor.putString("edittext_pwd", passwdEditText.getText().toString())
-//                            .commit();
-//                }
-//
-//                //检查账户密码合法性 true：验证成功
-//                if (checkUserPwd(userText, passwdText) == false) {
-//                    return;
-//                }
-//
-//                dialog.show();//显示“正在登录中....”
-//
-//                /*---------------------------------------------------------------
-//                 *                  开启一个服务
-//                 * --------------------------------------------------------*/
-//                Intent serviceIntent = new Intent();
-//                serviceIntent.putExtra("user", userText);
-//                serviceIntent.putExtra("pwd", passwdText);
-//                serviceIntent.setClass(LoginActivity.this, QQService.class);
-//                startService(serviceIntent);
-//            }
-//        });
-
-    }
-
-    /**
-     * -------------------------------------------------------------------
-     *
-     * @class MsgReceiver
-     * @描述： 接收广播
-     * -------------------------------------------------------------------
-     */
-    private class MsgReceiver extends BroadcastReceiver {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            //通过intent获得广播来的信息
-            String msg = intent.getStringExtra("result");
-            //登陆成功
-            if (msg != null && msg.equals("ok")) {
-                //为了方便观察效果，添加延时。之后完善项目工程中会去除该延时
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        dialog.dismiss();
-                        //跳转
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        startActivity(intent);
-
-                        /*----------------------------------------------------------
-                         *                  关闭服务
-                         * --------------------------------------------------------*/
-                        Intent serviceIntent = new Intent();
-                        serviceIntent.setClass(LoginActivity.this, QQService.class);
-                        stopService(serviceIntent);
-
-                        LoginActivity.this.finish();//结束该activity
-
-                    }
-                }, 1500);//延时2000ms（2s)
-
-            } else {
-                dialog.dismiss();
-                //登录失败
-                Toast.makeText(LoginActivity.this, "账号/密码错误", Toast.LENGTH_SHORT).show();
-
-                /*----------------------------------------------------------
-                 *                  关闭服务
-                 * --------------------------------------------------------*/
-                Intent serviceIntent = new Intent();
-                serviceIntent.setClass(LoginActivity.this, QQService.class);
-                stopService(serviceIntent);
-            }
-        }
-
     }
 
     /*-------------------------------------
@@ -313,11 +209,13 @@ public class LoginActivity extends Activity implements View.OnFocusChangeListene
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == 1) {
-            Toast.makeText(LoginActivity.this, data.getStringExtra("account"), Toast.LENGTH_SHORT).show();
-            Toast.makeText(LoginActivity.this, data.getStringExtra("passwd"), Toast.LENGTH_SHORT).show();
+        if (resultCode == ResUtil.SIGN_UP_SUCCESS) {//注册成功，自动填写内容
+
             userEditText.setText(data.getStringExtra("account"));
             passwdEditText.setText(data.getStringExtra("passwd"));
+
+        }else if(resultCode == ResUtil.SIGN_UP_CANCEL){ //取消注册，不做任何事
+
         }
     }
 

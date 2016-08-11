@@ -28,7 +28,7 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
-        android:name=".QQApplication"
+        android:name=".Login.QQApplication"
         android:allowBackup="true"
         android:icon="@drawable/qq_icon"
         android:label="@string/app_name"
@@ -58,7 +58,7 @@
         </receiver>
 
         <activity
-            android:name=".LoginActivity"
+            android:name=".Login.LoginActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
@@ -74,47 +74,47 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".Main.MainActivity"
             android:label="@string/title_activity_operator_interface2"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <service android:name=".QQService" >
+        <service android:name=".Login.QQService" >
         </service>
-        <service android:name=".wenwen.tab.Testservice" />
+        <service android:name=".Main.Testservice" />
 
         <activity android:name=".start.PagerActivity" />
         <activity
-            android:name=".wenwen.tab.MessageActivity"
+            android:name=".Main.MessageActivity"
             android:label="@string/title_activity_message"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
-        <activity android:name=".wenwen.tab.ContactActivity" >
+        <activity android:name=".Main.ContactActivity" >
         </activity>
-        <activity android:name=".wenwen.tab.TrendsActivity" >
+        <activity android:name=".Main.TrendsActivity" >
         </activity>
-        <activity android:name=".wenwen.tab.Test.PopupWindowTest.TestPopWindowActivity" >
+        <activity android:name=".Test.PopupWindowTest.TestPopWindowActivity" >
         </activity>
-        <activity android:name=".wenwen.tab.Test.PopupWindowTest.TestPopWindow1Activity" >
+        <activity android:name=".Test.PopupWindowTest.TestPopWindow1Activity" >
         </activity>
-        <activity android:name=".wenwen.tab.Test.ExpandListViewTest.TestExpaandListViewActivity" >
+        <activity android:name=".Test.ExpandListViewTest.TestExpaandListViewActivity" >
         </activity>
-        <activity android:name=".wenwen.tab.Test.ExpandListViewTest.TestExpandListView2Activity" >
+        <activity android:name=".Test.ExpandListViewTest.TestExpandListView2Activity" >
         </activity>
-        <activity android:name=".wenwen.tab.ChatPersonalActivity" >
+        <activity android:name=".Main.ChatPersonalActivity" >
         </activity>
         <activity
             android:name=".chat.ChatMenuActivity"
             android:windowSoftInputMode="adjustPan" >
         </activity>
-        <activity android:name=".wenwen.tab.Test.ChatTest.ChatTestActivity" >
+        <activity android:name=".Test.ChatTest.ChatTestActivity" >
         </activity>
         <activity android:name=".start.PastDoorActivity" >
         </activity>
-        <activity android:name=".Sign_upActivity" >
+        <activity android:name=".Login.SignUpActivity" >
         </activity>
         <activity android:name=".chat.ChatRecordActivity" >
         </activity>
-        <activity android:name=".wenwen.tab.AddContactActivity" >
+        <activity android:name=".Friends.AddContactActivity" >
         </activity>
     </application>
 

@@ -1,18 +1,13 @@
-package com.example.lenovo.qqdemos.wenwen.tab.Test.ChatTest;
+package com.example.lenovo.qqdemos.Test.ChatTest;
 
 import android.app.ListActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ListView;
 
 import com.example.lenovo.qqdemos.R;
-import com.example.lenovo.qqdemos.chat.adapter.ChatListAdapter;
-import com.example.lenovo.qqdemos.wenwen.tab.Test.ChatTest.Adapter.ChatListAdapter1;
+import com.example.lenovo.qqdemos.Test.ChatTest.Adapter.ChatListAdapter1;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import static com.example.lenovo.qqdemos.R.layout.chat_me_item;
 
 public class ChatTestActivity extends ListActivity {
 

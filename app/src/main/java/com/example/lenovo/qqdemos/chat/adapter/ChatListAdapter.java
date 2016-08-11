@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.example.lenovo.qqdemos.R;
 import com.example.lenovo.qqdemos.chat.ChatItem;
+import com.hyphenate.chat.EMClient;
 
 import org.w3c.dom.Text;
 
@@ -23,12 +24,13 @@ public class ChatListAdapter extends ArrayAdapter<ChatItem>{
     int my_chat_layout;
     int other_chat_layout;
 
-    String otherId = "test123";
-    String myId = "1456593200";
-
+    String myId;
 
     public ChatListAdapter(Context context, int my_layout, List<ChatItem> objects, int other_layout) {
         super(context, my_layout, objects);
+
+        //得到自己的ID
+        myId = EMClient.getInstance().getCurrentUser();
 
         this.chatItems = (ArrayList<ChatItem>) objects;
         this.my_chat_layout = my_layout;
@@ -39,7 +41,7 @@ public class ChatListAdapter extends ArrayAdapter<ChatItem>{
     public View getView(int position, View convertView, ViewGroup parent) {
         ChatItem chatItem = getItem(position);
 
-        if(chatItem.getId().equals(myId)){       //自己
+        if(chatItem.getSendName().equals(myId)){       //自己
             convertView = View.inflate(getContext(), my_chat_layout, null);
         }else{            //other
             convertView = View.inflate(getContext(), other_chat_layout, null);
@@ -51,7 +53,11 @@ public class ChatListAdapter extends ArrayAdapter<ChatItem>{
 
         timeText.setText(chatItem.getTime());
         contentText.setText(chatItem.getContent());
-        imageView.setImageResource(chatItem.getHead());
+        if(chatItem.getSendName().equals(myId)){
+            imageView.setImageResource(R.drawable.wen);
+        }else{
+            imageView.setImageResource(R.drawable.feather);
+        }
 
         return convertView;
     }

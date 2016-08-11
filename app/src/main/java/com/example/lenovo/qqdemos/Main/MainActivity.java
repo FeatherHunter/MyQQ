@@ -1,4 +1,4 @@
-package com.example.lenovo.qqdemos;
+package com.example.lenovo.qqdemos.Main;
 
 import android.app.TabActivity;
 import android.content.Intent;
@@ -6,17 +6,22 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.widget.TabHost;
 
-import com.example.lenovo.qqdemos.wenwen.tab.ContactActivity;
-import com.example.lenovo.qqdemos.wenwen.tab.MessageActivity;
-import com.example.lenovo.qqdemos.wenwen.tab.TrendsActivity;
-
-import static com.example.lenovo.qqdemos.R.id.radio_button0;
+import com.example.lenovo.qqdemos.Login.QQService;
+import com.example.lenovo.qqdemos.R;
+import com.hyphenate.chat.EMClient;
 
 public class MainActivity extends TabActivity {
+
+    Intent serviceIntent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        serviceIntent = new Intent();
+        serviceIntent.setClass(MainActivity.this, QQService.class);
+        startService(serviceIntent);
 
         //第一个选项卡（消息）
         TabHost tabHost1 = getTabHost();
@@ -44,5 +49,17 @@ public class MainActivity extends TabActivity {
         spec3.setIndicator("动态", resources3.getDrawable(R.drawable.feather)); //设置名字和图片
         spec3.setContent(intent3);    //加载内容
         tabHost3.addTab(spec3);       //添加到tabHost中
+
+    }
+
+    @Override
+    protected void onDestroy() {
+
+        //退出登录
+        EMClient.getInstance().logout(true);
+        //停止后台服务
+        stopService(serviceIntent);
+
+        super.onDestroy();
     }
 }

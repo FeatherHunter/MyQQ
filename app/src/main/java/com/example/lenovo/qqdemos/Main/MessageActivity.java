@@ -1,6 +1,5 @@
-package com.example.lenovo.qqdemos.wenwen.tab;
+package com.example.lenovo.qqdemos.Main;
 
-import android.content.ClipData;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -20,7 +19,6 @@ import com.hyphenate.exceptions.HyphenateException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
 
 public class MessageActivity extends AppCompatActivity {
 

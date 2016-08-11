@@ -1,21 +1,21 @@
-package com.example.lenovo.qqdemos;
+package com.example.lenovo.qqdemos.Login;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Message;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.lenovo.qqdemos.R;
+import com.example.lenovo.qqdemos.Util.ResUtil;
 import com.hyphenate.EMError;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.exceptions.HyphenateException;
 
-import java.util.logging.Handler;
-
-public class Sign_upActivity extends Activity {
+public class SignUpActivity extends Activity {
 
     private EditText sign_up_account;
     private EditText sign_up_pwd;
@@ -53,12 +53,13 @@ public class Sign_upActivity extends Activity {
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        Toast.makeText(Sign_upActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(SignUpActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
                                     }
 
                                 });
-                                setResult(1, sign_up_successIntent);
-                                Sign_upActivity.this.finish();
+                                //注册成功
+                                setResult(ResUtil.SIGN_UP_SUCCESS, sign_up_successIntent);
+                                SignUpActivity.this.finish();
                             } catch (final HyphenateException e) {
                                 runOnUiThread(new Runnable() {
                                     public void run() {
@@ -83,7 +84,7 @@ public class Sign_upActivity extends Activity {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Toast.makeText(Sign_upActivity.this, "两次输入的密码不一致，请重新输入", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(SignUpActivity.this, "两次输入的密码不一致，请重新输入", Toast.LENGTH_SHORT).show();
                                 }
                             });
                         }
@@ -92,5 +93,20 @@ public class Sign_upActivity extends Activity {
                 sign_up_thread.start();
             }
         });
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+
+            Intent intent = new Intent();
+            setResult(ResUtil.SIGN_UP_CANCEL, intent); //取消
+            SignUpActivity.this.finish();
+
+            return true;
+        }else{
+            return super.onKeyDown(keyCode, event);
+        }
     }
 }

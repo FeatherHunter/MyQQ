@@ -1,4 +1,4 @@
-package com.example.lenovo.qqdemos.wenwen.tab.Test.ChatTest;
+package com.example.lenovo.qqdemos.Test.ChatTest;
 
 import android.content.Intent;
 

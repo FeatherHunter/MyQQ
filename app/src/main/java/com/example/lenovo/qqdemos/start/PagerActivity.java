@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 
-import com.example.lenovo.qqdemos.LoginActivity;
 import com.example.lenovo.qqdemos.R;
 
 import java.util.ArrayList;

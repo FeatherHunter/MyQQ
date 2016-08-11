@@ -13,7 +13,7 @@ import android.view.animation.AnimationSet;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.lenovo.qqdemos.MainActivity;
+import com.example.lenovo.qqdemos.Main.MainActivity;
 import com.example.lenovo.qqdemos.R;
 
 public class PastDoorActivity extends Activity {

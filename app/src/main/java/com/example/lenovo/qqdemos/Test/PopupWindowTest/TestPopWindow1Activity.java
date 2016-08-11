@@ -1,4 +1,4 @@
-package com.example.lenovo.qqdemos.wenwen.tab.Test.PopupWindowTest;
+package com.example.lenovo.qqdemos.Test.PopupWindowTest;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

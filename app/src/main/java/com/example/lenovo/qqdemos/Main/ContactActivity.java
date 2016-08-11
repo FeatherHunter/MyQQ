@@ -1,37 +1,36 @@
-package com.example.lenovo.qqdemos.wenwen.tab;
+package com.example.lenovo.qqdemos.Main;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.Adapter;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.example.lenovo.qqdemos.Friends.AddContactActivity;
+import com.example.lenovo.qqdemos.Main.Beans.ContactGroup;
+import com.example.lenovo.qqdemos.Main.Beans.ContactItem;
 import com.example.lenovo.qqdemos.R;
-import com.hyphenate.EMContactListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.exceptions.HyphenateException;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class ContactActivity extends Activity {
 
     private ExpandableListView expandListView;
-    private List<String> groupArray;
-    private List<List<String>> childArrayy;
-    private List<List<String>> childArrayy1;
-    private List<List<Integer>> childArray2;
-
+    //存放“好友组”，每个好友组内部还有一个好友列表
+    private ArrayList<ContactGroup> contactGroups;
     private Button addFriendButton;
+    private ExpandListViewAdapter adapter;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -40,9 +39,10 @@ public class ContactActivity extends Activity {
 
         addFriendButton = (Button) findViewById(R.id.add_friend_button);
 
-        groupArray = new ArrayList<>();
-        childArrayy = new ArrayList<>();
-        childArrayy1 = new ArrayList<>();
+        //初始化
+        contactGroups = new ArrayList<ContactGroup>();
+        //有好友组“我的好友”
+        contactGroups.add(new ContactGroup("我的好友"));
 
         addFriendButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,51 +52,62 @@ public class ContactActivity extends Activity {
             }
         });
 
-        //列表
-        groupArray.add("我的好友");
-        groupArray.add("男神");
-
-        //设置用户昵称
-        final List<String> tempArray = new ArrayList<>();
-        tempArray.add("帅猎羽");
-
-        List<String> tempArray2 = new ArrayList<>();
-        tempArray2.add("最近分享：今日头条");
-        tempArray2.add("创新为你");
-        tempArray2.add("更新了相册");
-
-        //设置头像
-        List<Integer> tmp_list = new ArrayList<>();
-        childArray2 = new ArrayList<>();
-        tmp_list.add(R.drawable.feather);
-        childArray2.add(tmp_list);
-        tmp_list.add(R.drawable.wen);
-        childArray2.add(tmp_list);
-        tmp_list.add(R.drawable.tank1);
-        childArray2.add(tmp_list);
-
-        for (int i = 0; i < groupArray.size(); ++i) {
-            childArrayy.add(tempArray);
-        }
-        for (int i = 0; i < groupArray.size(); ++i) {
-            childArrayy1.add(tempArray2);
-        }
-
         //设置Adapter
         expandListView = (ExpandableListView) findViewById(R.id.expandListView);
-        expandListView.setAdapter(new ExpandListViewAdapter(ContactActivity.this));
+        //设置适配器（分成两行写，adapater需要设置为全局变量方便后面刷新列表）
+        adapter = new ExpandListViewAdapter(ContactActivity.this);
+        expandListView.setAdapter(adapter);
 
         expandListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 Intent intent = new Intent(ContactActivity.this, ChatPersonalActivity.class);
-//                intent.setData(Uri.parse(adapter.getList().get(groupPosition).videos.get(childPosition).url));
+                //讲好友组“groupPosition所指的组别”的第“childPosition”个好友的用户名（ID）作为参数传入
+                intent.putExtra("other_id", contactGroups.get(groupPosition).getContacts().get(childPosition).getUserName());
                 startActivity(intent);
                 return true;
             }
         });
-//        fixListViewHeight(expandListView);
 
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    //获得好友列表
+                    final ArrayList<String> frinednames = (ArrayList<String>) EMClient.getInstance().contactManager().getAllContactsFromServer();
+                    Log.i("ContactActivity", frinednames.size()+"");
+
+                    //改变数据集的操作需要放到UI线程中
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            //好友列表
+                            ArrayList<ContactItem> contactItems = new ArrayList<>();
+                            //一个管理员好友，用于调试
+                            contactItems.add(new ContactItem("admin", //好友ID
+                                    "管理员",//昵称
+                                    R.drawable.feather,//头像
+                                    "我是管理员哦"));//好友动态
+                            //创建好友信息
+                            for(String names: frinednames){
+                                //创建一个好友的信息
+                                contactItems.add(new ContactItem(names, //好友ID
+                                        "帅猎羽",//昵称
+                                        R.drawable.feather,//头像
+                                        "最近分享：今日头条"));//好友动态
+                            }
+                            //加入到好友组中
+                            contactGroups.get(0).setContacts(contactItems);//添加到"我的好友"里面
+                            adapter.notifyDataSetChanged();
+                        }
+                    });
+
+                } catch (HyphenateException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
     }
 
     //自定义的Adapter
@@ -110,22 +121,22 @@ public class ContactActivity extends Activity {
 
         @Override
         public int getGroupCount() {
-            return groupArray.size();
+            return contactGroups.size();
         }
 
         @Override
         public int getChildrenCount(int groupPosition) {
-            return childArrayy.get(groupPosition).size();
+            return contactGroups.get(groupPosition).getContacts().size();
         }
 
         @Override
         public Object getGroup(int groupPosition) {
-            return groupArray.get(groupPosition);
+            return contactGroups.get(groupPosition);
         }
 
         @Override
         public Object getChild(int groupPosition, int childPosition) {
-            return childArrayy.get(groupPosition).get(childPosition);
+            return contactGroups.get(groupPosition).getContacts().get(childPosition);
         }
 
         @Override
@@ -145,9 +156,12 @@ public class ContactActivity extends Activity {
 
         @Override
         public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-            String groupName = groupArray.get(groupPosition);
+            //获得“好友分组”对象
+            ContactGroup contactGroup = (ContactGroup) getGroup(groupPosition);
+            String groupName = contactGroup.getGroupName();
 
-            ContactGroup contactGroup = new ContactGroup();
+            //临时保存相关控件对象
+            ContactGroupTemp contactGroupTemp = new ContactGroupTemp();
             if (convertView == null) { //不存在，第一次进行初始化
 
                 //获取 组 的布局
@@ -165,27 +179,31 @@ public class ContactActivity extends Activity {
                 TextView onclineTextView = (TextView) convertView.findViewById(R.id.contact_group_online_text);
                 TextView sumTextView = (TextView) convertView.findViewById(R.id.contact_group_sum_text);
 
-                contactGroup.setName(nameTextView);
-                contactGroup.setOnlineCount(onclineTextView);
-                contactGroup.setSumCount(sumTextView);
+                contactGroupTemp.setName(nameTextView);
+                contactGroupTemp.setOnlineCount(onclineTextView);
+                contactGroupTemp.setSumCount(sumTextView);
 
                 //保存
-                convertView.setTag(contactGroup);
+                convertView.setTag(contactGroupTemp);
             } else {
                 //已经存在，直接取出
-                contactGroup = (ContactGroup) convertView.getTag();
+                contactGroupTemp = (ContactGroupTemp) convertView.getTag();
             }
 
             //设置“组名”
-            contactGroup.getName().setText(groupName);
-            contactGroup.getOnlineCount().setText("16");
-            contactGroup.getSumCount().setText("61");
+            contactGroupTemp.getName().setText(groupName);
+            contactGroupTemp.getOnlineCount().setText(getChildrenCount(groupPosition)+"");//该小组在线人数（暂时用总人数）
+            contactGroupTemp.getSumCount().setText(getChildrenCount(groupPosition)+"");//该小组总人数
 
             return convertView;
         }
 
         @Override
         public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+
+            //得到“一位好友”对象
+            ContactItem contactItem = (ContactItem) getChild(groupPosition,childPosition);
+
             ItemHolder itemHolder = new ItemHolder();
             if (convertView == null) {
                 convertView = getLayoutInflater().from(context).inflate(
@@ -195,21 +213,21 @@ public class ContactActivity extends Activity {
                         ViewGroup.LayoutParams.MATCH_PARENT, 160);
                 convertView.setLayoutParams(layoutParams);
 
-                itemHolder.txt1 = (TextView) convertView.findViewById(R.id.expandlistview_user_name_textview);
-                itemHolder.txt2 = (TextView) convertView.findViewById(R.id.expandlistview_user_sate_textview);
+                //用户名
+                itemHolder.userName = (TextView) convertView.findViewById(R.id.expandlistview_user_name_textview);
+                //用户状态
+                itemHolder.userState = (TextView) convertView.findViewById(R.id.expandlistview_user_sate_textview);
                 itemHolder.userImage = (ImageView) convertView.findViewById(R.id.imageview);
                 convertView.setTag(itemHolder);
             } else {
                 itemHolder = (ItemHolder) convertView.getTag();
             }
-            itemHolder.txt1.setText(childArrayy.get(groupPosition).get(
-                    childPosition));
-            itemHolder.txt2.setText(childArrayy1.get(groupPosition).get(
-                    childPosition));
-
+            //用户名
+            itemHolder.userName.setText(contactItem.getUserName());
+            //用户状态
+            itemHolder.userState.setText(contactItem.getDynamicMsg());
             //用户头像
-            itemHolder.userImage.setImageResource(childArray2.get(groupPosition).get(
-                    childPosition));
+            itemHolder.userImage.setImageResource(contactItem.getHead());
 
             return convertView;
         }
@@ -221,11 +239,11 @@ public class ContactActivity extends Activity {
 
         class ItemHolder {
             public ImageView userImage;
-            public TextView txt1;
-            public TextView txt2;
+            public TextView userName;
+            public TextView userState;
         }
 
-        class ContactGroup {
+        class ContactGroupTemp {
             public TextView name;
             public TextView onlineCount;
             public TextView sumCount;
@@ -256,27 +274,4 @@ public class ContactActivity extends Activity {
         }
     }
 
-    //    public void fixListViewHeight(ExpandableListView listView) {
-//        if(listView == null) return;
-//        // 如果没有设置数据适配器，则ListView没有子项，返回。
-//        ListAdapter listAdapter = listView.getAdapter();
-//        int totalHeight = 0;
-//        if (listAdapter == null) {
-//            return;
-//        }
-//
-//        for (int index = 0, len = listAdapter.getCount(); index < len; index++) {
-//            View listViewItem = listAdapter.getView(index , null, listView);
-//            // 计算子项View 的宽高
-//            listViewItem.measure(0, 0);
-//            // 计算所有子项的高度和
-//            totalHeight += listViewItem.getMeasuredHeight();
-//        }
-//        ViewGroup.LayoutParams params = listView.getLayoutParams();
-//
-//        // listView.getDividerHeight()获取子项间分隔符的高度
-//        // params.height设置ListView完全显示需要的高度
-//        params.height = totalHeight+ (listView.getDividerHeight() * (listAdapter.getCount() - 1));
-//        listView.setLayoutParams(params);
-//    }
 }

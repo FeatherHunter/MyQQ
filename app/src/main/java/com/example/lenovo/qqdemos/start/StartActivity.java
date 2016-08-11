@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.example.lenovo.qqdemos.LoginActivity;
+import com.example.lenovo.qqdemos.Login.LoginActivity;
 import com.example.lenovo.qqdemos.R;
 
 import java.util.Calendar;

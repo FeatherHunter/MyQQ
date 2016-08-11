@@ -1,4 +1,4 @@
-package com.example.lenovo.qqdemos.wenwen.tab;
+package com.example.lenovo.qqdemos.Main;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.example.lenovo.qqdemos.R;
-import com.example.lenovo.qqdemos.wenwen.tab.Test.ExpandListViewTest.TestExpaandListViewActivity;
-import com.example.lenovo.qqdemos.wenwen.tab.Test.ExpandListViewTest.TestExpandListView2Activity;
+import com.example.lenovo.qqdemos.Test.ExpandListViewTest.TestExpaandListViewActivity;
+import com.example.lenovo.qqdemos.Test.ExpandListViewTest.TestExpandListView2Activity;
 
 public class TrendsActivity extends AppCompatActivity {
 
