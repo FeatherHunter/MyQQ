@@ -6,9 +6,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
 
 import com.example.lenovo.qqdemos.Main.Beans.MessageItem;
+import com.example.lenovo.qqdemos.Util.GsonUtil;
 import com.example.lenovo.qqdemos.chat.ChatItem;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.File;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +35,7 @@ public class MessageDB {
     }
 
     /*===================================================================================================================
-    *                                                   聊天记录
+    *                                                   消息列表
     * ===================================================================================================================*/
 
     /**
@@ -41,13 +44,71 @@ public class MessageDB {
      */
     public void addMessage(String currentUserName, ArrayList<MessageItem> messageItems) {
 
-        if (messageItems != null) {
-            //表不存在则创建
-            db.execSQL("CREATE TABLE IF NOT EXISTS message (user_name text PRIMARY KEY, contact_list text)");
-            db.execSQL("INSERT INTO message (recv_name, send_name, content, type, time) VALUES(?,?,?,?,?)", new Object[]{chatItem.getRecvName(),
-                    chatItem.getSendName(), chatItem.getContent(), chatItem.getType(), chatItem.getTime()});
+        //转换为json
+        String json = GsonUtil.getInstance().toJson(messageItems);
+
+        if (messageItems != null){
+            if(messageExits(currentUserName))  //用户信息存在，更新
+            {
+                updateMessage(currentUserName, messageItems);
+            }else{
+                //表不存在则创建
+                db.execSQL("CREATE TABLE IF NOT EXISTS message (user_name text PRIMARY KEY, contact_list text)");
+                //创建
+                db.execSQL("insert into message (user_name, contact_list) VALUES(?,?)", new Object[]{currentUserName, json});
+            }
         }
     }
+
+    /**
+     * 查询“currentUserName”用户的消息列表是否存在
+     */
+    private boolean messageExits(String currentUserName)
+    {
+        db.execSQL("CREATE TABLE IF NOT EXISTS message (user_name text PRIMARY KEY, contact_list text)");
+        Cursor cursor = db.rawQuery("select * from message where user_name = '?' ", new String[]{currentUserName});
+        if(cursor.getCount() != 0)//存在
+        {
+            return true;
+        }
+        return false; //不存在
+    }
+
+    /**
+     * 更新用户的消息列表
+     * @param currentUserName 用户
+     */
+    public void updateMessage(String currentUserName, ArrayList<MessageItem> messageItems){
+
+        //得到json string
+        String json = GsonUtil.getInstance().toJson(messageItems);
+
+        db.execSQL("CREATE TABLE IF NOT EXISTS message (user_name text PRIMARY KEY, contact_list text)");
+        db.execSQL("update message set contact_list = '?' where user_name = '?'",
+                new Object[]{json, currentUserName});
+    }
+
+    /**
+     * 根据用户名，获取信息列表
+     * @return
+     */
+    public ArrayList<MessageItem> getMessage(String currentUserName){
+        db.execSQL("CREATE TABLE IF NOT EXISTS message (user_name text PRIMARY KEY, contact_list text)");
+        Cursor c = db.rawQuery("SELECT contact_list from message WHERE user_name = '" + currentUserName +"'", null);
+        if (c.getCount() == 0) {
+            return null;
+        }else{
+            c.moveToFirst();
+
+            String json = c.getString(c.getColumnIndex("contact_list"));
+            //json转换需要的类型
+            Type type = new TypeToken<ArrayList<MessageItem>>(){}.getType();
+            //转换
+            ArrayList<MessageItem> messageItemArrayList = (ArrayList<MessageItem>)GsonUtil.getInstance().fromJson(json, type);
+            return messageItemArrayList;
+        }
+    }
+
 }
 //
 //    /**
