@@ -163,17 +163,17 @@ public class QQService extends Service {
                     MessageDB messageDB = new MessageDB(QQService.this);
                     messageDB.addMessage(account, item);
 
-                    /*----------------------------------------
-                    *   发送广播(提示聊天界面刷新数据)
-                    *------------------------------------*/
-                    Intent intent = new Intent();
-                    intent.putExtra("chat_menu", "new_msg");//自定义，表示需要"聊天界面"接收“新消息”
-                    intent.setAction("android.intent.action.ANSWER");
-                    sendBroadcast(intent);
 
                 }
 
-            }
+            }//end of msg
+            /*----------------------------------------
+            *   发送广播(提示聊天界面刷新数据)
+            *------------------------------------*/
+            Intent intent = new Intent();
+            intent.putExtra("chat_menu", "new_msg");//自定义，表示需要"聊天界面"接收“新消息”
+            intent.setAction("android.intent.action.ANSWER");
+            sendBroadcast(intent);
         }
 
         @Override
