@@ -15,15 +15,17 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.lenovo.qqdemos.DB.MessageDB;
-import com.example.lenovo.qqdemos.DB.MessageType;
-import com.example.lenovo.qqdemos.Login.QQService;
-import com.example.lenovo.qqdemos.Main.MainActivity;
+//import com.example.lenovo.qqdemos.DB.MessageDB;
+//import com.example.lenovo.qqdemos.DB.MessageType;
+//import com.example.lenovo.qqdemos.Login.QQService;
+//import com.example.lenovo.qqdemos.Main.MainActivity;
 import com.example.lenovo.qqdemos.R;
 import com.example.lenovo.qqdemos.chat.adapter.ChatListAdapter;
 import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
+import com.hyphenate.chat.EMMessageBody;
 import com.hyphenate.chat.EMTextMessageBody;
 
 import java.text.SimpleDateFormat;
@@ -36,14 +38,13 @@ public class ChatMenuActivity extends ListActivity {
     private EditText chatContentEdit;
     private ListView chatToListView;
     private Button sendMsgButton;
-    private Button chatRecordButton;
 
-    private MessageDB messageDB;
+//    private MessageDB messageDB;
 
     String otherId = "";
     int otherHead = R.drawable.feather;
     String myId = "";
-    int  myHead= R.drawable.wen;
+    int myHead = R.drawable.wen;
 
     ChatListAdapter adapter;
 
@@ -55,7 +56,7 @@ public class ChatMenuActivity extends ListActivity {
         setContentView(R.layout.activity_chat_menu);
 
         //创建数据库对象
-        messageDB= new MessageDB(this);
+//        messageDB = new MessageDB(this);
 
         //得到自己的ID
         myId = EMClient.getInstance().getCurrentUser();
@@ -66,11 +67,11 @@ public class ChatMenuActivity extends ListActivity {
 
         chatContentEdit = (EditText) findViewById(R.id.chat_content_edit); //要发送的文本消息
         sendMsgButton = (Button) findViewById(R.id.send_msg_button);
-        chatRecordButton = (Button) findViewById(R.id.get_chat_record_button);
 
         //查询和对方的聊天记录（得到记录的链表）
-        chatItemList  = (ArrayList<ChatItem>) messageDB.getAllMessage(myId, otherId);
-        Log.i("ChatMenu", ""+chatItemList.size()+" "+ myId + " "+ otherId);
+        refreshChatList();
+//        chatItemList  = (ArrayList<ChatItem>) messageDB.getAllMessage(myId, otherId);
+        Log.i("ChatMenu", "" + chatItemList.size() + " " + myId + " " + otherId);
         //listView
         chatToListView = getListView();
         //adapter
@@ -84,15 +85,8 @@ public class ChatMenuActivity extends ListActivity {
         //设置发送的监听器
         sendMsgButton.setOnClickListener(new sendMsgOnClickListenner());
 
-         /*---------------------------------------------------------------
-         *                  动态注册广播接收器（接收后台服务发送的消息）
-         * --------------------------------------------------------*/
-        MsgReceiver msgReceiver = new MsgReceiver();
-        IntentFilter filter = new IntentFilter();
-        //指定接收哪个广播
-        filter.addAction("android.intent.action.ANSWER");
-        registerReceiver(msgReceiver, filter);//注册
-
+        Thread thread = new Thread(runable);
+        thread.start();
     }
 
     /*-------------------------------------------------------------------------------
@@ -100,42 +94,47 @@ public class ChatMenuActivity extends ListActivity {
      * @描述： 刷新列表
      *--------------------------------------------------------------------------------*/
 
-    public void refreshChatList(){
-        //UI线程中刷新数据
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
+    public void refreshChatList() {
+        EMConversation conversation = EMClient.getInstance().chatManager().getConversation(otherId);
+        if (conversation != null) {
+            //clear
+            chatItemList.clear();
 
-                ArrayList<ChatItem> newItems = new ArrayList<>();
-                //一条消息都没有
-                if((chatItemList == null) || (chatItemList.size() == 0)){
-                    //查询所有message
-                    newItems = (ArrayList<ChatItem>) messageDB.getAllMessage(myId, otherId);
-                }else{
-                    newItems = (ArrayList<ChatItem>) messageDB.getNewMessage(myId, otherId,
-                            chatItemList.get(chatItemList.size() - 1).getMessageId()); //从数据库获取目前链表中最新ID之后所有信息
-                    Log.i("ChatMenuActivity", newItems.size()+"");
+            //获取此会话的所有消息
+            List<EMMessage> messages = conversation.getAllMessages();
+            for (EMMessage message : messages) {
+                //获得消息的时间戳
+                long timeStamp = message.getMsgTime();
+                //时间戳转换为时间String
+                SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+                String time = formatter.format(timeStamp);
+                //得到一条EMTextMessageBody类型消息
+                EMTextMessageBody msgBody = (EMTextMessageBody) message.getBody();
+                //将EMTextMessageBody类型的消息转换成String类型
+                String data = msgBody.getMessage();
+                //将得到的消息添加到聊天链表中
+                if (message.getTo().equals(myId)) {
+                    chatItemList.add(new ChatItem(myId, otherId, data, EMMessage.Type.TXT, time, true));
+                } else {
+                    chatItemList.add(new ChatItem(otherId, myId, data, EMMessage.Type.TXT, time, true));
                 }
-
-                chatItemList.addAll(newItems); //加入最新数据
-                adapter.notifyDataSetChanged();
-                //移动到listview的底部
-                chatToListView.setSelection(chatToListView.getBottom());
             }
-        });
+        } else {
+            Log.i("ChatMenuActivity", "conversation is null");
+        }
     }
 
     /*-------------------------------------------------------------------------------
      * @class： sendMsgOnClickListenner
      * @描述： 点击后发送信息给对方，并且将数据加入到数据库中，之后进行刷新。
      *--------------------------------------------------------------------------------*/
-    class sendMsgOnClickListenner implements View.OnClickListener{
+    class sendMsgOnClickListenner implements View.OnClickListener {
         //发送文本消息
         @Override
         public void onClick(View v) {
 
             //输入消息为空，直接忽略发送按钮
-            if(TextUtils.isEmpty(chatContentEdit.getText())){//这里是Android提供的功能
+            if (TextUtils.isEmpty(chatContentEdit.getText())) {//这里是Android提供的功能
                 return;
             }
             final String chatContent = chatContentEdit.getText().toString();   //获取要发送的文本消息
@@ -152,58 +151,36 @@ public class ChatMenuActivity extends ListActivity {
             });
             sendMsgThread.start();
 
-            //获得系统的时间
-            SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
-            Date currentTime = new Date();
-            String dateString = formatter.format(currentTime);
-
-            messageDB.addMessage(myId, new ChatItem(otherId, myId, chatContent, MessageType.MESSAGE_TYPE_TEXT, //自定义：文本类型
-                    dateString, true));
-
-            //刷新聊天数据
-            refreshChatList();
+//            refreshChatList();
+//            adapter.notifyDataSetChanged();
+//            //移动到listview的底部
+//            chatToListView.setSelection(chatToListView.getBottom());
 
             //清空输入框
             chatContentEdit.setText(null);
         }
     }
 
-//    //添加接收到的消息到显示中
-//    public void addNewMessage(String msg){
-//        //获得系统的时间
-//        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
-//        Date currentTime = new Date();
-//        String dateString = formatter.format(currentTime);
-//
-//        chatItemList.add(new ChatItem(myId, myHead, "帅猎羽", msg, dateString));
-//        adapter.notifyDataSetChanged();
-//        //移动到listview的底部
-//        chatToListView.setSelection(chatToListView.getBottom());
-//    }
-
-    /**
-     * -------------------------------------------------------------------
-     *
-     * @class MsgReceiver
-     * @描述： 接收后台服务的广播，接收到新消息
-     * -------------------------------------------------------------------
-     */
-    private class MsgReceiver extends BroadcastReceiver {
-
+    Runnable runable = new Runnable() {
+        //每秒钟刷新聊天链表，添加新的聊天消息
         @Override
-        public void onReceive(Context context, Intent intent) {
-            Log.i("MsgReceiver", "收到广播");
-            //通过intent获得广播来的信息
-            String msg = intent.getStringExtra("chat_menu");
-            //登陆成功
-            if (msg != null) {
-                if(msg.equals("new_msg")){
-                    Log.i("MsgReceiver", "刷新中");
-                    refreshChatList();
+        public void run() {
+            while (true) {
+                refreshChatList();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter.notifyDataSetChanged();
+                        //移动到listview的底部
+                        chatToListView.setSelection(chatToListView.getBottom());
+                    }
+                });
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
         }
-
-    }
-
+    };
 }

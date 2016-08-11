@@ -11,11 +11,11 @@ public class ChatItem {
     private String recvName; //接收方名字
     private String sendName; //发送方名字
     private String content; //内容
-    private int type;
+    private EMMessage.Type type;
     private String time;
     private boolean valid; //是否合法
 
-    public ChatItem(String recvName, String sendName,  String content, int type, String time, boolean valid){
+    public ChatItem(String recvName, String sendName,  String content, EMMessage.Type type, String time, boolean valid){
 
         this.content = content;
         this.time = time;
@@ -58,11 +58,11 @@ public class ChatItem {
         this.content = content;
     }
 
-    public int getType() {
+    public EMMessage.Type getType() {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(EMMessage.Type type) {
         this.type = type;
     }
 

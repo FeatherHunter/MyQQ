@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TabHost
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@android:id/tabhost"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
 
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:layout_height="match_parent">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -14,49 +14,14 @@
             android:id="@android:id/tabcontent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_centerHorizontal="true">
-        </FrameLayout>
-
-        <RadioGroup
-            android:id="@+id/main_tab"
-            android:background="@android:color/background_dark"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:layout_gravity="bottom"
-            android:visibility="gone">
-
-            <RadioButton
-                android:layout_marginTop="2.0dip"
-                android:text="@string/msg"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:drawableTop="@drawable/koala"
-                android:id="@+id/radio_button0" />
-            <RadioButton
-                android:layout_marginTop="2.0dip"
-                android:text="@string/contact"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableTop="@drawable/contact"
-                android:id="@+id/radio_button1" />
-            <RadioButton
-                android:layout_marginTop="2.0dip"
-                android:text="@string/trends"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableTop="@drawable/feather"
-                android:id="@+id/radio_button2" />
-        </RadioGroup>
+            android:layout_centerHorizontal="true"></FrameLayout>
 
         <TabWidget
             android:id="@android:id/tabs"
-            android:layout_centerHorizontal="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:background="@android:color/holo_purple">
-        </TabWidget>
+            android:layout_centerHorizontal="true"
+            android:background="@android:color/holo_purple"></TabWidget>
     </RelativeLayout>
 </TabHost>
