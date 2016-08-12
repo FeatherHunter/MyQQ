@@ -152,8 +152,13 @@ public class ChatMenuActivity extends ListActivity {
             messageItems = messageDB.getMessage(myId);
 
             //再调整链表
-            messageItems.add(new MessageItem(myId, null, "13:12", 3));
-
+            for (MessageItem messageItem : messageItems) {
+                if (messageItem.getUsername().equals(otherId)) {
+                    messageItems.addAll(messageDB.getMessage(myId));
+                }else{
+                    messageItems.add(new MessageItem(myId, null, "13:12", 3));
+                }
+            }
 
 
             //最后再次插入进数据库
