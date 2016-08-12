@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.example.lenovo.qqdemos.DB.MessageDB;
+import com.example.lenovo.qqdemos.Main.Beans.MessageItem;
 import com.example.lenovo.qqdemos.R;
 import com.example.lenovo.qqdemos.chat.adapter.ChatListAdapter;
 import com.hyphenate.chat.EMClient;
@@ -42,6 +44,7 @@ public class ChatMenuActivity extends ListActivity {
     ChatListAdapter adapter;
 
     private ArrayList<ChatItem> chatItemList = new ArrayList<>(); //聊天链表
+    ArrayList<MessageItem> messageItems = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,14 +129,6 @@ public class ChatMenuActivity extends ListActivity {
         @Override
         public void onClick(View v) {
 
-                /*----------------------------------------
-                 *   发送广播(提示MessageActivity获得一个新的会话好友)
-                *------------------------------------*/
-            Intent userIntent = new Intent();
-            userIntent.putExtra("userName", otherId);
-            userIntent.setAction("android.intent.action.ANSWER");
-            sendBroadcast(userIntent);
-
             //输入消息为空，直接忽略发送按钮
             if (TextUtils.isEmpty(chatContentEdit.getText())) {//这里是Android提供的功能
                 return;
@@ -152,6 +147,11 @@ public class ChatMenuActivity extends ListActivity {
             });
             sendMsgThread.start();
 
+            MessageDB messageDB = new MessageDB(ChatMenuActivity.this);
+            messageItems.add(new MessageItem(myId, null, "13:12", 3));
+            messageDB.addMessage(myId, messageItems);
+
+
 //            refreshChatList();
 //            adapter.notifyDataSetChanged();
 //            //移动到listview的底部
@@ -159,6 +159,8 @@ public class ChatMenuActivity extends ListActivity {
 
             //清空输入框
             chatContentEdit.setText(null);
+
+
         }
     }
 

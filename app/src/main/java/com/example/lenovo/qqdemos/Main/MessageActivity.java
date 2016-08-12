@@ -1,13 +1,8 @@
 package com.example.lenovo.qqdemos.Main;
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,10 +30,10 @@ public class MessageActivity extends Activity {
     private PopupWindow popupWindow;
     private ListView msg_listView;
 
-    private String userName;
+    private String myId;
 
     ArrayList<MessageItem> messageItems = new ArrayList<>();
-    MessageDB messageDB;
+    MessageDB messageDB = new MessageDB(this);
     MessageAdapter adapter;
 
     @Override
@@ -49,36 +44,14 @@ public class MessageActivity extends Activity {
         button = (Button) findViewById(R.id.button);
         msg_listView = (ListView) findViewById(R.id.listView_msg);
 
-        messageDB = new MessageDB(this); //创建一个数据库
-        messageItems = messageDB.getMessage("test1");
+        Thread thread = new Thread(runnable);
+        thread.start();
+
+        //得到自己的ID
+        myId = EMClient.getInstance().getCurrentUser();
+        messageItems = messageDB.getMessage(myId);
         adapter = new MessageAdapter(this, R.layout.tab_item_msg, messageItems);
         msg_listView.setAdapter(adapter);
-
-        BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                userName = intent.getStringExtra("userName"); //接收到好友的名字
-                Log.i("MessageActivity", "broadcastReceiver");
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        messageItems = messageDB.getMessage(userName);  //获得会话过的好友链表
-                        messageDB.addMessage(userName, messageItems);
-                        messageItems = messageDB.getMessage(userName);  //获得会话过的好友链表
-                        if (messageItems == null) {
-                            Toast.makeText(MessageActivity.this, "messageItems is null", Toast.LENGTH_SHORT).show();
-                        } else {
-                            adapter.notifyDataSetChanged();
-                            //移动到listview的底部
-                            msg_listView.setSelection(msg_listView.getBottom());
-                        }
-                    }
-                });
-            }
-        };
-        IntentFilter filter = new IntentFilter();
-        filter.addAction("android.intent.action.ANSWER");          //指明动作
-        registerReceiver(broadcastReceiver, filter); //注册
 
         iniPopupWindow();
 
@@ -136,4 +109,24 @@ public class MessageActivity extends Activity {
         popupWindow.setOutsideTouchable(true);  //触摸PopupWindow外部，popupWindow消失
 
     }
+
+    Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            messageItems = messageDB.getMessage(myId);
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    adapter.notifyDataSetChanged();
+                    //移动到listview的底部
+                    msg_listView.setSelection(msg_listView.getBottom());
+                }
+            });
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    };
 }

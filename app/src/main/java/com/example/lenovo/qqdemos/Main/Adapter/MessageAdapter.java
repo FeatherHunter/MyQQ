@@ -18,7 +18,6 @@ import java.util.List;
 public class MessageAdapter extends ArrayAdapter<MessageItem> {
 
     ArrayList<MessageItem> messageItems; //聊天的好友链表
-    String userName;
 
     public MessageAdapter(Context context, int resource, List<MessageItem> objects) {
         super(context, resource, objects);
