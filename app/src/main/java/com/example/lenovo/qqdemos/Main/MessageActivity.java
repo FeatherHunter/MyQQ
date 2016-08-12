@@ -44,14 +44,14 @@ public class MessageActivity extends Activity {
         button = (Button) findViewById(R.id.button);
         msg_listView = (ListView) findViewById(R.id.listView_msg);
 
-        Thread thread = new Thread(runnable);
-        thread.start();
-
         //得到自己的ID
         myId = EMClient.getInstance().getCurrentUser();
         messageItems = messageDB.getMessage(myId);
         adapter = new MessageAdapter(this, R.layout.tab_item_msg, messageItems);
         msg_listView.setAdapter(adapter);
+
+        Thread thread = new Thread(runnable);
+        thread.start();   //开启一个线程，刷新会话列表
 
         iniPopupWindow();
 
@@ -110,24 +110,28 @@ public class MessageActivity extends Activity {
 
     }
 
+    //每隔一秒钟刷新会话列表
     Runnable runnable = new Runnable() {
         @Override
         public void run() {
-            messageItems.clear();
-            messageItems.addAll(messageDB.getMessage(myId));
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    adapter.notifyDataSetChanged();
-                    //移动到listview的底部
-                    msg_listView.setSelection(msg_listView.getBottom());
+            while (true) {
+                messageItems.clear();
+                messageItems.addAll(messageDB.getMessage(myId));
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter.notifyDataSetChanged();
+                        //移动到listview的底部
+                        msg_listView.setSelection(msg_listView.getBottom());
+                    }
+                });
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
-            });
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
             }
         }
     };
 }
+
