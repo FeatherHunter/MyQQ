@@ -151,14 +151,21 @@ public class ChatMenuActivity extends ListActivity {
             //先查询
             messageItems = messageDB.getMessage(myId);
 
-            //再调整链表
-            for(int i = 0; i < messageItems.size(); i++){
+            int i;
+            //查找链表中是否有该用户
+            for(i = 0; i < messageItems.size(); i++){
                 if (messageItems.get(i).getOtherName().equals(otherId)){
-                    messageItems.remove(i);
+                    //先将该Item添加到链表头部
                     messageItems.add(0, messageItems.get(i));
-                }else{
-                    messageItems.add(new MessageItem(myId, otherId, null, "13:12", 3));
+                    //再移除掉原来的Item
+                    messageItems.remove(i + 1);
+                    break;
                 }
+            }
+            //此时表示没有查找到
+            if(i == messageItems.size()){
+                //添加到链表头部
+                messageItems.add(0, new MessageItem(myId, otherId, null, "13:12", 3));
             }
 
             //最后再次插入进数据库
