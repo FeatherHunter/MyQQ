@@ -147,7 +147,7 @@ public class ChatMenuActivity extends ListActivity {
             });
             sendMsgThread.start();
 
-            MessageDB messageDB = new MessageDB(ChatMenuActivity.this);
+            MessageDB messageDB = new MessageDB(ChatMenuActivity.this); //创建数据库
             messageItems.add(new MessageItem(myId, null, "13:12", 3));
             messageDB.addMessage(myId, messageItems);
 
