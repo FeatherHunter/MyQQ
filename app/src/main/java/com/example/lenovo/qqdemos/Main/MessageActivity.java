@@ -1,26 +1,32 @@
 package com.example.lenovo.qqdemos.Main;
 
+import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.PopupWindow;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.lenovo.qqdemos.DB.MessageDB;
+import com.example.lenovo.qqdemos.Main.Adapter.MessageAdapter;
+import com.example.lenovo.qqdemos.Main.Beans.MessageItem;
 import com.example.lenovo.qqdemos.R;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.exceptions.HyphenateException;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
-public class MessageActivity extends AppCompatActivity {
+public class MessageActivity extends Activity {
 
     private TextView textView1 = null;
     private TextView textView2 = null;
@@ -29,15 +35,50 @@ public class MessageActivity extends AppCompatActivity {
     private PopupWindow popupWindow;
     private ListView msg_listView;
 
+    private String userName;
+
+    ArrayList<MessageItem> messageItems = new ArrayList<>();
+    MessageDB messageDB;
+    MessageAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.tab_item_msg);
+        setContentView(R.layout.tab_msg);
 
         button = (Button) findViewById(R.id.button);
         msg_listView = (ListView) findViewById(R.id.listView_msg);
 
+        messageDB = new MessageDB(this); //创建一个数据库
+        messageItems = messageDB.getMessage("test1");
+        adapter = new MessageAdapter(this, R.layout.tab_item_msg, messageItems);
+        msg_listView.setAdapter(adapter);
 
+        BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                userName = intent.getStringExtra("userName"); //接收到好友的名字
+                Log.i("MessageActivity", "broadcastReceiver");
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        messageItems = messageDB.getMessage(userName);  //获得会话过的好友链表
+                        messageDB.addMessage(userName, messageItems);
+                        messageItems = messageDB.getMessage(userName);  //获得会话过的好友链表
+                        if (messageItems == null) {
+                            Toast.makeText(MessageActivity.this, "messageItems is null", Toast.LENGTH_SHORT).show();
+                        } else {
+                            adapter.notifyDataSetChanged();
+                            //移动到listview的底部
+                            msg_listView.setSelection(msg_listView.getBottom());
+                        }
+                    }
+                });
+            }
+        };
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("android.intent.action.ANSWER");          //指明动作
+        registerReceiver(broadcastReceiver, filter); //注册
 
         iniPopupWindow();
 

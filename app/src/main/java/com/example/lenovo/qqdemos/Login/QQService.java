@@ -2,26 +2,16 @@ package com.example.lenovo.qqdemos.Login;
 
 import android.app.Service;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.IBinder;
 import android.util.Log;
-import android.widget.Toast;
+
+import com.hyphenate.EMContactListener;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.exceptions.HyphenateException;
+
+import java.util.List;
 
 //import com.example.lenovo.qqdemos.DB.MessageDB;
-import com.example.lenovo.qqdemos.DB.MessageType;
-import com.example.lenovo.qqdemos.Main.SqliteStart;
-import com.example.lenovo.qqdemos.chat.ChatItem;
-import com.hyphenate.EMContactListener;
-import com.hyphenate.EMMessageListener;
-import com.hyphenate.chat.EMClient;
-import com.hyphenate.chat.EMMessage;
-import com.hyphenate.chat.EMTextMessageBody;
-import com.hyphenate.exceptions.HyphenateException;
-import com.hyphenate.util.TimeInfo;
-
-import java.text.SimpleDateFormat;
-import java.util.List;
 
 
 /**

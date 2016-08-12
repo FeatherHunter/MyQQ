@@ -2,68 +2,48 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="60dp"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
+    <com.pkmmte.view.CircularImageView
+        android:id="@+id/head_image"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_marginLeft="10dp"
+        android:src="@drawable/feather"
+        app:border="false"
+        app:shadow="true" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/gray1">
+        android:layout_marginLeft="10dp"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textView"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:background="@android:color/holo_blue_bright" />
-
-        <com.pkmmte.view.CircularImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:paddingLeft="10dp"
-            android:paddingTop="10dp"
-            android:src="@drawable/feather"
-            app:border="true"
-            app:border_color="#EEEEEE"
-            app:border_width="1dp"
-            app:shadow="true" />
-
-        <Button
-            android:id="@+id/button"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
-            android:background="@drawable/oye" />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        android:background="@color/gray1"
-        android:focusable="true"
-        android:focusableInTouchMode="true">
-
-        <EditText
-            android:layout_width="match_parent"
+            android:id="@+id/msg_name_textView"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_margin="10dp"
-            android:background="@color/white"
-            android:gravity="center_horizontal"
-            android:hint="搜索"
-            android:padding="10dp"
-            android:textSize="12dp" />
-    </RelativeLayout>
+            android:textColor="@color/black"
+            android:textSize="17dp"
+            android:textStyle="bold"
+            android:text="帅猎羽"/>
 
-    <ListView
-        android:id="@+id/listView_msg"
+        <TextView
+            android:id="@+id/msg_chat_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="hello"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/msg_time_textView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="65dp">
-    </ListView>
-
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:gravity="right"
+        android:textSize="10dp"
+        android:text="13:12"/>
 </LinearLayout>

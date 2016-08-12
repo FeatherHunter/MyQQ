@@ -1,37 +1,30 @@
 package com.example.lenovo.qqdemos.chat;
 
 import android.app.ListActivity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
+
+import com.example.lenovo.qqdemos.R;
+import com.example.lenovo.qqdemos.chat.adapter.ChatListAdapter;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMConversation;
+import com.hyphenate.chat.EMMessage;
+import com.hyphenate.chat.EMTextMessageBody;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 //import com.example.lenovo.qqdemos.DB.MessageDB;
 //import com.example.lenovo.qqdemos.DB.MessageType;
 //import com.example.lenovo.qqdemos.Login.QQService;
 //import com.example.lenovo.qqdemos.Main.MainActivity;
-import com.example.lenovo.qqdemos.R;
-import com.example.lenovo.qqdemos.chat.adapter.ChatListAdapter;
-import com.hyphenate.EMMessageListener;
-import com.hyphenate.chat.EMClient;
-import com.hyphenate.chat.EMConversation;
-import com.hyphenate.chat.EMMessage;
-import com.hyphenate.chat.EMMessageBody;
-import com.hyphenate.chat.EMTextMessageBody;
-
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 public class ChatMenuActivity extends ListActivity {
 
@@ -132,6 +125,14 @@ public class ChatMenuActivity extends ListActivity {
         //发送文本消息
         @Override
         public void onClick(View v) {
+
+                /*----------------------------------------
+                 *   发送广播(提示MessageActivity获得一个新的会话好友)
+                *------------------------------------*/
+            Intent userIntent = new Intent();
+            userIntent.putExtra("userName", otherId);
+            userIntent.setAction("android.intent.action.ANSWER");
+            sendBroadcast(userIntent);
 
             //输入消息为空，直接忽略发送按钮
             if (TextUtils.isEmpty(chatContentEdit.getText())) {//这里是Android提供的功能

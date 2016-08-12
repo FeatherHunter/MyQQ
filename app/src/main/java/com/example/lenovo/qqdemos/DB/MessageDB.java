@@ -7,13 +7,12 @@ import android.os.Environment;
 
 import com.example.lenovo.qqdemos.Main.Beans.MessageItem;
 import com.example.lenovo.qqdemos.Util.GsonUtil;
-import com.example.lenovo.qqdemos.chat.ChatItem;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.File;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.List;
+
 
 /**
  * Created by feather on 2016/8/11.
