@@ -38,7 +38,7 @@ public class ChatMenuActivity extends ListActivity {
 
     String otherId = "";
     int otherHead = R.drawable.feather;
-    String myId = "";
+    String myId = EMClient.getInstance().getCurrentUser();
     int myHead = R.drawable.wen;
 
     ChatListAdapter adapter;

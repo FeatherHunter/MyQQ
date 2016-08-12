@@ -65,7 +65,7 @@ public class MessageDB {
     private boolean messageExits(String currentUserName)
     {
         db.execSQL("CREATE TABLE IF NOT EXISTS message (user_name text PRIMARY KEY, contact_list text)");
-        Cursor cursor = db.rawQuery("select * from message where user_name = '?' ", new String[]{currentUserName});
+        Cursor cursor = db.rawQuery("select * from message where user_name = ? ", new String[]{currentUserName});
         if(cursor.getCount() != 0)//存在
         {
             return true;
