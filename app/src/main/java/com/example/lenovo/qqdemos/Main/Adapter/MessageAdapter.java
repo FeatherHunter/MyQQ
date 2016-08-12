@@ -47,4 +47,9 @@ public class MessageAdapter extends ArrayAdapter<MessageItem> {
         return messageItems.get(position);
     }
 
+    @Override
+    public int getCount() {
+        return messageItems.size();
+    }
+
 }

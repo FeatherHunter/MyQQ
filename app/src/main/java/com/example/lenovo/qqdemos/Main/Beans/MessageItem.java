@@ -6,17 +6,26 @@ package com.example.lenovo.qqdemos.Main.Beans;
 public class MessageItem {
 
     private String username;
+    private String otherName;
     private String newMsg;
     private String time;
     private int unReadCount;
 
-    public MessageItem(String username, String newMsg, String time, int unReadCount) {
+    public MessageItem(String username, String otherName, String newMsg, String time, int unReadCount) {
         this.username = username;
+        this.otherName = otherName;
         this.newMsg = newMsg;
         this.time = time;
         this.unReadCount = unReadCount;
     }
 
+    public String getOtherName() {
+        return otherName;
+    }
+
+    public void setOtherName(String otherName) {
+        this.otherName = otherName;
+    }
     public String getUsername() {
         return username;
     }
