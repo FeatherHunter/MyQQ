@@ -148,7 +148,15 @@ public class ChatMenuActivity extends ListActivity {
             sendMsgThread.start();
 
             MessageDB messageDB = new MessageDB(ChatMenuActivity.this); //创建数据库
+            //先查询
+            messageItems = messageDB.getMessage(myId);
+
+            //再调整链表
             messageItems.add(new MessageItem(myId, null, "13:12", 3));
+
+
+
+            //最后再次插入进数据库
             messageDB.addMessage(myId, messageItems);
 
 
