@@ -92,10 +92,11 @@ public class MessageDB {
      * @return
      */
     public ArrayList<MessageItem> getMessage(String currentUserName){
+        ArrayList<MessageItem> messageItemArrayList = new ArrayList<MessageItem>();
         db.execSQL("CREATE TABLE IF NOT EXISTS message (user_name text PRIMARY KEY, contact_list text)");
         Cursor c = db.rawQuery("SELECT contact_list from message WHERE user_name = '" + currentUserName +"'", null);
         if (c.getCount() == 0) {
-            return null;
+            return messageItemArrayList;
         }else{
             c.moveToFirst();
 
@@ -103,7 +104,7 @@ public class MessageDB {
             //json转换需要的类型
             Type type = new TypeToken<ArrayList<MessageItem>>(){}.getType();
             //转换
-            ArrayList<MessageItem> messageItemArrayList = (ArrayList<MessageItem>)GsonUtil.getInstance().fromJson(json, type);
+            messageItemArrayList = (ArrayList<MessageItem>)GsonUtil.getInstance().fromJson(json, type);
             return messageItemArrayList;
         }
     }
