@@ -83,7 +83,7 @@ public class MessageDB {
         String json = GsonUtil.getInstance().toJson(messageItems);
 
         db.execSQL("CREATE TABLE IF NOT EXISTS message (user_name text PRIMARY KEY, contact_list text)");
-        db.execSQL("update message set contact_list = '?' where user_name = '?'",
+        db.execSQL("update message set contact_list = ? where user_name = ?",
                 new Object[]{json, currentUserName});
     }
 

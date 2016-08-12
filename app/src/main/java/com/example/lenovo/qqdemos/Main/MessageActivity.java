@@ -113,7 +113,8 @@ public class MessageActivity extends Activity {
     Runnable runnable = new Runnable() {
         @Override
         public void run() {
-            messageItems = messageDB.getMessage(myId);
+            messageItems.clear();
+            messageItems.addAll(messageDB.getMessage(myId));
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
