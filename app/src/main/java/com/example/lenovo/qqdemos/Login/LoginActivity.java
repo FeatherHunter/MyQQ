@@ -103,6 +103,7 @@ public class LoginActivity extends Activity implements View.OnFocusChangeListene
             }
         });
 
+
 //        userEditText.setOnFocusChangeListener(this);
 //        passwdEditText.setOnFocusChangeListener(this);
 

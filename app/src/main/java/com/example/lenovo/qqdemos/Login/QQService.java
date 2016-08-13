@@ -42,6 +42,7 @@ public class QQService extends Service {
 
         Thread sendMsgThread = new Thread(serviceRunnale);
         sendMsgThread.start();
+
     }
 
     Runnable serviceRunnale = new Runnable() {
@@ -61,7 +62,7 @@ public class QQService extends Service {
             EMClient.getInstance().contactManager().setContactListener(new EMContactListener() {
                 @Override
                 public void onContactAdded(String s) {
-                    Log.i(TAG,"增加联系人");
+                    Log.i(TAG, "增加联系人");
                 }
 
                 @Override
@@ -75,7 +76,7 @@ public class QQService extends Service {
                         public void run() {
                             try {
                                 EMClient.getInstance().contactManager().acceptInvitation(username); //同意好友请求
-                                Log.i(TAG,"收到好友邀请");
+                                Log.i(TAG, "收到好友邀请");
                             } catch (HyphenateException e) {
                                 e.printStackTrace();
                             }
@@ -92,7 +93,7 @@ public class QQService extends Service {
                         public void run() {
                             try {
                                 final List<String> usernames = EMClient.getInstance().contactManager().getAllContactsFromServer();
-                                Log.i(TAG,"好友请求被同意");
+                                Log.i(TAG, "好友请求被同意");
                             } catch (HyphenateException e) {
                                 e.printStackTrace();
                             }
@@ -110,6 +111,7 @@ public class QQService extends Service {
 
         }
     };
+
 
 //    //注册消息监听来接收消息
 //    EMMessageListener msgListener = new EMMessageListener() {

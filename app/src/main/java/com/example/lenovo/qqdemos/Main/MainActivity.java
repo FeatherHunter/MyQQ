@@ -8,7 +8,6 @@ import android.widget.TabHost;
 
 import com.example.lenovo.qqdemos.Login.QQService;
 import com.example.lenovo.qqdemos.R;
-import com.hyphenate.chat.EMClient;
 
 public class MainActivity extends TabActivity {
 
@@ -55,8 +54,6 @@ public class MainActivity extends TabActivity {
     @Override
     protected void onDestroy() {
 
-        //退出登录
-        EMClient.getInstance().logout(true);
         //停止后台服务
         stopService(serviceIntent);
 

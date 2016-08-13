@@ -3,12 +3,18 @@ package com.example.lenovo.qqdemos.Main;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
+
+import com.example.lenovo.qqdemos.R;
+import com.hyphenate.chat.EMClient;
 
 /**
  * Created by lenovo on 2016/8/13.
@@ -53,6 +59,17 @@ public class MyHorizontalScrollView extends HorizontalScrollView {
             // this指的是HorizontalScrollView，获取各个元素
             linearLayout = (LinearLayout) this.getChildAt(0);// 第一个子元素
             myMenu = (ViewGroup) linearLayout.getChildAt(0);// HorizontalScrollView下LinearLayout的第一个子元素
+            //退出登录
+            Button quitButton = (Button) myMenu.findViewById(R.id.quit_button);
+            quitButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.i("MyHorizontalScrollView", "quit");
+                    //退出登录
+                    EMClient.getInstance().logout(true);
+
+                }
+            });
             myContent = (ViewGroup) linearLayout.getChildAt(1);// HorizontalScrollView下LinearLayout的第二个子元素
 
             // 设置子View的宽高，高于屏幕一致
