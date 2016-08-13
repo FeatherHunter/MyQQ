@@ -33,10 +33,12 @@ public class MessageAdapter extends ArrayAdapter<MessageItem> {
         convertView = View.inflate(getContext(), R.layout.tab_item_msg, null);
 
        TextView msgNameTextView = (TextView) convertView.findViewById(R.id.msg_name_textView); //好友的名字
+       TextView msgChattextView = (TextView) convertView.findViewById(R.id.msg_chat_textView); //聊天内容
        TextView msgTimeTextView = (TextView) convertView.findViewById(R.id.msg_time_textView); //聊天的时间
 
         msgNameTextView.setText(messageItem.getOtherName());
         msgTimeTextView.setText(messageItem.getTime());
+        msgChattextView.setText(messageItem.getNewMsg());
 
         return convertView;
     }

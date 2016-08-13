@@ -3,17 +3,13 @@ package com.example.lenovo.qqdemos.Login;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,8 +31,6 @@ public class LoginActivity extends Activity implements View.OnFocusChangeListene
     private TextView infoTextView = null;//无法登陆
     private TextView sign_upTextView = null;//新用户注册
 
-    private SharedPreferences.Editor editor;
-    private SharedPreferences sharedPreferences;
     private CheckBox checkBox_remember_pwd = null;
     private CheckBox checkBox_auto_login = null;
 
@@ -70,25 +64,22 @@ public class LoginActivity extends Activity implements View.OnFocusChangeListene
             @Override
             public void onClick(View v) {
 
-                String userText = userEditText.getText().toString(); //读取账号信息
-                String passwdText = passwdEditText.getText().toString(); //读取密码信息
+                final String userText = userEditText.getText().toString(); //读取账号信息
+                final String passwdText = passwdEditText.getText().toString(); //读取密码信息
 
-                //SharedPreferences完成自动登录
-                editor.putBoolean("checkbox_pwd", checkBox_remember_pwd.isChecked())
-                        .putString("edittext_user",
-                                userEditText.getText().toString().trim())
-                        .putBoolean("checkbox_auto_login", checkBox_auto_login.isChecked()).commit();//保存“记住密码”和“自动登录”的状态，并默认保存账户信息
-
-                if (checkBox_remember_pwd.isChecked()) {    //勾选“记住密码”，保存密码
-                    editor.putString("edittext_pwd", passwdEditText.getText().toString())
-                            .commit();
-                }
 
                 EMClient.getInstance().login(userText, passwdText, new EMCallBack() {
                     @Override
                     public void onSuccess() {      //登陆成功
                         EMClient.getInstance().groupManager().loadAllGroups();
                         EMClient.getInstance().chatManager().loadAllConversations();
+
+                        SharedPreferences sharedPreferences = getSharedPreferences("login", MODE_PRIVATE); //私有数据
+                        SharedPreferences.Editor editor = sharedPreferences.edit();//获取编辑器
+                        //本地保存
+                        editor.putString("account", userText).commit();
+                        editor.putString("password", passwdText).commit();
+
                         Intent startIntent = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(startIntent);
                         LoginActivity.this.finish();
@@ -99,7 +90,7 @@ public class LoginActivity extends Activity implements View.OnFocusChangeListene
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(LoginActivity.this, "登录失败:"+msg+"("+i+")", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LoginActivity.this, "登录失败:" + msg + "(" + i + ")", Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
@@ -121,8 +112,6 @@ public class LoginActivity extends Activity implements View.OnFocusChangeListene
         dialog.setTitle("提示");
         dialog.setTitle("正在登录中....");
         dialog.setCancelable(false);
-
-        autoLogin();
     }
 
     /*-------------------------------------
@@ -165,45 +154,6 @@ public class LoginActivity extends Activity implements View.OnFocusChangeListene
         }
     }
 
-    //自动登录
-    public void autoLogin() {
-
-        sharedPreferences = getSharedPreferences("loginCheck", 777);  //获得SharedPreferences实例
-        editor = sharedPreferences.edit();   //通过editor获得写权限
-
-        checkBox_remember_pwd.setChecked(sharedPreferences.getBoolean("checkbox_pwd", false));
-        checkBox_auto_login.setChecked(sharedPreferences.getBoolean("checkbox_auto_login", false));
-        userEditText.setText(sharedPreferences.getString("edittext_user", ""));
-
-        if (checkBox_remember_pwd.isChecked()) {   //记住密码
-            passwdEditText.setText(sharedPreferences.getString("edittext_pwd", ""));
-        }
-        if (checkBox_auto_login.isChecked()) {     //自动登录
-
-//            Intent autoIntent = new Intent(this, MainActivity.class);
-//            startActivity(autoIntent);
-
-        }
-
-        checkBox_remember_pwd.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (checkBox_auto_login.isChecked() == true && isChecked == false) {
-                    checkBox_auto_login.setChecked(false);
-                }
-            }
-        });
-
-        checkBox_auto_login.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (checkBox_remember_pwd.isChecked() == false && isChecked == true) {
-                    checkBox_remember_pwd.setChecked(true);
-                }
-            }
-        });
-    }
-
     //利用Activity的回传值，接受从Sign_upActivity中传过来的账户密码
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -214,7 +164,7 @@ public class LoginActivity extends Activity implements View.OnFocusChangeListene
             userEditText.setText(data.getStringExtra("account"));
             passwdEditText.setText(data.getStringExtra("passwd"));
 
-        }else if(resultCode == ResUtil.SIGN_UP_CANCEL){ //取消注册，不做任何事
+        } else if (resultCode == ResUtil.SIGN_UP_CANCEL) { //取消注册，不做任何事
 
         }
     }

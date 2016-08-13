@@ -30,6 +30,7 @@ public class ChatPersonalActivity extends Activity {
                 //继续传递给“聊天”界面
                 intent.putExtra("other_id", otherID);
                 startActivity(intent);
+                ChatPersonalActivity.this.finish();
             }
         });
 

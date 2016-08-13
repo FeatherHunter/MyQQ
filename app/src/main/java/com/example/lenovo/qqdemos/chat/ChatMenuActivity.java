@@ -64,10 +64,6 @@ public class ChatMenuActivity extends ListActivity {
         chatContentEdit = (EditText) findViewById(R.id.chat_content_edit); //要发送的文本消息
         sendMsgButton = (Button) findViewById(R.id.send_msg_button);
 
-        //查询和对方的聊天记录（得到记录的链表）
-        refreshChatList();
-//        chatItemList  = (ArrayList<ChatItem>) messageDB.getAllMessage(myId, otherId);
-        Log.i("ChatMenu", "" + chatItemList.size() + " " + myId + " " + otherId);
         //listView
         chatToListView = getListView();
         //adapter
@@ -90,34 +86,49 @@ public class ChatMenuActivity extends ListActivity {
      * @描述： 刷新列表
      *--------------------------------------------------------------------------------*/
 
-    public void refreshChatList() {
-        EMConversation conversation = EMClient.getInstance().chatManager().getConversation(otherId);
-        if (conversation != null) {
-            //clear
-            chatItemList.clear();
+    public void refreshChatList(final boolean needToBootom) {
 
-            //获取此会话的所有消息
-            List<EMMessage> messages = conversation.getAllMessages();
-            for (EMMessage message : messages) {
-                //获得消息的时间戳
-                long timeStamp = message.getMsgTime();
-                //时间戳转换为时间String
-                SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
-                String time = formatter.format(timeStamp);
-                //得到一条EMTextMessageBody类型消息
-                EMTextMessageBody msgBody = (EMTextMessageBody) message.getBody();
-                //将EMTextMessageBody类型的消息转换成String类型
-                String data = msgBody.getMessage();
-                //将得到的消息添加到聊天链表中
-                if (message.getTo().equals(myId)) {
-                    chatItemList.add(new ChatItem(myId, otherId, data, EMMessage.Type.TXT, time, true));
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+                EMConversation conversation = EMClient.getInstance().chatManager().getConversation(otherId);
+                if (conversation != null) {
+                    //clear
+                    chatItemList.clear();
+
+                    //获取此会话的所有消息
+                    List<EMMessage> messages = conversation.getAllMessages();
+                    for (EMMessage message : messages) {
+                        //获得消息的时间戳
+                        long timeStamp = message.getMsgTime();
+                        //时间戳转换为时间String
+                        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+                        String time = formatter.format(timeStamp);
+                        //得到一条EMTextMessageBody类型消息
+                        EMTextMessageBody msgBody = (EMTextMessageBody) message.getBody();
+                        //将EMTextMessageBody类型的消息转换成String类型
+                        String data = msgBody.getMessage();
+                        //将得到的消息添加到聊天链表中
+                        if (message.getTo().equals(myId)) {
+                            chatItemList.add(new ChatItem(myId, otherId, data, EMMessage.Type.TXT, time, true));
+                        } else {
+                            chatItemList.add(new ChatItem(otherId, myId, data, EMMessage.Type.TXT, time, true));
+                        }
+
+                    }
+
                 } else {
-                    chatItemList.add(new ChatItem(otherId, myId, data, EMMessage.Type.TXT, time, true));
+                    Log.i("ChatMenuActivity", "conversation is null");
+                }
+
+                adapter.notifyDataSetChanged();
+                if(needToBootom == true){
+                    //移动到listview的底部
+                    chatToListView.setSelection(chatToListView.getBottom());
                 }
             }
-        } else {
-            Log.i("ChatMenuActivity", "conversation is null");
-        }
+        });
     }
 
     /*-------------------------------------------------------------------------------
@@ -143,33 +154,46 @@ public class ChatMenuActivity extends ListActivity {
                      * ----------------------------------*/
                     EMMessage message = EMMessage.createTxtSendMessage(chatContent, otherId);  //创建一条文本消息
                     EMClient.getInstance().chatManager().sendMessage(message);  //发送消息
+
+                    refreshChatList(true);//发送消息后，刷新一次
                 }
             });
             sendMsgThread.start();
 
-            MessageDB messageDB = new MessageDB(ChatMenuActivity.this); //创建数据库
-            //先查询
-            messageItems = messageDB.getMessage(myId);
+            //调整链表（插入到数据库）
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    MessageDB messageDB = new MessageDB(ChatMenuActivity.this); //创建数据库
+                    //先查询
+                    messageItems = messageDB.getMessage(myId);
 
-            int i;
-            //查找链表中是否有该用户
-            for(i = 0; i < messageItems.size(); i++){
-                if (messageItems.get(i).getOtherName().equals(otherId)){
-                    //先将该Item添加到链表头部
-                    messageItems.add(0, messageItems.get(i));
-                    //再移除掉原来的Item
-                    messageItems.remove(i + 1);
-                    break;
+                    int i;
+                    //查找链表中是否有该用户
+                    for(i = 0; i < messageItems.size(); i++){
+                        if (messageItems.get(i).getOtherName().equals(otherId)){
+                            //先将该Item添加到链表头部
+                            MessageItem item = messageItems.get(i);
+                            //set msg
+                            item.setNewMsg(chatContent);
+                            messageItems.add(0, item);
+                            //再移除掉原来的Item
+                            messageItems.remove(i + 1);
+                            break;
+                        }
+                    }
+                    //此时表示没有查找到
+                    if(i == messageItems.size()){
+                        //添加到链表头部
+                        messageItems.add(0, new MessageItem(myId, otherId, chatContent, "13:12", 3));
+                    }
+
+                    //最后再次插入进数据库
+                    messageDB.addMessage(myId, messageItems);
+
                 }
-            }
-            //此时表示没有查找到
-            if(i == messageItems.size()){
-                //添加到链表头部
-                messageItems.add(0, new MessageItem(myId, otherId, null, "13:12", 3));
-            }
-
-            //最后再次插入进数据库
-            messageDB.addMessage(myId, messageItems);
+            });
+            thread.start();
 
 
 //            refreshChatList();
@@ -188,16 +212,16 @@ public class ChatMenuActivity extends ListActivity {
         //每秒钟刷新聊天链表，添加新的聊天消息
         @Override
         public void run() {
+//            refreshChatList(true);
+//            runOnUiThread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    chatToListView.setSelection(chatToListView.getBottom());
+//                }
+//            });
+
             while (true) {
-                refreshChatList();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        adapter.notifyDataSetChanged();
-                        //移动到listview的底部
-                        chatToListView.setSelection(chatToListView.getBottom());
-                    }
-                });
+                refreshChatList(false);
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {

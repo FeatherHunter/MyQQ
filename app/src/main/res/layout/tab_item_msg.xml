@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="60dp"
-    android:gravity="center_vertical"
-    android:orientation="horizontal">
+    android:gravity="center_vertical">
 
     <com.pkmmte.view.CircularImageView
         android:id="@+id/head_image"
@@ -17,15 +16,16 @@
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:layout_marginLeft="10dp"
-        android:gravity="center_vertical"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@id/head_image"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/msg_name_textView"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="20dp"
             android:text="帅猎羽"
             android:textColor="@color/black"
             android:textSize="17dp"
@@ -34,33 +34,36 @@
         <TextView
             android:id="@+id/msg_chat_textView"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_height="20dp"
+            android:singleLine="true"
             android:text="hello" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="200dp"
+        android:layout_height="60dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp"
+        android:gravity="center_vertical"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/msg_time_textView"
-            android:layout_width="wrap_content"
+            android:layout_width="40dp"
             android:layout_height="wrap_content"
-            android:gravity="right"
             android:text="13:12"
             android:textSize="10dp" />
 
         <TextView
             android:id="@+id/msg_unread_textView"
-            android:layout_width="wrap_content"
+            android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:gravity="right"
+            android:gravity="center"
             android:text="1"
             android:textSize="10dp" />
 
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>
