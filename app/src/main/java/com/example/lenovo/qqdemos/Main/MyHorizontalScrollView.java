@@ -1,6 +1,10 @@
 package com.example.lenovo.qqdemos.Main;
 
+import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -13,12 +17,14 @@ import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
+import com.example.lenovo.qqdemos.Login.LoginActivity;
 import com.example.lenovo.qqdemos.R;
 import com.hyphenate.chat.EMClient;
 
 /**
  * Created by lenovo on 2016/8/13.
  */
+@TargetApi(Build.VERSION_CODES.CUPCAKE)
 public class MyHorizontalScrollView extends HorizontalScrollView {
 
     // 在HorizontalScrollView有个LinearLayout
@@ -65,8 +71,14 @@ public class MyHorizontalScrollView extends HorizontalScrollView {
                 @Override
                 public void onClick(View v) {
                     Log.i("MyHorizontalScrollView", "quit");
+
                     //退出登录
                     EMClient.getInstance().logout(true);
+
+                    //跳转到登录界面
+                    Intent intent = new Intent(getContext(), LoginActivity.class);
+                    getContext().startActivity(intent);
+                    ((Activity)getContext()).finish();
 
                 }
             });

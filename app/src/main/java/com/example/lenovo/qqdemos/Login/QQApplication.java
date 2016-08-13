@@ -17,6 +17,8 @@ public class QQApplication extends Application {
         EMOptions options = new EMOptions();
 // 默认添加好友时，是不需要验证的，改成需要验证
         options.setAcceptInvitationAlways(false);
+        //取消自动登录
+        options.setAutoLogin(false);
 //        ...
 //初始化
         EMClient.getInstance().init(getApplicationContext(), options);

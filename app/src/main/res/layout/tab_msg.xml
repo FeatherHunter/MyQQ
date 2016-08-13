@@ -16,7 +16,7 @@
             android:layout_height="match_parent"
             android:orientation="horizontal" >
 
-            <include layout="@layout/horizontalscrollview" />
+            <include layout="@layout/horizontalscrollview"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
