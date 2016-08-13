@@ -13,20 +13,25 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.lenovo.qqdemos.Login.LoginActivity;
+import com.example.lenovo.qqdemos.Main.Adapter.FunctionAdapter;
+import com.example.lenovo.qqdemos.Main.Beans.FunctionItem;
 import com.example.lenovo.qqdemos.R;
 import com.hyphenate.chat.EMClient;
+
+import java.util.ArrayList;
 
 /**
  * Created by lenovo on 2016/8/13.
  */
 @TargetApi(Build.VERSION_CODES.CUPCAKE)
-public class SlidingMenu extends HorizontalScrollView {
+public class MyHorizontalScrollView extends HorizontalScrollView {
 
     // 在HorizontalScrollView有个LinearLayout
     private LinearLayout linearLayout;
@@ -43,8 +48,9 @@ public class SlidingMenu extends HorizontalScrollView {
     private boolean once = false;
     // 菜单是否已经打开
     private boolean isOpen;// 是否已经打开
+    private ArrayList<FunctionItem> functionItems = new ArrayList<>();
 
-    public SlidingMenu(Context context, AttributeSet attrs) {
+    public MyHorizontalScrollView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         // 获取屏幕宽度
@@ -69,8 +75,8 @@ public class SlidingMenu extends HorizontalScrollView {
             linearLayout = (LinearLayout) this.getChildAt(0);// 第一个子元素
             myMenu = (ViewGroup) linearLayout.getChildAt(0);// HorizontalScrollView下LinearLayout的第一个子元素
             //退出登录
-            Button quitButton = (Button) myMenu.findViewById(R.id.quit_button);
-            quitButton.setOnClickListener(new OnClickListener() {
+            TextView quitText = (TextView) myMenu.findViewById(R.id.quit_text);
+            quitText.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Log.i("MyHorizontalScrollView", "quit");
@@ -81,10 +87,19 @@ public class SlidingMenu extends HorizontalScrollView {
                     //跳转到登录界面
                     Intent intent = new Intent(getContext(), LoginActivity.class);
                     getContext().startActivity(intent);
-                    ((Activity)getContext()).finish();
+                    ((Activity) getContext()).finish();
 
                 }
             });
+            ListView listView = (ListView) myMenu.findViewById(R.id.info_show_list);
+            //测试数据
+            functionItems.add(new FunctionItem(1, R.drawable.frs, "开通会员"));
+            functionItems.add(new FunctionItem(2, R.drawable.fcd, "我的空间"));
+            functionItems.add(new FunctionItem(3, R.drawable.fcc, "我的相册"));
+            functionItems.add(new FunctionItem(4, R.drawable.fdm, "我的文件"));
+            FunctionAdapter adapter = new FunctionAdapter(getContext(), R.layout.horizontalscrollview_item, functionItems);
+            listView.setAdapter(adapter);
+
             myContent = (ViewGroup) linearLayout.getChildAt(1);// HorizontalScrollView下LinearLayout的第二个子元素
             ImageView imageView = (ImageView) myContent.findViewById(R.id.head);
             imageView.setOnClickListener(new OnClickListener() {
@@ -131,23 +146,23 @@ public class SlidingMenu extends HorizontalScrollView {
     }
 
     //打开菜单
-    public void openMenu(){
-        if(isOpen)return;
+    public void openMenu() {
+        if (isOpen) return;
         this.smoothScrollTo(0, 0);
         isOpen = true;
     }
 
     //关闭菜单
-    public void closeMenu(){
-        if(!isOpen)return;
+    public void closeMenu() {
+        if (!isOpen) return;
         this.smoothScrollTo(myMenuWidth, 0);
         isOpen = false;
     }
 
-    public void toggle(){
-        if(isOpen){
+    public void toggle() {
+        if (isOpen) {
             closeMenu();
-        }else{
+        } else {
             openMenu();
         }
     }

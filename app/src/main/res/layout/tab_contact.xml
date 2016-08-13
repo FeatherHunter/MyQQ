@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.example.lenovo.qqdemos.Main.SlidingMenu
+    <com.example.lenovo.qqdemos.Main.MyHorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="none">
@@ -34,8 +34,8 @@
 
                     <com.pkmmte.view.CircularImageView
                         android:id="@+id/head"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="10dp"
                         android:paddingLeft="10dp"
@@ -51,17 +51,19 @@
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
                         android:text="联系人"
+                        android:textColor="@android:color/white"
                         android:textSize="18dp" />
 
-                    <Button
+                    <TextView
                         android:id="@+id/add_friend_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="10dp"
-                        android:background="@android:color/white"
-                        android:text="添加" />
+                        android:text="添加"
+                        android:textColor="@android:color/white"
+                        android:textSize="18dp" />
 
                 </RelativeLayout>
 
@@ -166,7 +168,7 @@
 
         </LinearLayout>
 
-    </com.example.lenovo.qqdemos.Main.SlidingMenu>
+    </com.example.lenovo.qqdemos.Main.MyHorizontalScrollView>
 
 </LinearLayout>
 

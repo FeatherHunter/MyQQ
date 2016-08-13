@@ -1,12 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <Button
-        android:id="@+id/quit_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/quit"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.pkmmte.view.CircularImageView
+                android:id="@+id/head"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="30dp"
+                android:src="@drawable/feather"
+                app:border="true"
+                app:border_color="#EEEEEE"
+                app:border_width="1dp"
+                app:shadow="true" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/msg_name_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:text="帅猎羽"
+                    android:textColor="@color/black"
+                    android:textSize="17dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/info_show_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="10dp"
+                    android:singleLine="true"
+                    android:text="hello" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/info_trend_textView"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_marginLeft="30dp"
+            android:singleLine="true"
+            android:text="愿再无灾难" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/holo_blue_light">
+
+
+        <ListView
+            android:id="@+id/info_show_list"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginLeft="30dp"></ListView>
+
+        <TextView
+            android:layout_below="@+id/info_show_list"
+            android:id="@+id/quit_text"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="10dp"
+            android:text="退出"
+            android:textColor="@android:color/white"
+            android:textSize="14dp"
+            android:textStyle="bold" />
+    </RelativeLayout>
 
 </LinearLayout>

@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -28,7 +27,7 @@ public class ContactActivity extends Activity {
     private ExpandableListView expandListView;
     //存放“好友组”，每个好友组内部还有一个好友列表
     private ArrayList<ContactGroup> contactGroups;
-    private Button addFriendButton;
+    private TextView addFriendTextView;
     private ExpandListViewAdapter adapter;
 
     @Override
@@ -36,14 +35,14 @@ public class ContactActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tab_contact);
 
-        addFriendButton = (Button) findViewById(R.id.add_friend_button);
+        addFriendTextView = (TextView) findViewById(R.id.add_friend_button);
 
         //初始化
-        contactGroups = new ArrayList<ContactGroup>();
+        contactGroups = new ArrayList<>();
         //有好友组“我的好友”
         contactGroups.add(new ContactGroup("我的好友"));
 
-        addFriendButton.setOnClickListener(new View.OnClickListener() {
+        addFriendTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent addIntent = new Intent(ContactActivity.this, AddContactActivity.class);
@@ -170,7 +169,7 @@ public class ContactActivity extends Activity {
                  *    改变每个分组的显示时大小
                  * ---------------------------------------*/
                 AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT, 140);
+                        ViewGroup.LayoutParams.MATCH_PARENT, 120);
                 convertView.setLayoutParams(layoutParams);
 
                 //获取布局中控件
@@ -209,7 +208,7 @@ public class ContactActivity extends Activity {
                         R.layout.expandlistview_item, null);
 
                 AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT, 160);
+                        ViewGroup.LayoutParams.MATCH_PARENT, 140);
                 convertView.setLayoutParams(layoutParams);
 
                 //用户名
