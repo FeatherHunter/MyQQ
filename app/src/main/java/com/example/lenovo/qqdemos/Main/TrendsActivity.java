@@ -14,7 +14,7 @@ public class TrendsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.tab_item_trends);
+        setContentView(R.layout.tab_trends);
 
         findViewById(R.id.button10).setOnClickListener(new View.OnClickListener() {
             @Override

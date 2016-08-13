@@ -14,6 +14,7 @@
     <string name="trends">动态</string>
     <string name="sendButton">发送</string>
     <string name="confirm">确定</string>
+    <string name="quit">退出登录</string>
     <string name="addContact">请输入要添加的好友的账号</string>
     <string name="title_activity_operator_interface2">OperatorInterface2Activity</string>
     <string name="title_activity_chat_person">ChatPersonActivity</string>
