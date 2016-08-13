@@ -94,16 +94,32 @@
                     android:paddingTop="10dp">
 
                     <LinearLayout
+                        android:id="@+id/new_friend"
                         android:layout_width="wrap_content"
                         android:layout_height="65dp"
                         android:orientation="vertical"
                         android:paddingLeft="30dp">
 
-                        <ImageView
+                        <RelativeLayout
                             android:layout_width="30dp"
                             android:layout_height="35dp"
-                            android:layout_gravity="center"
-                            android:background="@drawable/new_friend" />
+                            android:layout_gravity="center">
+
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="35dp"
+                                android:layout_gravity="center"
+                                android:background="@drawable/new_friend" />
+
+                            <TextView
+                                android:id="@+id/new_friend_flag"
+                                android:layout_width="10dp"
+                                android:layout_height="10dp"
+                                android:layout_alignParentRight="true"
+                                android:layout_alignParentTop="true"
+                                android:background="@color/qqred"
+                                android:visibility="gone" />
+                        </RelativeLayout>
 
                         <TextView
                             android:layout_width="wrap_content"

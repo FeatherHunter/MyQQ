@@ -4,21 +4,22 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.lenovo.qqdemos.DB.MessageDB;
-import com.example.lenovo.qqdemos.Login.LoginActivity;
 import com.example.lenovo.qqdemos.Main.Adapter.MessageAdapter;
 import com.example.lenovo.qqdemos.Main.Beans.MessageItem;
 import com.example.lenovo.qqdemos.R;
+import com.example.lenovo.qqdemos.chat.ChatMenuActivity;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.exceptions.HyphenateException;
 
@@ -52,6 +53,21 @@ public class MessageActivity extends Activity {
         messageItems = messageDB.getMessage(myId);
         adapter = new MessageAdapter(this, R.layout.tab_item_msg, messageItems);
         msg_listView.setAdapter(adapter);
+
+        //给listView的每一个Item设置点击事件监听
+        msg_listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.i("msg_listView", position + " ");
+
+                MessageItem item = adapter.getItem(position);
+                String otherName = item.getOtherName();
+
+                Intent chatIntent = new Intent(MessageActivity.this, ChatMenuActivity.class);
+                chatIntent.putExtra("other_id", otherName);
+                startActivity(chatIntent);
+            }
+        });
 
         Thread thread = new Thread(runnable);
         thread.start();   //开启一个线程，刷新会话列表
@@ -136,5 +152,6 @@ public class MessageActivity extends Activity {
             }
         }
     };
+
 }
 

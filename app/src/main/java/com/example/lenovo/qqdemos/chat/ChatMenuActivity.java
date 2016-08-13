@@ -30,6 +30,7 @@ import java.util.List;
 
 public class ChatMenuActivity extends ListActivity {
 
+    String TAG = "ChatMenuActivity";
     private EditText chatContentEdit;
     private ListView chatToListView;
     private Button sendMsgButton;
@@ -37,6 +38,8 @@ public class ChatMenuActivity extends ListActivity {
 //    private MessageDB messageDB;
 
     String otherId = "";
+    String otherId1 = "";
+    String otherId2 = "";
     int otherHead = R.drawable.feather;
     String myId = EMClient.getInstance().getCurrentUser();
     int myHead = R.drawable.wen;
@@ -171,15 +174,16 @@ public class ChatMenuActivity extends ListActivity {
                     int i;
                     //查找链表中是否有该用户
                     for(i = 0; i < messageItems.size(); i++){
-                        if (messageItems.get(i).getOtherName().equals(otherId)){
-                            //先将该Item添加到链表头部
-                            MessageItem item = messageItems.get(i);
-                            //set msg
-                            item.setNewMsg(chatContent);
-                            messageItems.add(0, item);
-                            //再移除掉原来的Item
-                            messageItems.remove(i + 1);
-                            break;
+                        MessageItem messageItem = messageItems.get(i);
+                        if (messageItem.getOtherName().equals(otherId)){
+                                //先将该Item添加到链表头部
+                                MessageItem item = messageItems.get(i);
+                                //set msg
+                                item.setNewMsg(chatContent);
+                                messageItems.add(0, item);
+                                //再移除掉原来的Item
+                                messageItems.remove(i + 1);
+                                break;
                         }
                     }
                     //此时表示没有查找到

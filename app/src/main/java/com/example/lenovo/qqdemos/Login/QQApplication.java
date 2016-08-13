@@ -2,7 +2,6 @@ package com.example.lenovo.qqdemos.Login;
 
 import android.app.Application;
 
-import com.hyphenate.chat.EMChatManager;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMOptions;
 
@@ -16,7 +15,7 @@ public class QQApplication extends Application {
 
         EMOptions options = new EMOptions();
 // 默认添加好友时，是不需要验证的，改成需要验证
-        options.setAcceptInvitationAlways(false);
+        options.setAcceptInvitationAlways(true);
         //取消自动登录
         options.setAutoLogin(false);
 //        ...

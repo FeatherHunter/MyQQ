@@ -5,10 +5,17 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.example.lenovo.qqdemos.DB.MessageDB;
+import com.example.lenovo.qqdemos.Main.Beans.MessageItem;
 import com.hyphenate.EMContactListener;
+import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMMessage;
+import com.hyphenate.chat.EMTextMessageBody;
 import com.hyphenate.exceptions.HyphenateException;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 //import com.example.lenovo.qqdemos.DB.MessageDB;
@@ -19,7 +26,8 @@ import java.util.List;
  */
 public class QQService extends Service {
 
-    String account = null;
+    String myId = null;
+    MessageDB messageDB;
 
 //    private MessageDB messageDB;//信息的数据库
 
@@ -35,10 +43,10 @@ public class QQService extends Service {
         super.onCreate();
 
         //用户ID
-        account = EMClient.getInstance().getCurrentUser();
+        myId = EMClient.getInstance().getCurrentUser();
 
         //信息的数据库
-//        messageDB = new MessageDB(this);
+        messageDB = new MessageDB(this);
 
         Thread sendMsgThread = new Thread(serviceRunnale);
         sendMsgThread.start();
@@ -49,14 +57,14 @@ public class QQService extends Service {
         @Override
         public void run() {
 
-//            //接收消息
-//            Thread recMsgThread = new Thread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    EMClient.getInstance().chatManager().addMessageListener(msgListener);  //接受消息
-//                }
-//            });
-//            recMsgThread.start(); //开启接收消息的线程
+            //接收消息
+            Thread recMsgThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    EMClient.getInstance().chatManager().addMessageListener(msgListener);  //接受消息
+                }
+            });
+            recMsgThread.start(); //开启接收消息的线程
 
             //监听好友状态
             EMClient.getInstance().contactManager().setContactListener(new EMContactListener() {
@@ -70,16 +78,18 @@ public class QQService extends Service {
                 }
 
                 @Override
-                public void onContactInvited(final String username, String reason) {
+                public void onContactInvited(final String otherName, String reason) {
                     Thread thread = new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            try {
-                                EMClient.getInstance().contactManager().acceptInvitation(username); //同意好友请求
-                                Log.i(TAG, "收到好友邀请");
-                            } catch (HyphenateException e) {
-                                e.printStackTrace();
-                            }
+//                            EMClient.getInstance().contactManager().acceptInvitation(username); //同意好友请求
+                            Log.i(TAG, "收到好友邀请");
+                            messageDB.addFriendRequest(myId, true, otherName);
+
+                            Intent intent = new Intent();
+                            intent.setAction("android.intent.action.ANSWER");
+                            intent.putExtra("notification", "new_friend");
+                            sendBroadcast(intent);
                         }
                     });
                     //开启线程
@@ -113,86 +123,96 @@ public class QQService extends Service {
     };
 
 
-//    //注册消息监听来接收消息
-//    EMMessageListener msgListener = new EMMessageListener() {
-//
-//        @Override
-//        public void onMessageReceived(List<EMMessage> messagesList) {
-//
-//            Log.i("QQService", "收到服务器发来的消息");
-//
-//            //收到消息
-//            for(EMMessage message : messagesList){
-//
-//                EMTextMessageBody recMsg = (EMTextMessageBody) message.getBody();
-//                /*----------------------------------------
-//                 *   msg为接收到的消息，下面进行处理
-//                 *------------------------------------*/
-//
-//                final String msg = recMsg.getMessage();
-//                //信息来自谁
-//                String otherName = message.getUserName();
-//                //得到信息的时间戳
-//                long timeStamp = message.getMsgTime();
-//                //时间戳转换为时间String
-//                SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
-//                String time = formatter.format(timeStamp);
-//                //消息类型
-//                EMMessage.Type type = message.getType();
-//
-//                if(type == EMMessage.Type.TXT){//接收到文本信息
-//
-//                    Log.i("QQService", "接受到文本消息"+msg+otherName);
-//
-//                    ChatItem item = new ChatItem(account, //接收方，自己
-//                            otherName, //发送方
-//                            msg, //内容
-//                            EMMessage.Type.TXT, //数据库保存“文本信息”
-//                            time, //时间
-//                            true); //消息合法
-//
-//                    //保存到数据库中
-//                    MessageDB messageDB = new MessageDB(QQService.this);
-//                    messageDB.addMessage(account, item);
-//
-//
-//                }
-//
-//            }//end of msg
-//            /*----------------------------------------
-//            *   发送广播(提示聊天界面刷新数据)
-//            *------------------------------------*/
-//            Intent intent = new Intent();
-//            intent.putExtra("chat_menu", "new_msg");//自定义，表示需要"聊天界面"接收“新消息”
-//            intent.setAction("android.intent.action.ANSWER");
-//            sendBroadcast(intent);
-//        }
-//
-//        @Override
-//        public void onCmdMessageReceived(List<EMMessage> messages) {
-//            //收到透传消息
-//        }
-//
-//        @Override
-//        public void onMessageReadAckReceived(List<EMMessage> messages) {
-//            //收到已读回执
-//        }
-//
-//        @Override
-//        public void onMessageDeliveryAckReceived(List<EMMessage> message) {
-//            //收到已送达回执
-//        }
-//
-//        @Override
-//        public void onMessageChanged(EMMessage message, Object change) {
-//            //消息状态变动
-//        }
-//    };
-//
-//    @Override
-//    public void onDestroy() {
-//        super.onDestroy();
-//
-//        EMClient.getInstance().chatManager().removeMessageListener(msgListener);  //移除消息监听
-//    }
+    //注册消息监听来接收消息
+    EMMessageListener msgListener = new EMMessageListener() {
+
+        @Override
+        public void onMessageReceived(List<EMMessage> messagesList) {
+
+            Log.i("QQService", "收到服务器发来的消息");
+
+            //收到消息
+            for (EMMessage message : messagesList) {
+
+                EMTextMessageBody recMsg = (EMTextMessageBody) message.getBody();
+                /*----------------------------------------
+                 *   msg为接收到的消息，下面进行处理
+                 *------------------------------------*/
+
+                final String msg = recMsg.getMessage();
+                //信息来自谁
+                final String otherName = message.getUserName();
+                //得到信息的时间戳
+                long timeStamp = message.getMsgTime();
+                //时间戳转换为时间String
+                SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+                final String time = formatter.format(timeStamp);
+
+
+                //调整链表（插入到数据库）
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        MessageDB messageDB = new MessageDB(QQService.this); //创建数据库
+                        //先查询
+                        ArrayList<MessageItem> messageItems = messageDB.getMessage(myId);
+
+                        int i;
+                        //查找链表中是否有该用户
+                        for (i = 0; i < messageItems.size(); i++) {
+                            MessageItem messageItem = messageItems.get(i);
+                            if (messageItem.getOtherName().equals(otherName)) {
+                                //先将该Item添加到链表头部
+                                MessageItem item = messageItems.get(i);
+                                //set msg
+                                item.setNewMsg(msg);
+                                messageItems.add(0, item);
+                                //再移除掉原来的Item
+                                messageItems.remove(i + 1);
+                                break;
+                            }
+                        }
+                        //此时表示没有查找到
+                        if (i == messageItems.size()) {
+                            //添加到链表头部
+                            messageItems.add(0, new MessageItem(myId, otherName, msg, time, 3));
+                        }
+
+                        //最后再次插入进数据库
+                        messageDB.addMessage(myId, messageItems);
+
+                    }
+                });
+                thread.start();
+
+            }//end of msg
+        }
+
+        @Override
+        public void onCmdMessageReceived(List<EMMessage> messages) {
+            //收到透传消息
+        }
+
+        @Override
+        public void onMessageReadAckReceived(List<EMMessage> messages) {
+            //收到已读回执
+        }
+
+        @Override
+        public void onMessageDeliveryAckReceived(List<EMMessage> message) {
+            //收到已送达回执
+        }
+
+        @Override
+        public void onMessageChanged(EMMessage message, Object change) {
+            //消息状态变动
+        }
+    };
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        EMClient.getInstance().chatManager().removeMessageListener(msgListener);  //移除消息监听
+    }
 }

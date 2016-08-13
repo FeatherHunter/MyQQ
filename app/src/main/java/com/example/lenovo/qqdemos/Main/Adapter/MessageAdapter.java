@@ -54,4 +54,12 @@ public class MessageAdapter extends ArrayAdapter<MessageItem> {
         return messageItems.size();
     }
 
+//    private class OnItemChildClickListener implements View.OnClickListener{
+//
+//        @Override
+//        public void onClick(View v) {
+//
+//        }
+//    }
+
 }

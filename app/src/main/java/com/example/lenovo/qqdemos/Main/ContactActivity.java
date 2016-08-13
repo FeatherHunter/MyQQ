@@ -1,8 +1,10 @@
 package com.example.lenovo.qqdemos.Main;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,8 +13,10 @@ import android.widget.AbsListView;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.lenovo.qqdemos.DB.MessageDB;
 import com.example.lenovo.qqdemos.Friends.AddContactActivity;
 import com.example.lenovo.qqdemos.Main.Beans.ContactGroup;
 import com.example.lenovo.qqdemos.Main.Beans.ContactItem;
@@ -29,13 +33,29 @@ public class ContactActivity extends Activity {
     private ArrayList<ContactGroup> contactGroups;
     private TextView addFriendTextView;
     private ExpandListViewAdapter adapter;
+    private LinearLayout newFriend;
+    private TextView newFriendFlag;
+    String myId;
+    MsgReceiver msgReceiver;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tab_contact);
 
+        newFriendFlag = (TextView) findViewById(R.id.new_friend_flag);
         addFriendTextView = (TextView) findViewById(R.id.add_friend_button);
+        newFriend = (LinearLayout) findViewById(R.id.new_friend);
+
+        myId = EMClient.getInstance().getCurrentUser(); //自己的id
+
+        newFriend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ContactActivity.this, NewFriendActivity.class);
+                startActivity(intent);
+            }
+        });
 
         //初始化
         contactGroups = new ArrayList<>();
@@ -73,7 +93,7 @@ public class ContactActivity extends Activity {
                 try {
                     //获得好友列表
                     final ArrayList<String> frinednames = (ArrayList<String>) EMClient.getInstance().contactManager().getAllContactsFromServer();
-                    Log.i("ContactActivity", frinednames.size()+"");
+                    Log.i("ContactActivity", frinednames.size() + "");
 
                     //改变数据集的操作需要放到UI线程中
                     runOnUiThread(new Runnable() {
@@ -87,7 +107,7 @@ public class ContactActivity extends Activity {
                                     R.drawable.feather,//头像
                                     "我是管理员哦"));//好友动态
                             //创建好友信息
-                            for(String names: frinednames){
+                            for (String names : frinednames) {
                                 //创建一个好友的信息
                                 contactItems.add(new ContactItem(names, //好友ID
                                         "帅猎羽",//昵称
@@ -106,6 +126,37 @@ public class ContactActivity extends Activity {
             }
         });
         thread.start();
+
+        //动态注册广播，接受QQService发送的好友请求
+        msgReceiver = new MsgReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("android.intent.action.ANSWER");
+        registerReceiver(msgReceiver, intentFilter);
+
+    }
+
+    public class MsgReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String msg = intent.getStringExtra("notification");
+            if (msg != null) {
+                //有好友请求
+                if (msg.equals("new_friend")) {
+                    refreshFriendRequest();
+                }
+            }
+        }
+    }
+
+    //显示或者隐藏 新朋友的红点
+    private void refreshFriendRequest() {
+        MessageDB messageDB = new MessageDB(this);
+        boolean flag = messageDB.getFlag(myId);
+        if (flag == true) { //显示红点
+            newFriendFlag.setVisibility(View.VISIBLE);
+        } else {
+            newFriendFlag.setVisibility(View.GONE);
+        }
     }
 
     //自定义的Adapter
@@ -190,8 +241,8 @@ public class ContactActivity extends Activity {
 
             //设置“组名”
             contactGroupTemp.getName().setText(groupName);
-            contactGroupTemp.getOnlineCount().setText(getChildrenCount(groupPosition)+"");//该小组在线人数（暂时用总人数）
-            contactGroupTemp.getSumCount().setText(getChildrenCount(groupPosition)+"");//该小组总人数
+            contactGroupTemp.getOnlineCount().setText(getChildrenCount(groupPosition) + "");//该小组在线人数（暂时用总人数）
+            contactGroupTemp.getSumCount().setText(getChildrenCount(groupPosition) + "");//该小组总人数
 
             return convertView;
         }
@@ -200,7 +251,7 @@ public class ContactActivity extends Activity {
         public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
 
             //得到“一位好友”对象
-            ContactItem contactItem = (ContactItem) getChild(groupPosition,childPosition);
+            ContactItem contactItem = (ContactItem) getChild(groupPosition, childPosition);
 
             ItemHolder itemHolder = new ItemHolder();
             if (convertView == null) {
@@ -272,4 +323,9 @@ public class ContactActivity extends Activity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        unregisterReceiver(msgReceiver); //解除注册
+        super.onDestroy();
+    }
 }
