@@ -159,6 +159,13 @@ public class ContactActivity extends Activity {
         }
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        refreshFriendRequest();
+
+    }
+
     //自定义的Adapter
     class ExpandListViewAdapter extends BaseExpandableListAdapter {
 

@@ -1,10 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.example.lenovo.qqdemos.Main.NewFriendActivity">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-</RelativeLayout>
+    <TextView
+        android:id="@+id/title_new_friend"
+        android:layout_width="match_parent"
+        android:layout_height="200px"
+        android:gravity="center"
+        android:textSize="28dp"
+        android:text="请求添加好友" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="2"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/accept_new_friend"
+            android:layout_width="1pt"
+            android:layout_height="wrap_content"
+            android:textSize="28dp"
+            android:text="接受"
+            android:gravity="center"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:id="@+id/refuse_new_friend"
+            android:layout_width="1pt"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:textSize="28dp"
+            android:text="拒绝"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+
+</LinearLayout>
