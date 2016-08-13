@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.example.lenovo.qqdemos.Main.MyHorizontalScrollView
+    <com.example.lenovo.qqdemos.Main.SlidingMenu
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="none">
@@ -33,6 +33,7 @@
                         android:background="@android:color/holo_blue_light" />
 
                     <com.pkmmte.view.CircularImageView
+                        android:id="@+id/head"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:layout_centerVertical="true"
@@ -59,6 +60,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="10dp"
+                        android:background="@android:color/white"
                         android:text="添加" />
 
                 </RelativeLayout>
@@ -164,7 +166,7 @@
 
         </LinearLayout>
 
-    </com.example.lenovo.qqdemos.Main.MyHorizontalScrollView>
+    </com.example.lenovo.qqdemos.Main.SlidingMenu>
 
 </LinearLayout>
 

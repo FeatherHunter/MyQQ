@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.HorizontalScrollView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.example.lenovo.qqdemos.Login.LoginActivity;
@@ -25,7 +26,7 @@ import com.hyphenate.chat.EMClient;
  * Created by lenovo on 2016/8/13.
  */
 @TargetApi(Build.VERSION_CODES.CUPCAKE)
-public class MyHorizontalScrollView extends HorizontalScrollView {
+public class SlidingMenu extends HorizontalScrollView {
 
     // 在HorizontalScrollView有个LinearLayout
     private LinearLayout linearLayout;
@@ -40,8 +41,10 @@ public class MyHorizontalScrollView extends HorizontalScrollView {
     private int myMenuPaddingRight = 50;
     // 避免多次调用onMeasure的标志
     private boolean once = false;
+    // 菜单是否已经打开
+    private boolean isOpen;// 是否已经打开
 
-    public MyHorizontalScrollView(Context context, AttributeSet attrs) {
+    public SlidingMenu(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         // 获取屏幕宽度
@@ -83,6 +86,13 @@ public class MyHorizontalScrollView extends HorizontalScrollView {
                 }
             });
             myContent = (ViewGroup) linearLayout.getChildAt(1);// HorizontalScrollView下LinearLayout的第二个子元素
+            ImageView imageView = (ImageView) myContent.findViewById(R.id.head);
+            imageView.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    toggle();
+                }
+            });
 
             // 设置子View的宽高，高于屏幕一致
             myMenuWidth = myMenu.getLayoutParams().width = screenWidth
@@ -120,4 +130,25 @@ public class MyHorizontalScrollView extends HorizontalScrollView {
         return super.onTouchEvent(ev);
     }
 
+    //打开菜单
+    public void openMenu(){
+        if(isOpen)return;
+        this.smoothScrollTo(0, 0);
+        isOpen = true;
+    }
+
+    //关闭菜单
+    public void closeMenu(){
+        if(!isOpen)return;
+        this.smoothScrollTo(myMenuWidth, 0);
+        isOpen = false;
+    }
+
+    public void toggle(){
+        if(isOpen){
+            closeMenu();
+        }else{
+            openMenu();
+        }
+    }
 }
