@@ -1,27 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TabHost
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@android:id/tabhost"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:layout_gravity="bottom"
+    android:background="@color/bisque"
+    android:orientation="horizontal">
 
-    android:layout_height="match_parent">
-
-    <RelativeLayout
+    <LinearLayout
+        android:layout_height="55dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_marginTop="5dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:weightSum="3">
 
-        <FrameLayout
-            android:id="@android:id/tabcontent"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerHorizontal="true"></FrameLayout>
 
-        <TabWidget
-            android:id="@android:id/tabs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:background="@android:color/holo_purple"></TabWidget>
-    </RelativeLayout>
-</TabHost>
+        <LinearLayout
+            android:id="@+id/contact"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/image_main_contact"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/ncm" />
+
+            <TextView
+                android:id="@+id/text_main_contact"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="消息" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/msg"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/image_main_msg"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/ncm" />
+
+            <TextView
+                android:id="@+id/text_main_msg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="消息" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/trend"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/image_main_trend"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/ncm" />
+
+            <TextView
+                android:id="@+id/text_main_trend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="消息" />
+
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
