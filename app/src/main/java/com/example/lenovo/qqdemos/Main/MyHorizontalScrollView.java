@@ -48,6 +48,9 @@ public class MyHorizontalScrollView extends HorizontalScrollView {
     private boolean once = false;
     // 菜单是否已经打开
     private boolean isOpen;// 是否已经打开
+
+    //用户ID
+    String myId = EMClient.getInstance().getCurrentUser();
     private ArrayList<FunctionItem> functionItems = new ArrayList<>();
 
     public MyHorizontalScrollView(Context context, AttributeSet attrs) {
@@ -76,6 +79,8 @@ public class MyHorizontalScrollView extends HorizontalScrollView {
             myMenu = (ViewGroup) linearLayout.getChildAt(0);// HorizontalScrollView下LinearLayout的第一个子元素
             //退出登录
             TextView quitText = (TextView) myMenu.findViewById(R.id.quit_text);
+            TextView accountText = (TextView) myMenu.findViewById(R.id.msg_name_textView);
+            accountText.setText(myId);   //显示当前用户的账号
             quitText.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {

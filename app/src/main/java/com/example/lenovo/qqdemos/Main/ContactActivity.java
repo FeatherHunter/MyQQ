@@ -72,7 +72,7 @@ public class ContactActivity extends Activity {
 
         //设置Adapter
         expandListView = (ExpandableListView) findViewById(R.id.expandListView);
-        //设置适配器（分成两行写，adapater需要设置为全局变量方便后面刷新列表）
+        //设置适配器（分成两行写，adapter需要设置为全局变量方便后面刷新列表）
         adapter = new ExpandListViewAdapter(ContactActivity.this);
         expandListView.setAdapter(adapter);
 
@@ -87,45 +87,7 @@ public class ContactActivity extends Activity {
             }
         });
 
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    //获得好友列表
-                    final ArrayList<String> frinednames = (ArrayList<String>) EMClient.getInstance().contactManager().getAllContactsFromServer();
-                    Log.i("ContactActivity", frinednames.size() + "");
-
-                    //改变数据集的操作需要放到UI线程中
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            //好友列表
-                            ArrayList<ContactItem> contactItems = new ArrayList<>();
-                            //一个管理员好友，用于调试
-                            contactItems.add(new ContactItem("admin", //好友ID
-                                    "管理员",//昵称
-                                    R.drawable.feather,//头像
-                                    "我是管理员哦"));//好友动态
-                            //创建好友信息
-                            for (String names : frinednames) {
-                                //创建一个好友的信息
-                                contactItems.add(new ContactItem(names, //好友ID
-                                        "帅猎羽",//昵称
-                                        R.drawable.feather,//头像
-                                        "最近分享：今日头条"));//好友动态
-                            }
-                            //加入到好友组中
-                            contactGroups.get(0).setContacts(contactItems);//添加到"我的好友"里面
-                            adapter.notifyDataSetChanged();
-                        }
-                    });
-
-                } catch (HyphenateException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        thread.start();
+        refreshFriendList();
 
         //动态注册广播，接受QQService发送的好友请求
         msgReceiver = new MsgReceiver();
@@ -142,7 +104,10 @@ public class ContactActivity extends Activity {
             if (msg != null) {
                 //有好友请求
                 if (msg.equals("new_friend")) {
-                    refreshFriendRequest();
+                    refreshFriendRequest();   //刷新好友请求
+                } else if (msg.equals("delete_friend")) {
+                    //删除好友
+                    refreshFriendList();   //刷新好友列表
                 }
             }
         }
@@ -157,6 +122,55 @@ public class ContactActivity extends Activity {
         } else {
             newFriendFlag.setVisibility(View.GONE);
         }
+    }
+
+    private void refreshFriendList() {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    try {
+                        //获得好友列表
+                        final ArrayList<String> frinednames = (ArrayList<String>) EMClient.getInstance().contactManager().getAllContactsFromServer();
+                        Log.i("ContactActivity", frinednames.size() + "");
+
+                        //改变数据集的操作需要放到UI线程中
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                //好友列表
+                                ArrayList<ContactItem> contactItems = new ArrayList<>();
+                                //一个管理员好友，用于调试
+                                contactItems.add(new ContactItem("admin", //好友ID
+                                        "管理员",//昵称
+                                        R.drawable.feather,//头像
+                                        "我是管理员哦"));//好友动态
+                                //创建好友信息
+                                for (String names : frinednames) {
+                                    //创建一个好友的信息
+                                    contactItems.add(new ContactItem(names, //好友ID
+                                            "帅猎羽",//昵称
+                                            R.drawable.feather,//头像
+                                            "最近分享：今日头条"));//好友动态
+                                }
+                                //加入到好友组中
+                                contactGroups.get(0).setContacts(contactItems);//添加到"我的好友"里面
+                                adapter.notifyDataSetChanged();
+                            }
+                        });
+
+                    } catch (HyphenateException e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+        thread.start();
     }
 
     @Override

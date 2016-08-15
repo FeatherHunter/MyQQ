@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.lenovo.qqdemos.DB.MessageDB;
 import com.example.lenovo.qqdemos.R;
@@ -32,38 +33,48 @@ public class NewFriendActivity extends AppCompatActivity {
 
         //用户ID
         myId = EMClient.getInstance().getCurrentUser();
-        ;
+
         messageDB = new MessageDB(this);
         otherName = messageDB.getOtherName(myId);
 
-        titleFriend.setText(otherName + "向你发送好友请求");
+        String msg = myId + " " + otherName;
+        Toast.makeText(NewFriendActivity.this, msg, Toast.LENGTH_SHORT).show();
 
-        acceptFriend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    EMClient.getInstance().contactManager().acceptInvitation(otherName); //同意好友请求
-                    messageDB.addFriendRequest(myId, false, otherName);
-                    Log.i(TAG, "同意好友请求");
-                    NewFriendActivity.this.finish();
-                } catch (HyphenateException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+        boolean flag = messageDB.getFlag(myId);
 
-        refuseFriend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    EMClient.getInstance().contactManager().declineInvitation(otherName); //拒绝好友请求
-                    messageDB.addFriendRequest(myId, false, otherName);
-                    Log.i(TAG, "拒绝好友请求");
-                    NewFriendActivity.this.finish();
-                } catch (HyphenateException e) {
-                    e.printStackTrace();
+        if(flag){
+            titleFriend.setText(otherName + "向你发送好友请求");
+
+            acceptFriend.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        EMClient.getInstance().contactManager().acceptInvitation(otherName); //同意好友请求
+                        messageDB.addFriendRequest(myId, false, otherName);
+                        Log.i(TAG, "同意好友请求");
+                        NewFriendActivity.this.finish();
+                    } catch (HyphenateException e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-        });
+            });
+
+            refuseFriend.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        EMClient.getInstance().contactManager().declineInvitation(otherName); //拒绝好友请求
+                        messageDB.addFriendRequest(myId, false, otherName);
+                        Log.i(TAG, "拒绝好友请求");
+                        NewFriendActivity.this.finish();
+                    } catch (HyphenateException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+        }else{
+            titleFriend.setText("没有好友请求");
+        }
     }
 }

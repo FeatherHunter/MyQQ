@@ -8,11 +8,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.lenovo.qqdemos.R;
-import com.hyphenate.EMContactListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.exceptions.HyphenateException;
-
-import java.util.List;
 
 public class AddContactActivity extends Activity {
 
@@ -53,6 +50,7 @@ public class AddContactActivity extends Activity {
                     });
                     addFriendThread.start();
                 }
+                AddContactActivity.this.finish();
             }
         });
         addFriendEditText.setText(null);

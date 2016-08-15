@@ -75,6 +75,12 @@ public class QQService extends Service {
 
                 @Override
                 public void onContactDeleted(String s) {
+                    Log.i(TAG, "删除联系人");
+
+                    Intent intent = new Intent();
+                    intent.setAction("android.intent.action.ANSWER");
+                    intent.putExtra("notification", "delete_friend");
+                    sendBroadcast(intent);
                 }
 
                 @Override
@@ -82,14 +88,17 @@ public class QQService extends Service {
                     Thread thread = new Thread(new Runnable() {
                         @Override
                         public void run() {
-//                            EMClient.getInstance().contactManager().acceptInvitation(username); //同意好友请求
                             Log.i(TAG, "收到好友邀请");
-                            messageDB.addFriendRequest(myId, true, otherName);
+                            if (myId.equals(otherName)) {
+                                Log.i(TAG, "不能添加自己" + myId + otherName);
+                            } else {
+                                messageDB.addFriendRequest(myId, true, otherName);
 
-                            Intent intent = new Intent();
-                            intent.setAction("android.intent.action.ANSWER");
-                            intent.putExtra("notification", "new_friend");
-                            sendBroadcast(intent);
+                                Intent intent = new Intent();
+                                intent.setAction("android.intent.action.ANSWER");
+                                intent.putExtra("notification", "new_friend");
+                                sendBroadcast(intent);
+                            }
                         }
                     });
                     //开启线程
