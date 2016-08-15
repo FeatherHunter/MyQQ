@@ -79,6 +79,8 @@ public class ChatPersonalActivity extends Activity {
                                                     break;
                                                 }
                                             }
+
+                                            ChatPersonalActivity.this.finish();
                                         } catch (HyphenateException e) {
                                             e.printStackTrace();
                                         }
