@@ -4,12 +4,10 @@ import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.example.lenovo.qqdemos.Login.QQService;
 import com.example.lenovo.qqdemos.Main.fragment.ContactFragment;
@@ -104,7 +102,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 if (contactFragment == null) {
                     // 如果MessageFragment为空，则创建一个并添加到界面上
                     contactFragment = new ContactFragment();
-                    transaction.replace(android.R.id.content, contactFragment);
+                    transaction.add(android.R.id.content, contactFragment);
                 } else {
                     // 如果MessageFragment不为空，则直接将它显示出来
                     transaction.show(contactFragment);
@@ -116,7 +114,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 if (msgFragment == null) {
                     // 如果ContactsFragment为空，则创建一个并添加到界面上
                     msgFragment = new MsgFragment();
-                    transaction.replace(android.R.id.content, msgFragment);
+                    transaction.add(android.R.id.content, msgFragment);
                 } else {
                     // 如果ContactsFragment不为空，则直接将它显示出来
                     transaction.show(msgFragment);
@@ -128,7 +126,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 if (trendFragment == null) {
                     // 如果NewsFragment为空，则创建一个并添加到界面上
                     trendFragment = new TrendFragment();
-                    transaction.replace(android.R.id.content, trendFragment);
+                    transaction.add(android.R.id.content, trendFragment);
                 } else {
                     // 如果NewsFragment不为空，则直接将它显示出来
                     transaction.show(trendFragment);
