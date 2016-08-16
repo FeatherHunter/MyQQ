@@ -33,6 +33,11 @@ import java.util.ArrayList;
 @TargetApi(Build.VERSION_CODES.CUPCAKE)
 public class MyHorizontalScrollView extends HorizontalScrollView {
 
+    //向左滑动系数，表示左移 屏幕宽度的 1/系数 的长度时，向左收起菜单
+    static int LEFT_SLIDE_FACTOR = 6;
+    //向右滑动系数，  右移 1/RIGHT_SLIDE_FACTOR 的长度时，展开左侧菜单
+    static int RIGHT_SLIDE_FACTOR = 5;
+
     // 在HorizontalScrollView有个LinearLayout
     private LinearLayout linearLayout;
     // 菜单，内容页
@@ -147,17 +152,20 @@ public class MyHorizontalScrollView extends HorizontalScrollView {
             case MotionEvent.ACTION_UP:
                 int scrollX = this.getScrollX();// 滑动的距离scrollTo方法里，也就是onMeasure方法里的向左滑动那部分
                 int relativeScroll = scrollX - mBaseScroll; //相对距离：>0左移，<0右移
-
-                Log.i("MyHorizontal", scrollX+":"+myMenuWidth+":"+relativeScroll);
-                if (relativeScroll >= myMenuWidth / 6) { //向左滑动的距离
+//
+//                Log.i("MyHorizontal", scrollX+":"+myMenuWidth+":"+relativeScroll);
+                if (relativeScroll >= myMenuWidth / LEFT_SLIDE_FACTOR) { //向左滑动的距离
                     this.smoothScrollTo(myMenuWidth, 0);// 向左滑动展示内容
                     mBaseScroll = myMenuWidth;//记录本次偏移
-                } else if(-relativeScroll >= (myMenuWidth/5)){//向右滑动的距离
+
+                } else if(-relativeScroll >= (myMenuWidth/RIGHT_SLIDE_FACTOR)){//向右滑动的距离
                     this.smoothScrollTo(0, 0);
                     mBaseScroll = 0;//记录本次偏移
+
                 } else if(mBaseScroll > myMenuWidth/2){
                     this.smoothScrollTo(myMenuWidth, 0);
                     mBaseScroll = myMenuWidth;
+
                 } else{
                     this.smoothScrollTo(0, 0);
                     mBaseScroll = 0;
