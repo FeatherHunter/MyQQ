@@ -30,9 +30,9 @@ public class LoginActivity extends Activity implements View.OnFocusChangeListene
     private Button logButton = null;//登陆
     private TextView infoTextView = null;//无法登陆
     private TextView sign_upTextView = null;//新用户注册
-
-    private CheckBox checkBox_remember_pwd = null;
-    private CheckBox checkBox_auto_login = null;
+//
+//    private CheckBox checkBox_remember_pwd = null;
+//    private CheckBox checkBox_auto_login = null;
 
     private Dialog dialog; //显示“正在登陆”的提示框
 //  private static final String SMG_ACTION = "android.provider.Telephony.SMS_RECEIVER";
@@ -47,9 +47,9 @@ public class LoginActivity extends Activity implements View.OnFocusChangeListene
         logButton = (Button) findViewById(R.id.login_button);  //登陆
         infoTextView = (TextView) findViewById(R.id.info_textview);
         sign_upTextView = (TextView) findViewById(R.id.sign_up_textview); //注册账户
-
-        checkBox_remember_pwd = (CheckBox) findViewById(R.id.checkbox_remember_pwd); //记住密码
-        checkBox_auto_login = (CheckBox) findViewById(R.id.checkbox_auto_login);   //自动登录
+//
+//        checkBox_remember_pwd = (CheckBox) findViewById(R.id.checkbox_remember_pwd); //记住密码
+//        checkBox_auto_login = (CheckBox) findViewById(R.id.checkbox_auto_login);   //自动登录
 
 
         sign_upTextView.setOnClickListener(new View.OnClickListener() {
