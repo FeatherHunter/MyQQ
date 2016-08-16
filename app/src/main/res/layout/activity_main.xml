@@ -17,12 +17,12 @@
 
             <include layout="@layout/horizontalscrollview" />
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_height="match_parent">
 
                 <RelativeLayout
+                    android:id="@+id/main_head_panel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -67,52 +67,66 @@
 
                 </RelativeLayout>
 
-                <FrameLayout
-                    android:id="@+id/content"
+
+                <RelativeLayout
+                    android:id="@+id/main_bottom_panel"
+                    android:layout_alignParentBottom="true"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"></FrameLayout>
+                    android:layout_height="55dp">
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1px"
-                    android:background="@color/gray2">
+                    <View
+                        android:id="@+id/bottom_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="1px"
+                        android:background="@color/gray2">
 
-                </View>
+                    </View>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_gravity="bottom"
-                    android:layout_marginTop="5dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:weightSum="3">
+                    <LinearLayout
 
-                    <ImageView
-                        android:id="@+id/tab_conversation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:layout_marginTop="5dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:layout_below="@id/bottom_view"
+                        android:weightSum="3">
+
+                        <ImageView
+                            android:id="@+id/tab_conversation"
                             android:layout_width="1pt"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:src="@drawable/skin_tab_icon_conversation_normal"/>
 
-                    <ImageView
-                        android:id="@+id/tab_contact"
+                        <ImageView
+                            android:id="@+id/tab_contact"
                             android:layout_width="1pt"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:src="@drawable/skin_tab_icon_contact_normal"/>
 
-                    <ImageView
-                        android:id="@+id/tab_plugin"
+                        <ImageView
+                            android:id="@+id/tab_plugin"
                             android:layout_width="1pt"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:src="@drawable/skin_tab_icon_plugin_normal"/>
 
-                </LinearLayout>
+                    </LinearLayout>
 
-            </LinearLayout>
+                </RelativeLayout>
+
+                <FrameLayout
+                    android:id="@+id/content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/main_head_panel"
+                    android:layout_above="@id/main_bottom_panel"></FrameLayout>
+
+
+            </RelativeLayout>
 
         </LinearLayout>
 

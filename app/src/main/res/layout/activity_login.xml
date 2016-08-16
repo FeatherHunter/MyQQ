@@ -8,20 +8,20 @@
 
     <com.pkmmte.view.CircularImageView
         android:id="@+id/imageview"
-        android:layout_width="280px"
-        android:layout_height="280px"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:src="@drawable/feather"
         app:border="true"
         app:border_color="#EEEEEE"
         app:border_width="1dp"
         app:shadow="true"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="120px"
+        android:layout_marginTop="40dp"
         />
 
 
         <EditText
-            android:layout_marginTop="35px"
+            android:layout_marginTop="20dp"
             android:id="@+id/user_edittext"
             android:layout_width="match_parent"
             android:layout_height="40dp"
@@ -29,12 +29,12 @@
             android:hint="@string/info1"
             android:maxLength="10"
             android:singleLine="true"
-            android:textSize="40px"
+            android:textSize="15dp"
             android:textColorHint="@color/gray2"
-            android:paddingLeft="40px"/>
+            android:paddingLeft="20dp"/>
         <View
             android:layout_width="match_parent"
-            android:layout_height="1px"
+            android:layout_height="1dp"
             android:background="@color/gray1"></View>
 
         <EditText
@@ -44,21 +44,21 @@
             android:background="@android:color/white"
             android:hint="@string/info2"
             android:password="true"
-            android:paddingLeft="40px"
-            android:textSize="40px"
+            android:paddingLeft="20dp"
+            android:textSize="15dp"
             android:textColorHint="@color/gray2"
             android:singleLine="true" />
 
         <Button
             android:id="@+id/login_button"
             android:layout_width="match_parent"
-            android:layout_height="45dp"
+            android:layout_height="44dp"
             android:background="@drawable/shapebutton"
             android:text="@string/log"
             android:layout_marginTop="15dp"
-            android:layout_marginLeft="20px"
-            android:layout_marginRight="20px"
-            android:textSize="50px"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:textSize="20dp"
             android:textColor="@android:color/white" />
 
 
@@ -76,8 +76,8 @@
             android:maxLength="5"
             android:text="@string/question"
             android:textColor="#00bbdd"
-            android:layout_marginLeft="40px"
-            android:layout_marginBottom="40px"/>
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="20dp"/>
 
         <TextView
             android:id="@+id/sign_up_textview"
@@ -88,7 +88,7 @@
             android:maxLength="5"
             android:text="@string/reg"
             android:textColor="#00bbdd"
-            android:layout_marginRight="40px"
-            android:layout_marginBottom="40px"/>
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp"/>
     </RelativeLayout>
 </LinearLayout>
