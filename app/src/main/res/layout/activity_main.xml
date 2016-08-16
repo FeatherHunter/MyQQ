@@ -67,8 +67,6 @@
 
                 </RelativeLayout>
 
-                <include layout="@layout/tab_contact"></include>
-
                 <FrameLayout
                     android:id="@+id/content"
                     android:layout_width="match_parent"
