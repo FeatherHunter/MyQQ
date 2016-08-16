@@ -24,13 +24,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private  ImageView contactImage;
     private ImageView msgImage;
     private ImageView trendImage;
-    private  TextView contactText;
-    private TextView msgText;
-    private  TextView trendText;
-
-    private View contact;
-    private View msg;
-    private View trend;
 
     private ContactFragment contactFragment;
     private MsgFragment msgFragment;
@@ -58,39 +51,30 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     private void initViews(){
         //消息
-        contactImage = (ImageView)findViewById(R.id.image_main_contact);
-        contactText= (TextView)findViewById(R.id.text_main_contact);
-
+        contactImage = (ImageView)findViewById(R.id.tab_contact);
         //联系人
-        msgImage = (ImageView)findViewById(R.id.image_main_msg);
-        msgText= (TextView)findViewById(R.id.text_main_msg);
-
+        msgImage = (ImageView)findViewById(R.id.tab_conversation);
         //动态
-        trendImage = (ImageView)findViewById(R.id.image_main_trend);
-        trendText= (TextView)findViewById(R.id.text_main_trend);
+        trendImage = (ImageView)findViewById(R.id.tab_plugin);
 
-        contact = findViewById(R.id.contact);
-        msg = findViewById(R.id.msg);
-        trend = findViewById(R.id.trend);
-
-        contact.setOnClickListener(this);
-        msg.setOnClickListener(this);
-        trend.setOnClickListener(this);
+        contactImage.setOnClickListener(this);
+        msgImage.setOnClickListener(this);
+        trendImage.setOnClickListener(this);
 
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.contact:
+            case R.id.tab_conversation:
                 // 当点击了消息tab时，选中第1个tab
                 setTabSelection(0);
                 break;
-            case R.id.msg:
+            case R.id.tab_contact:
                 // 当点击了联系人tab时，选中第2个tab
                 setTabSelection(1);
                 break;
-            case R.id.trend:
+            case R.id.tab_plugin:
                 // 当点击了动态tab时，选中第3个tab
                 setTabSelection(2);
                 break;
@@ -115,8 +99,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
         switch (index) {
             case 0:
                 // 当点击了消息tab时，改变控件的图片和文字颜色
-                contactImage.setImageResource(R.drawable.frq);
-                contactText.setTextColor(Color.WHITE);
+                msgImage.setImageResource(R.drawable.skin_tab_icon_conversation_selected);
+//                contactText.setTextColor(Color.WHITE);
                 if (contactFragment == null) {
                     // 如果MessageFragment为空，则创建一个并添加到界面上
                     contactFragment = new ContactFragment();
@@ -128,8 +112,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 break;
             case 1:
                 // 当点击了联系人tab时，改变控件的图片和文字颜色
-                msgImage.setImageResource(R.drawable.frq);
-                msgText.setTextColor(Color.WHITE);
+                contactImage.setImageResource(R.drawable.skin_tab_icon_contact_selected);
                 if (msgFragment == null) {
                     // 如果ContactsFragment为空，则创建一个并添加到界面上
                     msgFragment = new MsgFragment();
@@ -141,8 +124,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 break;
             case 2:
                 // 当点击了动态tab时，改变控件的图片和文字颜色
-                trendImage.setImageResource(R.drawable.frq);
-                trendText.setTextColor(Color.WHITE);
+                trendImage.setImageResource(R.drawable.skin_tab_icon_plugin_selected);
                 if (trendFragment == null) {
                     // 如果NewsFragment为空，则创建一个并添加到界面上
                     trendFragment = new TrendFragment();
@@ -163,12 +145,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
      * 清除掉所有的选中状态。
      */
     private void clearSelection() {
-        contactImage.setImageResource(R.drawable.frq);
-        contactText.setTextColor(Color.parseColor("#82858b"));
-        msgImage.setImageResource(R.drawable.frq);
-        msgText.setTextColor(Color.parseColor("#82858b"));
-        trendImage.setImageResource(R.drawable.frq);
-        trendText.setTextColor(Color.parseColor("#82858b"));
+        contactImage.setImageResource(R.drawable.skin_tab_icon_contact_normal);
+        msgImage.setImageResource(R.drawable.skin_tab_icon_conversation_normal);
+        trendImage.setImageResource(R.drawable.skin_tab_icon_plugin_normal);
     }
 
     /**
