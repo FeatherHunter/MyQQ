@@ -17,7 +17,7 @@ public class TrendFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.tab_trends,container,false);
+        View view = inflater.inflate(R.layout.treng_fragment,container,false);
         return view;
     }
 }

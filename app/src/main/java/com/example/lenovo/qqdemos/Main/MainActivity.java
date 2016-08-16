@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.lenovo.qqdemos.Login.QQService;
@@ -29,9 +28,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private TextView msgText;
     private  TextView trendText;
 
-    private LinearLayout contact;
-    private LinearLayout msg;
-    private LinearLayout trend;
+    private View contact;
+    private View msg;
+    private View trend;
 
     private ContactFragment contactFragment;
     private MsgFragment msgFragment;
@@ -55,6 +54,49 @@ public class MainActivity extends Activity implements View.OnClickListener {
         startService(serviceIntent);
 
 
+    }
+
+    private void initViews(){
+        //消息
+        contactImage = (ImageView)findViewById(R.id.image_main_contact);
+        contactText= (TextView)findViewById(R.id.text_main_contact);
+
+        //联系人
+        msgImage = (ImageView)findViewById(R.id.image_main_msg);
+        msgText= (TextView)findViewById(R.id.text_main_msg);
+
+        //动态
+        trendImage = (ImageView)findViewById(R.id.image_main_trend);
+        trendText= (TextView)findViewById(R.id.text_main_trend);
+
+        contact = findViewById(R.id.contact);
+        msg = findViewById(R.id.msg);
+        trend = findViewById(R.id.trend);
+
+        contact.setOnClickListener(this);
+        msg.setOnClickListener(this);
+        trend.setOnClickListener(this);
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.contact:
+                // 当点击了消息tab时，选中第1个tab
+                setTabSelection(0);
+                break;
+            case R.id.msg:
+                // 当点击了联系人tab时，选中第2个tab
+                setTabSelection(1);
+                break;
+            case R.id.trend:
+                // 当点击了动态tab时，选中第3个tab
+                setTabSelection(2);
+                break;
+            default:
+                break;
+        }
     }
 
     /**
@@ -116,24 +158,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
         transaction.commit();
     }
 
-    private void initViews(){
-        //消息
-        contactImage = (ImageView)findViewById(R.id.image_main_contact);
-        contactText= (TextView)findViewById(R.id.text_main_contact);
-        contactImage.setOnClickListener(this);
-        //联系人
-        msgImage = (ImageView)findViewById(R.id.image_main_msg);
-        msgText= (TextView)findViewById(R.id.text_main_msg);
-
-        //动态
-        trendImage = (ImageView)findViewById(R.id.image_main_trend);
-        trendText= (TextView)findViewById(R.id.text_main_trend);
-
-        contact = (LinearLayout) findViewById(R.id.contact);
-        msg = (LinearLayout) findViewById(R.id.msg);
-        trend = (LinearLayout) findViewById(R.id.trend);
-
-    }
 
     /**
      * 清除掉所有的选中状态。
@@ -174,23 +198,4 @@ public class MainActivity extends Activity implements View.OnClickListener {
         super.onDestroy();
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.contact:
-                // 当点击了消息tab时，选中第1个tab
-                setTabSelection(0);
-                break;
-            case R.id.msg:
-                // 当点击了联系人tab时，选中第2个tab
-                setTabSelection(1);
-                break;
-            case R.id.trend:
-                // 当点击了动态tab时，选中第3个tab
-                setTabSelection(2);
-                break;
-            default:
-                break;
-        }
-    }
 }

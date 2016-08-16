@@ -78,12 +78,6 @@
                         android:textSize="12dp" />
                 </RelativeLayout>
 
-                <ListView
-                    android:id="@+id/listView_msg"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="65dp"></ListView>
-
             </LinearLayout>
 
         </LinearLayout>

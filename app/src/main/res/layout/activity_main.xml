@@ -1,84 +1,163 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
-    android:layout_gravity="bottom"
-    android:background="@color/bisque"
-    android:orientation="horizontal">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_height="55dp"
+    <com.example.lenovo.qqdemos.Main.MyHorizontalScrollView
         android:layout_width="match_parent"
-        android:layout_marginTop="5dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:weightSum="3">
-
+        android:layout_height="match_parent"
+        android:scrollbars="none">
 
         <LinearLayout
-            android:id="@+id/contact"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/image_main_contact"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:background="@drawable/ncm" />
+            <include layout="@layout/horizontalscrollview" />
 
-            <TextView
-                android:id="@+id/text_main_contact"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="消息" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/textView"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:background="@android:color/holo_blue_light" />
+
+                    <com.pkmmte.view.CircularImageView
+                        android:id="@+id/head"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:src="@drawable/feather"
+                        app:border="true"
+                        app:border_color="#EEEEEE"
+                        app:border_width="1dp"
+                        app:shadow="true" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="联系人"
+                        android:textColor="@android:color/white"
+                        android:textSize="18dp" />
+
+                    <TextView
+                        android:id="@+id/add_friend_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp"
+                        android:text="添加"
+                        android:textColor="@android:color/white"
+                        android:textSize="18dp" />
+
+                </RelativeLayout>
+
+                <include layout="@layout/tab_contact"></include>
+
+                <FrameLayout
+                    android:id="@+id/content"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"></FrameLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_gravity="bottom"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:weightSum="3">
+
+
+                    <LinearLayout
+                        android:id="@+id/contact"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/image_main_contact"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/ncm" />
+
+                        <TextView
+                            android:id="@+id/text_main_contact"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="消息" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/msg"
+                        android:layout_width="0dp"
+                        android:layout_height="60dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/image_main_msg"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/ncm" />
+
+                        <TextView
+                            android:id="@+id/text_main_msg"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="消息" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/trend"
+                        android:layout_width="0dp"
+                        android:layout_height="60dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/image_main_trend"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/ncm" />
+
+                        <TextView
+                            android:id="@+id/text_main_trend"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="消息" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/msg"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/image_main_msg"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:background="@drawable/ncm" />
 
-            <TextView
-                android:id="@+id/text_main_msg"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="消息" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/trend"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/image_main_trend"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:background="@drawable/ncm" />
-
-            <TextView
-                android:id="@+id/text_main_trend"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="消息" />
-
-        </LinearLayout>
-    </LinearLayout>
+    </com.example.lenovo.qqdemos.Main.MyHorizontalScrollView>
 </LinearLayout>
