@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Canvas;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -131,6 +132,7 @@ public class MyHorizontalScrollView extends HorizontalScrollView {
             // 决定自身View的宽高，高于屏幕一致
             // 由于这里的LinearLayout里只包含了Menu和Content所以就不需要额外的去指定自身的宽
             once = true;
+
         }
     }
 
@@ -141,6 +143,11 @@ public class MyHorizontalScrollView extends HorizontalScrollView {
 
         if (changed) {
             this.scrollTo(myMenuWidth, 0); // 没有动画效果的隐藏
+            Log.i("MyHorizontal", ":"+myMenuWidth+":");
+        }else{
+            if(isOpen == false){
+                this.scrollTo(myMenuWidth, 0); // 没有动画效果的隐藏
+            }
         }
     }
 
@@ -153,7 +160,7 @@ public class MyHorizontalScrollView extends HorizontalScrollView {
                 int scrollX = this.getScrollX();// 滑动的距离scrollTo方法里，也就是onMeasure方法里的向左滑动那部分
                 int relativeScroll = scrollX - mBaseScroll; //相对距离：>0左移，<0右移
 //
-//                Log.i("MyHorizontal", scrollX+":"+myMenuWidth+":"+relativeScroll);
+                Log.i("MyHorizontal", scrollX+":"+myMenuWidth+":"+relativeScroll);
                 if (relativeScroll >= myMenuWidth / LEFT_SLIDE_FACTOR) { //向左滑动的距离
                     this.smoothScrollTo(myMenuWidth, 0);// 向左滑动展示内容
                     mBaseScroll = myMenuWidth;//记录本次偏移

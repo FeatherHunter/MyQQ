@@ -1,6 +1,7 @@
 package com.example.lenovo.qqdemos.Main;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
@@ -28,12 +29,24 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private TrendFragment trendFragment;
 
     private FragmentManager fragmentManager;
+    private FragmentTransaction fragmentTransaction;
+
+    MyHorizontalScrollView myHorizontalScrollView;
+
+    //表示是哪个Fragment
+    int fragment_tag = 0; //默认是消息
+    static final int FRAGMENT_TAB_MSG = 0;
+    static final int FRAGMENT_TAB_CONTACT = 1;
+    static final int FRAGMENT_TAB_PLUGIN = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
+
+        //获得侧滑控件
+        myHorizontalScrollView = (MyHorizontalScrollView) findViewById(R.id.myHorizontalScrollView);
 
         initViews();
         fragmentManager = getFragmentManager();
@@ -43,8 +56,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
         serviceIntent = new Intent();
         serviceIntent.setClass(MainActivity.this, QQService.class);
         startService(serviceIntent);
-
-
     }
 
     private void initViews(){
@@ -88,64 +99,91 @@ public class MainActivity extends Activity implements View.OnClickListener {
      *            每个tab页对应的下标。0表示消息，1表示联系人，2表示动态
      */
     private void setTabSelection(int index) {
-        // 每次选中之前先清楚掉上次的选中状态
-        clearSelection();
+
         // 开启一个Fragment事务
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        fragmentTransaction = fragmentManager.beginTransaction();
+
         // 先隐藏掉所有的Fragment，以防止有多个Fragment显示在界面上的情况
-        hideFragments(transaction);
+        hideFragments(fragmentTransaction);
+
+        /*--------------------------------------------------
+         *      改变底层栏（bottom panel）
+         *      改变标题栏
+         *-------------------------------------------------*/
         switch (index) {
-            case 0:
-                // 当点击了消息tab时，改变控件的图片和文字颜色
+            case 0:  // 当点击了消息tab时，改变控件的图片和文字颜色
+                //“消息”
                 msgImage.setImageResource(R.drawable.skin_tab_icon_conversation_selected);
-//                contactText.setTextColor(Color.WHITE);
-                if (contactFragment == null) {
-                    // 如果MessageFragment为空，则创建一个并添加到界面上
-                    contactFragment = new ContactFragment();
-                    transaction.add(R.id.content, contactFragment);
-                } else {
-                    // 如果MessageFragment不为空，则直接将它显示出来
-                    transaction.show(contactFragment);
-                }
+                //normal
+                contactImage.setImageResource(R.drawable.skin_tab_icon_contact_normal);
+                trendImage.setImageResource(R.drawable.skin_tab_icon_plugin_normal);
+
+                //标记
+                fragment_tag = FRAGMENT_TAB_MSG;
                 break;
             case 1:
-                // 当点击了联系人tab时，改变控件的图片和文字颜色
+                //联系人
                 contactImage.setImageResource(R.drawable.skin_tab_icon_contact_selected);
-                if (msgFragment == null) {
-                    // 如果ContactsFragment为空，则创建一个并添加到界面上
-                    msgFragment = new MsgFragment();
-                    transaction.add(R.id.content, msgFragment);//不应该用Android.R.id
-                } else {
-                    // 如果ContactsFragment不为空，则直接将它显示出来
-                    transaction.show(msgFragment);
-                }
+                //消息和动态 normal
+                msgImage.setImageResource(R.drawable.skin_tab_icon_conversation_normal);
+                trendImage.setImageResource(R.drawable.skin_tab_icon_plugin_normal);
+
+                fragment_tag = FRAGMENT_TAB_CONTACT;
                 break;
             case 2:
-                // 当点击了动态tab时，改变控件的图片和文字颜色
+                //动态
                 trendImage.setImageResource(R.drawable.skin_tab_icon_plugin_selected);
-                if (trendFragment == null) {
-                    // 如果NewsFragment为空，则创建一个并添加到界面上
-                    trendFragment = new TrendFragment();
-                    transaction.add(R.id.content, trendFragment);
-                } else {
-                    // 如果NewsFragment不为空，则直接将它显示出来
-                    transaction.show(trendFragment);
-                }
-                break;
-            default:
+                //normal
+                contactImage.setImageResource(R.drawable.skin_tab_icon_contact_normal);
+                msgImage.setImageResource(R.drawable.skin_tab_icon_conversation_normal);
+
+                fragment_tag = FRAGMENT_TAB_PLUGIN;
                 break;
         }
-        transaction.commit();
+
+        //切换fragment
+        switchFragment(fragment_tag);
     }
 
+    private void switchFragment(int tag){
+        /*--------------------------------------------------
+         *          Fragment不存在则新建
+         *-------------------------------------------------*/
+        Fragment fragment = null;
+        if(tag == FRAGMENT_TAB_MSG){
+            //不存在则新建
+            if(msgFragment == null){
+                msgFragment = new MsgFragment();
+            }
+            fragment = msgFragment;
+        }else if(tag == FRAGMENT_TAB_CONTACT){
+            if(contactFragment == null){
+                contactFragment = new ContactFragment();
+            }
+            fragment = contactFragment;
+        }else if(tag == FRAGMENT_TAB_PLUGIN){
+            if(trendFragment == null){
+                trendFragment = new TrendFragment();
+            }
+            fragment = trendFragment;
+        }
 
-    /**
-     * 清除掉所有的选中状态。
-     */
-    private void clearSelection() {
-        contactImage.setImageResource(R.drawable.skin_tab_icon_contact_normal);
-        msgImage.setImageResource(R.drawable.skin_tab_icon_conversation_normal);
-        trendImage.setImageResource(R.drawable.skin_tab_icon_plugin_normal);
+        /*--------------------------------------------------
+         *          显示或者绑定Fragment
+         *    1.如果隐藏，则显示
+         *    2.如果第一次使用，add
+         *-------------------------------------------------*/
+        if(fragment != null){
+            if(fragment.isHidden()){
+                fragmentTransaction.show(fragment);
+            }else if(!fragment.isAdded()){
+                fragmentTransaction.add(R.id.content, fragment, tag+"");
+            }
+        }
+        //不为空，切换
+        if(fragmentTransaction != null && !fragmentTransaction.isEmpty()){
+            fragmentTransaction.commit();
+        }
     }
 
     /**

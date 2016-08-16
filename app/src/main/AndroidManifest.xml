@@ -88,10 +88,6 @@
             android:label="@string/title_activity_message"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
-        <activity android:name=".Main.ContactActivity" >
-        </activity>
-        <activity android:name=".Main.TrendsActivity" >
-        </activity>
         <activity android:name=".Test.PopupWindowTest.TestPopWindowActivity" >
         </activity>
         <activity android:name=".Test.PopupWindowTest.TestPopWindow1Activity" >

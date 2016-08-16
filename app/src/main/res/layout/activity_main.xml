@@ -6,6 +6,7 @@
     android:orientation="vertical">
 
     <com.example.lenovo.qqdemos.Main.MyHorizontalScrollView
+        android:id="@+id/myHorizontalScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="none">
