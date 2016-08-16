@@ -48,6 +48,8 @@ public class MyHorizontalScrollView extends HorizontalScrollView {
     private boolean once = false;
     // 菜单是否已经打开
     private boolean isOpen;// 是否已经打开
+    //上一次移动的位置
+    private int mBaseScroll;
 
     //用户ID
     String myId = EMClient.getInstance().getCurrentUser();
@@ -117,6 +119,9 @@ public class MyHorizontalScrollView extends HorizontalScrollView {
             // 设置子View的宽高，高于屏幕一致
             myMenuWidth = myMenu.getLayoutParams().width = screenWidth
                     - myMenuPaddingRight;// 菜单的宽度=屏幕宽度-右边距
+
+            mBaseScroll = myMenuWidth;//记录最大值，默认在最左边。
+
             myContent.getLayoutParams().width = screenWidth;// 内容宽度=屏幕宽度
             // 决定自身View的宽高，高于屏幕一致
             // 由于这里的LinearLayout里只包含了Menu和Content所以就不需要额外的去指定自身的宽
@@ -124,6 +129,7 @@ public class MyHorizontalScrollView extends HorizontalScrollView {
         }
     }
 
+    //初始布局
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         super.onLayout(changed, l, t, r, b);
@@ -140,10 +146,21 @@ public class MyHorizontalScrollView extends HorizontalScrollView {
         switch (action) {
             case MotionEvent.ACTION_UP:
                 int scrollX = this.getScrollX();// 滑动的距离scrollTo方法里，也就是onMeasure方法里的向左滑动那部分
-                if (scrollX >= myMenuWidth / 2) {
+                int relativeScroll = scrollX - mBaseScroll; //相对距离：>0左移，<0右移
+
+                Log.i("MyHorizontal", scrollX+":"+myMenuWidth+":"+relativeScroll);
+                if (relativeScroll >= myMenuWidth / 6) { //向左滑动的距离
                     this.smoothScrollTo(myMenuWidth, 0);// 向左滑动展示内容
-                } else {
+                    mBaseScroll = myMenuWidth;//记录本次偏移
+                } else if(-relativeScroll >= (myMenuWidth/5)){//向右滑动的距离
                     this.smoothScrollTo(0, 0);
+                    mBaseScroll = 0;//记录本次偏移
+                } else if(mBaseScroll > myMenuWidth/2){
+                    this.smoothScrollTo(myMenuWidth, 0);
+                    mBaseScroll = myMenuWidth;
+                } else{
+                    this.smoothScrollTo(0, 0);
+                    mBaseScroll = 0;
                 }
                 return true;
         }
