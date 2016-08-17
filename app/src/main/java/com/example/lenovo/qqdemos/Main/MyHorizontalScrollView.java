@@ -144,6 +144,7 @@ public class MyHorizontalScrollView extends HorizontalScrollView {
             this.scrollTo(myMenuWidth, 0); // 没有动画效果的隐藏
             Log.i("MyHorizontal", ":"+myMenuWidth+":");
         }else{
+            Log.i("MyHorizontal", ":onLayout:");
             if(isOpen == false){
                 this.scrollTo(myMenuWidth, 0); // 没有动画效果的隐藏
             }
@@ -163,18 +164,24 @@ public class MyHorizontalScrollView extends HorizontalScrollView {
                 if (relativeScroll >= myMenuWidth / LEFT_SLIDE_FACTOR) { //向左滑动的距离
                     this.smoothScrollTo(myMenuWidth, 0);// 向左滑动展示内容
                     mBaseScroll = myMenuWidth;//记录本次偏移
+                    //关闭
+                    isOpen = false;
 
                 } else if(-relativeScroll >= (myMenuWidth/RIGHT_SLIDE_FACTOR)){//向右滑动的距离
                     this.smoothScrollTo(0, 0);
                     mBaseScroll = 0;//记录本次偏移
+                    //打开
+                    isOpen = true;
 
                 } else if(mBaseScroll > myMenuWidth/2){
                     this.smoothScrollTo(myMenuWidth, 0);
                     mBaseScroll = myMenuWidth;
+                    isOpen = false;
 
                 } else{
                     this.smoothScrollTo(0, 0);
                     mBaseScroll = 0;
+                    isOpen = true;
                 }
                 return true;
         }
