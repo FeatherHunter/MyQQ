@@ -34,7 +34,7 @@
                         android:background="@android:color/holo_blue_light" />
 
                     <com.pkmmte.view.CircularImageView
-                        android:id="@+id/head"
+                        android:id="@+id/title_head"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_centerVertical="true"
@@ -48,6 +48,7 @@
                         app:shadow="true" />
 
                     <TextView
+                        android:id="@+id/title_center"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
@@ -55,25 +56,26 @@
                         android:textColor="@android:color/white"
                         android:textSize="18dp" />
 
-                    <TextView
-                        android:id="@+id/add_friend_button"
+                    <Button
+                        android:minWidth="0dp"
+                        android:minHeight="0dp"
+                        android:id="@+id/title_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="10dp"
-                        android:text="添加"
-                        android:textColor="@android:color/white"
-                        android:textSize="18dp" />
+                        android:textSize="18dp"
+                        android:textColor="@android:color/white" />
 
                 </RelativeLayout>
 
 
                 <RelativeLayout
                     android:id="@+id/main_bottom_panel"
-                    android:layout_alignParentBottom="true"
                     android:layout_width="match_parent"
-                    android:layout_height="55dp">
+                    android:layout_height="55dp"
+                    android:layout_alignParentBottom="true">
 
                     <View
                         android:id="@+id/bottom_view"
@@ -87,11 +89,11 @@
 
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_below="@id/bottom_view"
                         android:layout_gravity="bottom"
                         android:layout_marginTop="5dp"
                         android:gravity="center_vertical"
                         android:orientation="horizontal"
-                        android:layout_below="@id/bottom_view"
                         android:weightSum="3">
 
                         <ImageView
@@ -99,21 +101,21 @@
                             android:layout_width="1pt"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:src="@drawable/skin_tab_icon_conversation_normal"/>
+                            android:src="@drawable/skin_tab_icon_conversation_normal" />
 
                         <ImageView
                             android:id="@+id/tab_contact"
                             android:layout_width="1pt"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:src="@drawable/skin_tab_icon_contact_normal"/>
+                            android:src="@drawable/skin_tab_icon_contact_normal" />
 
                         <ImageView
                             android:id="@+id/tab_plugin"
                             android:layout_width="1pt"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:src="@drawable/skin_tab_icon_plugin_normal"/>
+                            android:src="@drawable/skin_tab_icon_plugin_normal" />
 
                     </LinearLayout>
 
@@ -123,14 +125,13 @@
                     android:id="@+id/content"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/main_head_panel"
-                    android:layout_above="@id/main_bottom_panel"></FrameLayout>
+                    android:layout_above="@id/main_bottom_panel"
+                    android:layout_below="@id/main_head_panel"></FrameLayout>
 
 
             </RelativeLayout>
 
         </LinearLayout>
-
 
 
     </com.example.lenovo.qqdemos.Main.MyHorizontalScrollView>

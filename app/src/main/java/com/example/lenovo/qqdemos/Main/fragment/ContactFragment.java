@@ -16,7 +16,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.lenovo.qqdemos.DB.MessageDB;
-import com.example.lenovo.qqdemos.Friends.AddContactActivity;
 import com.example.lenovo.qqdemos.Main.Adapter.ExpandListViewAdapter;
 import com.example.lenovo.qqdemos.Main.Beans.ContactGroup;
 import com.example.lenovo.qqdemos.Main.Beans.ContactItem;
@@ -130,31 +129,34 @@ public class ContactFragment extends Fragment{
                         final ArrayList<String> frinednames = (ArrayList<String>) EMClient.getInstance().contactManager().getAllContactsFromServer();
                         Log.i("ContactActivity", frinednames.size() + "");
 
-                        //改变数据集的操作需要放到UI线程中
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                //好友列表
-                                ArrayList<ContactItem> contactItems = new ArrayList<>();
-                                //一个管理员好友，用于调试
-                                contactItems.add(new ContactItem("admin", //好友ID
-                                        "管理员",//昵称
-                                        R.drawable.feather,//头像
-                                        "我是管理员哦"));//好友动态
-                                //创建好友信息
-                                for (String names : frinednames) {
-                                    //创建一个好友的信息
-                                    contactItems.add(new ContactItem(names, //好友ID
-                                            "帅猎羽",//昵称
+                        if(getActivity() == null){
+                            return;
+                        }else{
+                            //改变数据集的操作需要放到UI线程中
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    //好友列表
+                                    ArrayList<ContactItem> contactItems = new ArrayList<>();
+                                    //一个管理员好友，用于调试
+                                    contactItems.add(new ContactItem("admin", //好友ID
+                                            "管理员",//昵称
                                             R.drawable.feather,//头像
-                                            "最近分享：今日头条"));//好友动态
+                                            "我是管理员哦"));//好友动态
+                                    //创建好友信息
+                                    for (String names : frinednames) {
+                                        //创建一个好友的信息
+                                        contactItems.add(new ContactItem(names, //好友ID
+                                                "帅猎羽",//昵称
+                                                R.drawable.feather,//头像
+                                                "最近分享：今日头条"));//好友动态
+                                    }
+                                    //加入到好友组中
+                                    contactGroups.get(0).setContacts(contactItems);//添加到"我的好友"里面
+                                    adapter.notifyDataSetChanged();
                                 }
-                                //加入到好友组中
-                                contactGroups.get(0).setContacts(contactItems);//添加到"我的好友"里面
-                                adapter.notifyDataSetChanged();
-                            }
-                        });
-
+                            });
+                        }
                     } catch (HyphenateException e) {
                         e.printStackTrace();
                     }

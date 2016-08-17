@@ -4,7 +4,6 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Canvas;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -114,7 +113,7 @@ public class MyHorizontalScrollView extends HorizontalScrollView {
             listView.setAdapter(adapter);
 
             myContent = (ViewGroup) linearLayout.getChildAt(1);// HorizontalScrollView下LinearLayout的第二个子元素
-            ImageView imageView = (ImageView) myContent.findViewById(R.id.head);
+            ImageView imageView = (ImageView) myContent.findViewById(R.id.title_head);
             imageView.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {

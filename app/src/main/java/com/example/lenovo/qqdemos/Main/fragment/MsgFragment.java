@@ -3,13 +3,11 @@ package com.example.lenovo.qqdemos.Main.fragment;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 
 import com.example.lenovo.qqdemos.DB.MessageDB;
@@ -37,7 +35,7 @@ public class MsgFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.msg_fragment,container,false);
+        View view = inflater.inflate(R.layout.msg_fragment, container, false);
 
         msg_listView = (ListView) view.findViewById(R.id.listView_msg);
 
@@ -76,19 +74,23 @@ public class MsgFragment extends Fragment {
                 messageItems.clear();
                 messageItems.addAll(messageDB.getMessage(myId));
 
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        adapter.notifyDataSetChanged();
-                        //移动到listview的底部
-                        msg_listView.setSelection(msg_listView.getBottom());
-                    }
-                });
+                if (getActivity() == null) {
+                    return;
+                } else {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            adapter.notifyDataSetChanged();
+                            //移动到listview的底部
+                            msg_listView.setSelection(msg_listView.getBottom());
+                        }
+                    });
 
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
