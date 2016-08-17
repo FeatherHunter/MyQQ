@@ -1,4 +1,4 @@
-package com.example.lenovo.qqdemos.Main;
+package com.example.lenovo.qqdemos.Main.view;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -143,11 +143,6 @@ public class MyHorizontalScrollView extends HorizontalScrollView {
         if (changed) {
             this.scrollTo(myMenuWidth, 0); // 没有动画效果的隐藏
             Log.i("MyHorizontal", ":"+myMenuWidth+":");
-        }else{
-            Log.i("MyHorizontal", ":onLayout:");
-            if(isOpen == false){
-                this.scrollTo(myMenuWidth, 0); // 没有动画效果的隐藏
-            }
         }
     }
 

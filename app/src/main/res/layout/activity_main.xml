@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.example.lenovo.qqdemos.Main.MyHorizontalScrollView
+    <com.example.lenovo.qqdemos.Main.view.MyHorizontalScrollView
         android:id="@+id/myHorizontalScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -134,5 +134,5 @@
         </LinearLayout>
 
 
-    </com.example.lenovo.qqdemos.Main.MyHorizontalScrollView>
+    </com.example.lenovo.qqdemos.Main.view.MyHorizontalScrollView>
 </LinearLayout>
