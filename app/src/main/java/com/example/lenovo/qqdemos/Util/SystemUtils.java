@@ -9,8 +9,6 @@ import android.view.Display;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
-import com.example.lenovo.qqdemos.chat.GlobalContext;
-
 
 /**
  * Created by lenovo on 2016/8/17.

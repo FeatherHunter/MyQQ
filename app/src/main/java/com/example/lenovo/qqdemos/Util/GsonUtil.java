@@ -6,6 +6,11 @@ import com.google.gson.Gson;
 
 import java.lang.reflect.Type;
 
+/**
+ * @描述：封装gson
+ *     能打印调试信息，在Log.i
+ * Created by feather on 2016/8/18.
+ */
 public class GsonUtil {
     private static GsonUtil mInstance;
 

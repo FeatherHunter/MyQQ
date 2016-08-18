@@ -5,7 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
 
-import com.example.lenovo.qqdemos.Main.Beans.MessageItem;
+import com.example.lenovo.qqdemos.Beans.MessageItem;
 import com.example.lenovo.qqdemos.Util.GsonUtil;
 import com.google.gson.reflect.TypeToken;
 

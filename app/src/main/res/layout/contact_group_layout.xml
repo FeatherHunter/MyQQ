@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="150px"
-    tools:context="com.example.lenovo.qqdemos.start.PagerActivity">
+    tools:context=".Activity.Start.PagerActivity">
 
     <TextView
         android:id="@+id/contact_group_name_text"
