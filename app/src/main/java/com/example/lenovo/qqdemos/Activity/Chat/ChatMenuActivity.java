@@ -1,15 +1,27 @@
 package com.example.lenovo.qqdemos.Activity.Chat;
 
+import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.hardware.input.InputManager;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextUtils;
+import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import com.example.lenovo.qqdemos.Adapter.ChatEmotionAdapter;
+import com.example.lenovo.qqdemos.Beans.Emotion.EmotionId;
+import com.example.lenovo.qqdemos.Beans.Emotion.EmotionItem;
 import com.example.lenovo.qqdemos.DB.MessageDB;
 import com.example.lenovo.qqdemos.Beans.MessageItem;
 import com.example.lenovo.qqdemos.Beans.UserInfo;
