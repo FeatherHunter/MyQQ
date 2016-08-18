@@ -93,7 +93,6 @@
 
         <service android:name=".Login.QQService" >
         </service>
-        <service android:name=".Main.Testservice" />
 
         <activity android:name=".start.PagerActivity" />
         <activity android:name=".Test.PopupWindowTest.TestPopWindowActivity" >
