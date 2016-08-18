@@ -1,16 +1,10 @@
 package com.example.lenovo.qqdemos.Activity.Chat;
 
 import android.app.Activity;
-import android.app.ListActivity;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.hardware.input.InputManager;
 import android.os.Bundle;
-import android.text.Spannable;
-import android.text.SpannableString;
 import android.text.TextUtils;
-import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -20,21 +14,20 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.example.lenovo.qqdemos.Adapter.ChatEmotionAdapter;
-import com.example.lenovo.qqdemos.Beans.Emotion.EmotionId;
-import com.example.lenovo.qqdemos.Beans.Emotion.EmotionItem;
-import com.example.lenovo.qqdemos.DB.MessageDB;
-import com.example.lenovo.qqdemos.Beans.MessageItem;
-import com.example.lenovo.qqdemos.Beans.UserInfo;
-import com.example.lenovo.qqdemos.R;
-import com.example.lenovo.qqdemos.Util.ToastUtil;
 import com.example.lenovo.qqdemos.Adapter.ChatListAdapter;
 import com.example.lenovo.qqdemos.Beans.ChatItem;
+import com.example.lenovo.qqdemos.Beans.Emotion.EmotionId;
+import com.example.lenovo.qqdemos.Beans.Emotion.EmotionItem;
+import com.example.lenovo.qqdemos.Beans.MessageItem;
+import com.example.lenovo.qqdemos.Beans.UserInfo;
+import com.example.lenovo.qqdemos.DB.MessageDB;
+import com.example.lenovo.qqdemos.R;
+import com.example.lenovo.qqdemos.Util.ToastUtil;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMTextMessageBody;
 
-import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +46,8 @@ public class ChatMenuActivity extends Activity {
 
     String TAG = "ChatMenuActivity";
     InputManager mInputManager;
-    private EditText chatContentEdit;
+
+    public  EditText chatEdit;
     private ListView chatToListView;
     private Button sendMsgButton;
     private ImageView chatEmotionImageView;
@@ -96,7 +90,9 @@ public class ChatMenuActivity extends Activity {
                 emotionId6, emotionId7));
         emotionItems.add(new EmotionItem(emotionId1, emotionId2, emotionId3, emotionId4, emotionId5,
                 emotionId6, emotionId7));
-        emotionAdapter = new ChatEmotionAdapter(ChatMenuActivity.this, R.layout.emotion_chat_item, emotionItems);
+        //表情adapter
+        emotionAdapter = new ChatEmotionAdapter(ChatMenuActivity.this, R.layout.emotion_chat_item, emotionItems,
+                ChatMenuActivity.this);
         emotionList.setAdapter(emotionAdapter);
 
         Intent intent1 = getIntent();
@@ -127,7 +123,7 @@ public class ChatMenuActivity extends Activity {
 
         queryHeadUrl(); //得到双方的URL
 
-        chatContentEdit = (EditText) findViewById(R.id.chat_content_edit); //要发送的文本消息
+        chatEdit = (EditText) findViewById(R.id.chat_content_edit); //要发送的文本消息
         sendMsgButton = (Button) findViewById(R.id.send_msg_button);
         //listView
         chatToListView = (ListView) findViewById(R.id.list);
@@ -145,6 +141,14 @@ public class ChatMenuActivity extends Activity {
 
         Thread thread = new Thread(runable);
         thread.start();
+    }
+
+    public EditText getChatEdit() {
+        return chatEdit;
+    }
+
+    public void setChatEdit(EditText chatEdit) {
+        this.chatEdit = chatEdit;
     }
 
     public void queryHeadUrl(){
@@ -272,10 +276,10 @@ public class ChatMenuActivity extends Activity {
         public void onClick(View v) {
 
             //输入消息为空，直接忽略发送按钮
-            if (TextUtils.isEmpty(chatContentEdit.getText())) {//这里是Android提供的功能
+            if (TextUtils.isEmpty(chatEdit.getText())) {//这里是Android提供的功能
                 return;
             }
-            final String chatContent = chatContentEdit.getText().toString();   //获取要发送的文本消息
+            final String chatContent = chatEdit.getText().toString();   //获取要发送的文本消息
 
             Thread sendMsgThread = new Thread(new Runnable() {
                 @Override
@@ -334,7 +338,7 @@ public class ChatMenuActivity extends Activity {
 //            chatToListView.setSelection(chatToListView.getBottom());
 
             //清空输入框
-            chatContentEdit.setText(null);
+            chatEdit.setText(null);
 
 
         }
@@ -376,26 +380,26 @@ public class ChatMenuActivity extends Activity {
 //    }
 
 
-    public void onClick_RandomFace(View view) {
-        //  随机产生1至9的整数
-        try {
-            //  根据随机产生的1至9的整数从R.drawable类中获得相应资源ID（静态变量）的Field对象
-            Field field = R.drawable.class.getDeclaredField("emo" + id);
-            //  获得资源ID的值，也就是静态变量的值
-            int resourceId = Integer.parseInt(field.get(null).toString());
-            //  根据资源ID获得资源图像的Bitmap对象
-            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), resourceId);
-            //  根据Bitmap对象创建ImageSpan对象
-            ImageSpan imageSpan = new ImageSpan(this, bitmap);
-            //  创建一个SpannableString对象，以便插入用ImageSpan对象封装的图像
-            SpannableString spannableString = new SpannableString("emo");
-            //  用ImageSpan对象替换face
-            spannableString.setSpan(imageSpan, 0, 4, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            //  将随机获得的图像追加到EditText控件的最后
-            chatContentEdit.append(spannableString);
-        } catch (Exception e) {
-        }
-    }
+//    public void onClick_RandomFace(View view) {
+//        //  随机产生1至9的整数
+//        try {
+//            //  根据随机产生的1至9的整数从R.drawable类中获得相应资源ID（静态变量）的Field对象
+//            Field field = R.drawable.class.getDeclaredField("emo" + id);
+//            //  获得资源ID的值，也就是静态变量的值
+//            int resourceId = Integer.parseInt(field.get(null).toString());
+//            //  根据资源ID获得资源图像的Bitmap对象
+//            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), resourceId);
+//            //  根据Bitmap对象创建ImageSpan对象
+//            ImageSpan imageSpan = new ImageSpan(this, bitmap);
+//            //  创建一个SpannableString对象，以便插入用ImageSpan对象封装的图像
+//            SpannableString spannableString = new SpannableString("emo");
+//            //  用ImageSpan对象替换face
+//            spannableString.setSpan(imageSpan, 0, 4, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+//            //  将随机获得的图像追加到EditText控件的最后
+//            chatEdit.append(spannableString);
+//        } catch (Exception e) {
+//        }
+//    }
 
 
 }
