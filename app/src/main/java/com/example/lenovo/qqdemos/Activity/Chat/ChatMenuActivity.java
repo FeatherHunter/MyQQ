@@ -58,7 +58,6 @@ public class ChatMenuActivity extends Activity {
     private ImageView chatEmotionImageView;
 
     LinearLayout mEmotionLayout;
-    int id;
 
     String otherId = "";
     String myId = EMClient.getInstance().getCurrentUser();
@@ -91,13 +90,13 @@ public class ChatMenuActivity extends Activity {
         EmotionId emotionId6 = new EmotionId(6, R.drawable.emo6);
         EmotionId emotionId7 = new EmotionId(7, R.drawable.emo7);
 
-        EmotionId emotionId8 = new EmotionId(1, R.drawable.emo8);
-        EmotionId emotionId9 = new EmotionId(2, R.drawable.emo9);
-        EmotionId emotionId10 = new EmotionId(3, R.drawable.emo10);
-        EmotionId emotionId11 = new EmotionId(4, R.drawable.emo11);
-        EmotionId emotionId12= new EmotionId(5, R.drawable.emo12);
-        EmotionId emotionId13 = new EmotionId(6, R.drawable.emo13);
-        EmotionId emotionId14 = new EmotionId(7, R.drawable.emo14);
+        EmotionId emotionId8 = new EmotionId(8, R.drawable.emo8);
+        EmotionId emotionId9 = new EmotionId(9, R.drawable.emo9);
+        EmotionId emotionId10 = new EmotionId(10, R.drawable.emo10);
+        EmotionId emotionId11 = new EmotionId(11, R.drawable.emo11);
+        EmotionId emotionId12= new EmotionId(12, R.drawable.emo12);
+        EmotionId emotionId13 = new EmotionId(13, R.drawable.emo13);
+        EmotionId emotionId14 = new EmotionId(14, R.drawable.emo14);
         emotionItems.add(new EmotionItem(emotionId1, emotionId2, emotionId3, emotionId4, emotionId5,
                 emotionId6, emotionId7));
         emotionItems.add(new EmotionItem(emotionId8, emotionId9, emotionId10, emotionId11, emotionId12,
@@ -106,9 +105,6 @@ public class ChatMenuActivity extends Activity {
         emotionAdapter = new ChatEmotionAdapter(ChatMenuActivity.this, R.layout.emotion_chat_item, emotionItems,
                 ChatMenuActivity.this);
         emotionList.setAdapter(emotionAdapter);
-
-        Intent intent1 = getIntent();
-        id = intent1.getIntExtra("emotion1", 1);
 
         chatEmotionImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -393,8 +389,6 @@ public class ChatMenuActivity extends Activity {
 
 
     public void onClick_RandomFace(int id) {
-        Toast.makeText(ChatMenuActivity.this, "the first" + "" + id, Toast.LENGTH_SHORT).show();
-        //  随机产生1至9的整数
         try {
             //  根据随机产生的1至9的整数从R.drawable类中获得相应资源ID（静态变量）的Field对象
             Field field = R.drawable.class.getDeclaredField("emo" + id);
@@ -410,7 +404,6 @@ public class ChatMenuActivity extends Activity {
             spannableString.setSpan(imageSpan, 0, 3, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             //  将随机获得的图像追加到EditText控件的最后
             chatEdit.append(spannableString);
-            Toast.makeText(ChatMenuActivity.this, "222222222222" + "" + id, Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             e.printStackTrace();
         }

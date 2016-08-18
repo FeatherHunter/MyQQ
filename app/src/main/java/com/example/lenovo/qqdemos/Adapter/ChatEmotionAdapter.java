@@ -3,8 +3,10 @@ package com.example.lenovo.qqdemos.Adapter;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.lenovo.qqdemos.Activity.Chat.ChatMenuActivity;
@@ -33,10 +35,15 @@ public class ChatEmotionAdapter extends ArrayAdapter<EmotionItem> {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         emotionItem = getItem(position);  //得到每一个item
 
         convertView = View.inflate(getContext(), R.layout.emotion_chat_item, null); //获得表情的每一个item布局
+
+        //设置宽高
+        AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, 140);
+        convertView.setLayoutParams(layoutParams);
 
         ImageView emotion1 = (ImageView) convertView.findViewById(R.id.emotion1);
         ImageView emotion2 = (ImageView) convertView.findViewById(R.id.emotion2);
@@ -57,17 +64,18 @@ public class ChatEmotionAdapter extends ArrayAdapter<EmotionItem> {
         emotion1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                id = emotionItem.getEmotion1().getEmotioId();
-//                onClickEvent(id);
+                id = position * 7 + 1;
+                //id = emotionItem.getEmotion1().getEmotioId();
+                Toast.makeText(getContext(), "the first" + "" + id+":"+position, Toast.LENGTH_SHORT).show();
                 activity.onClick_RandomFace(id);
-
-//                Toast.makeText(getContext(), "the first" + "" + id, Toast.LENGTH_SHORT).show();
             }
         });
         emotion2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                id = emotionItem.getEmotion2().getEmotioId();
+//                id = emotionItem.getEmotion2().getEmotioId();
+                id = position * 7 + 2;
+                activity.onClick_RandomFace(id);
                 Toast.makeText(getContext(), "the second" + "" + id, Toast.LENGTH_SHORT).show();
             }
         });
