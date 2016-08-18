@@ -9,7 +9,7 @@
     <ImageView
         android:id="@+id/emotion1"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:scaleType="fitCenter"
         android:onClick="onClick_RandomFace" />
@@ -17,40 +17,40 @@
     <ImageView
         android:id="@+id/emotion2"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:onClick="onClick_RandomFace" />
 
     <ImageView
         android:id="@+id/emotion3"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:onClick="onClick_RandomFace" />
 
     <ImageView
         android:id="@+id/emotion4"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:onClick="onClick_RandomFace" />
 
     <ImageView
         android:id="@+id/emotion5"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="1" />
 
     <ImageView
         android:id="@+id/emotion6"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="1" />
 
     <ImageView
         android:id="@+id/emotion7"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="1" />
 
 </LinearLayout>

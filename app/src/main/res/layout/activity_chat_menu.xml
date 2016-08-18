@@ -62,6 +62,7 @@
 
 
             <EditText
+                android:maxLines="3"
                 android:id="@+id/chat_content_edit"
                 android:minLines="1"
                 android:background="@color/white"
@@ -136,7 +137,7 @@
         <ListView
             android:id="@+id/emotion_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="300dp"
             android:visibility="gone"></ListView>
 
     </LinearLayout>

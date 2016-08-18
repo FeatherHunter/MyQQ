@@ -12,29 +12,31 @@
         android:gravity="center"
         android:text="12:12" />
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="right"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/chat_content_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="20dp"
-            android:text="hello world"
-            android:textColor="@color/black"
-            android:textSize="15dp"
-            android:background="@drawable/chat_bubble_thumbnail"/>
+        android:layout_height="wrap_content">
 
         <com.pkmmte.view.CircularImageView
             android:id="@+id/chat_head_image"
             android:layout_width="55dp"
             android:layout_height="55dp"
             android:layout_marginRight="20dp"
+            android:layout_alignParentRight="true"
             app:border="false"
             app:shadow="true" />
-    </LinearLayout>
+
+        <TextView
+            android:id="@+id/chat_content_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/chat_head_image"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="2dp"
+            android:layout_gravity="center_vertical"
+            android:text="hello world"
+            android:textColor="@color/black"
+            android:textSize="15dp"
+            android:background="@drawable/chat_bubble_thumbnail"/>
+
+    </RelativeLayout>
 </LinearLayout>

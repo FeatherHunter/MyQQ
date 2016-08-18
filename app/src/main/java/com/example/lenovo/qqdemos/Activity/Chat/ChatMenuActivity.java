@@ -2,8 +2,13 @@ package com.example.lenovo.qqdemos.Activity.Chat;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextUtils;
+import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -11,6 +16,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.lenovo.qqdemos.Adapter.ChatEmotionAdapter;
 import com.example.lenovo.qqdemos.Adapter.ChatListAdapter;
@@ -27,6 +33,7 @@ import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMTextMessageBody;
 
+import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -73,7 +80,6 @@ public class ChatMenuActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_menu);
 
-        mEmotionLayout = (LinearLayout) View.inflate(ChatMenuActivity.this, R.layout.emotion_chat, null);
         chatEmotionImageView = (ImageView) findViewById(R.id.chat_emotion_imageView);  //点击"表情"
         emotionList = (ListView) findViewById(R.id.emotion_list);  //表情的链表
 
@@ -84,10 +90,18 @@ public class ChatMenuActivity extends Activity {
         EmotionId emotionId5 = new EmotionId(5, R.drawable.emo5);
         EmotionId emotionId6 = new EmotionId(6, R.drawable.emo6);
         EmotionId emotionId7 = new EmotionId(7, R.drawable.emo7);
+
+        EmotionId emotionId8 = new EmotionId(1, R.drawable.emo8);
+        EmotionId emotionId9 = new EmotionId(2, R.drawable.emo9);
+        EmotionId emotionId10 = new EmotionId(3, R.drawable.emo10);
+        EmotionId emotionId11 = new EmotionId(4, R.drawable.emo11);
+        EmotionId emotionId12= new EmotionId(5, R.drawable.emo12);
+        EmotionId emotionId13 = new EmotionId(6, R.drawable.emo13);
+        EmotionId emotionId14 = new EmotionId(7, R.drawable.emo14);
         emotionItems.add(new EmotionItem(emotionId1, emotionId2, emotionId3, emotionId4, emotionId5,
                 emotionId6, emotionId7));
-        emotionItems.add(new EmotionItem(emotionId1, emotionId2, emotionId3, emotionId4, emotionId5,
-                emotionId6, emotionId7));
+        emotionItems.add(new EmotionItem(emotionId8, emotionId9, emotionId10, emotionId11, emotionId12,
+                emotionId13, emotionId14));
         //表情adapter
         emotionAdapter = new ChatEmotionAdapter(ChatMenuActivity.this, R.layout.emotion_chat_item, emotionItems,
                 ChatMenuActivity.this);
@@ -378,26 +392,29 @@ public class ChatMenuActivity extends Activity {
 //    }
 
 
-//    public void onClick_RandomFace(View view) {
-//        //  随机产生1至9的整数
-//        try {
-//            //  根据随机产生的1至9的整数从R.drawable类中获得相应资源ID（静态变量）的Field对象
-//            Field field = R.drawable.class.getDeclaredField("emo" + id);
-//            //  获得资源ID的值，也就是静态变量的值
-//            int resourceId = Integer.parseInt(field.get(null).toString());
-//            //  根据资源ID获得资源图像的Bitmap对象
-//            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), resourceId);
-//            //  根据Bitmap对象创建ImageSpan对象
-//            ImageSpan imageSpan = new ImageSpan(this, bitmap);
-//            //  创建一个SpannableString对象，以便插入用ImageSpan对象封装的图像
-//            SpannableString spannableString = new SpannableString("emo");
-//            //  用ImageSpan对象替换face
-//            spannableString.setSpan(imageSpan, 0, 4, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-//            //  将随机获得的图像追加到EditText控件的最后
-//            chatEdit.append(spannableString);
-//        } catch (Exception e) {
-//        }
-//    }
+    public void onClick_RandomFace(int id) {
+        Toast.makeText(ChatMenuActivity.this, "the first" + "" + id, Toast.LENGTH_SHORT).show();
+        //  随机产生1至9的整数
+        try {
+            //  根据随机产生的1至9的整数从R.drawable类中获得相应资源ID（静态变量）的Field对象
+            Field field = R.drawable.class.getDeclaredField("emo" + id);
+            //  获得资源ID的值，也就是静态变量的值
+            int resourceId = Integer.parseInt(field.get(null).toString());
+            //  根据资源ID获得资源图像的Bitmap对象
+            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), resourceId);
+            //  根据Bitmap对象创建ImageSpan对象
+            ImageSpan imageSpan = new ImageSpan(this, bitmap);
+            //  创建一个SpannableString对象，以便插入用ImageSpan对象封装的图像
+            SpannableString spannableString = new SpannableString("emo");
+            //  用ImageSpan对象替换face
+            spannableString.setSpan(imageSpan, 0, 3, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            //  将随机获得的图像追加到EditText控件的最后
+            chatEdit.append(spannableString);
+            Toast.makeText(ChatMenuActivity.this, "222222222222" + "" + id, Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 
 }
