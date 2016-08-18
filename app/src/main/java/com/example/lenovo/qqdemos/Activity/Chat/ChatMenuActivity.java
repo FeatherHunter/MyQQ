@@ -137,6 +137,7 @@ public class ChatMenuActivity extends Activity {
                 chatItemList, R.layout.
                 chat_others_item, this);
 
+
         chatToListView.setAdapter(adapter);
 
         //设置发送的监听器
