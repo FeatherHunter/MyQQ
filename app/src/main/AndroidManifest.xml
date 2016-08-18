@@ -108,7 +108,7 @@
         </activity>
         <activity
             android:name=".chat.ChatMenuActivity"
-            android:windowSoftInputMode="adjustResize" >
+            android:windowSoftInputMode="stateVisible|adjustResize" >
         </activity>
         <activity android:name=".Test.ChatTest.ChatTestActivity" >
         </activity>
@@ -116,11 +116,11 @@
         </activity>
         <activity android:name=".Login.SignUpActivity" >
         </activity>
-        <activity android:name=".chat.ChatRecordActivity" >
-        </activity>
         <activity android:name=".Friends.AddContactActivity" >
         </activity>
         <activity android:name=".Main.NewFriendActivity" >
+        </activity>
+        <activity android:name=".chat.TestChatActivity" >
         </activity>
     </application>
 

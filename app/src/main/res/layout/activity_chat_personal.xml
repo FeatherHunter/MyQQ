@@ -44,4 +44,5 @@
         android:background="@color/qqred"
         android:text="@string/delete_friend"
         android:textColor="@android:color/white" />
+
 </LinearLayout>

@@ -1,7 +1,5 @@
 package com.example.lenovo.qqdemos.Main.Beans;
 
-import com.example.lenovo.qqdemos.chat.ChatItem;
-
 import java.util.ArrayList;
 
 /**

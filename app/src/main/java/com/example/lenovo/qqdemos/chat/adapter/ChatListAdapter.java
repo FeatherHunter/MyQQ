@@ -8,10 +8,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.lenovo.qqdemos.R;
-import com.example.lenovo.qqdemos.chat.ChatItem;
+import com.example.lenovo.qqdemos.chat.bean.ChatItem;
 import com.hyphenate.chat.EMClient;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;

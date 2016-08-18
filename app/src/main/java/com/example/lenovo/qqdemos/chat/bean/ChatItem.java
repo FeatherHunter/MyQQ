@@ -1,4 +1,4 @@
-package com.example.lenovo.qqdemos.chat;
+package com.example.lenovo.qqdemos.chat.bean;
 
 import com.hyphenate.chat.EMMessage;
 

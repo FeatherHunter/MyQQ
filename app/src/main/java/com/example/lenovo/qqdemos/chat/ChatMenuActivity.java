@@ -1,24 +1,37 @@
 package com.example.lenovo.qqdemos.chat;
 
-import android.app.ListActivity;
+import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.hardware.input.InputManager;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextUtils;
+import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.example.lenovo.qqdemos.DB.MessageDB;
 import com.example.lenovo.qqdemos.Main.Beans.MessageItem;
 import com.example.lenovo.qqdemos.R;
+import com.example.lenovo.qqdemos.chat.adapter.ChatEmotionAdapter;
 import com.example.lenovo.qqdemos.chat.adapter.ChatListAdapter;
+import com.example.lenovo.qqdemos.chat.bean.ChatItem;
+import com.example.lenovo.qqdemos.chat.bean.EmotionId;
+import com.example.lenovo.qqdemos.chat.bean.EmotionItem;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMTextMessageBody;
 
+import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,12 +41,17 @@ import java.util.List;
 //import com.example.lenovo.qqdemos.Login.QQService;
 //import com.example.lenovo.qqdemos.Main.MainActivity;
 
-public class ChatMenuActivity extends ListActivity {
+public class ChatMenuActivity extends Activity {
 
     String TAG = "ChatMenuActivity";
+    InputManager mInputManager;
     private EditText chatContentEdit;
     private ListView chatToListView;
     private Button sendMsgButton;
+    private ImageView chatEmotionImageView;
+
+    LinearLayout mEmotionLayout;
+    int id;
 
 //    private MessageDB messageDB;
 
@@ -49,10 +67,48 @@ public class ChatMenuActivity extends ListActivity {
     private ArrayList<ChatItem> chatItemList = new ArrayList<>(); //聊天链表
     ArrayList<MessageItem> messageItems = new ArrayList<>();
 
+    private ArrayList<EmotionItem> emotionItems = new ArrayList<>();  //表情的链表
+    private ListView emotionList;
+    ChatEmotionAdapter emotionAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_menu);
+
+        mEmotionLayout = (LinearLayout) View.inflate(ChatMenuActivity.this, R.layout.emotion_chat, null);
+        chatEmotionImageView = (ImageView) findViewById(R.id.chat_emotion_imageView);  //点击"表情"
+        emotionList = (ListView) findViewById(R.id.emotion_list);  //表情的链表
+
+        EmotionId emotionId1 = new EmotionId(1, R.drawable.emo1);
+        EmotionId emotionId2 = new EmotionId(2, R.drawable.emo2);
+        EmotionId emotionId3 = new EmotionId(3, R.drawable.emo3);
+        EmotionId emotionId4 = new EmotionId(4, R.drawable.emo4);
+        EmotionId emotionId5 = new EmotionId(5, R.drawable.emo5);
+        EmotionId emotionId6 = new EmotionId(6, R.drawable.emo6);
+        EmotionId emotionId7 = new EmotionId(7, R.drawable.emo7);
+        emotionItems.add(new EmotionItem(emotionId1, emotionId2, emotionId3, emotionId4, emotionId5,
+                emotionId6, emotionId7));
+        emotionItems.add(new EmotionItem(emotionId1, emotionId2, emotionId3, emotionId4, emotionId5,
+                emotionId6, emotionId7));
+        emotionAdapter = new ChatEmotionAdapter(ChatMenuActivity.this, R.layout.emotion_chat_item, emotionItems);
+        emotionList.setAdapter(emotionAdapter);
+
+        Intent intent1 = getIntent();
+        id = intent1.getIntExtra("emotion1", 1);
+
+        chatEmotionImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (emotionList.getVisibility() == View.GONE) {
+                    emotionList.setVisibility(View.VISIBLE);
+                } else {
+                    emotionList.setVisibility(View.GONE);
+                }
+//           Intent intent = new Intent(ChatMenuActivity.this, TestChatActivity.class);
+//                startActivity(intent);
+            }
+        });
 
         //创建数据库对象
 //        messageDB = new MessageDB(this);
@@ -65,10 +121,10 @@ public class ChatMenuActivity extends ListActivity {
         otherId = intent.getStringExtra("other_id");//对方ID
 
         chatContentEdit = (EditText) findViewById(R.id.chat_content_edit); //要发送的文本消息
-        sendMsgButton = (Button) findViewById(R.id.send_msg_button);
+        sendMsgButton = (Button) findViewById(R.id.send_msg_button);   //"发送"按钮
 
         //listView
-        chatToListView = getListView();
+        chatToListView = (ListView) findViewById(R.id.list);
         //adapter
         adapter = new ChatListAdapter(this,
                 R.layout.chat_me_item,
@@ -82,6 +138,7 @@ public class ChatMenuActivity extends ListActivity {
 
         Thread thread = new Thread(runable);
         thread.start();
+
     }
 
     /*-------------------------------------------------------------------------------
@@ -118,7 +175,6 @@ public class ChatMenuActivity extends ListActivity {
                         } else {
                             chatItemList.add(new ChatItem(otherId, myId, data, EMMessage.Type.TXT, time, true));
                         }
-
                     }
 
                 } else {
@@ -126,7 +182,7 @@ public class ChatMenuActivity extends ListActivity {
                 }
 
                 adapter.notifyDataSetChanged();
-                if(needToBootom == true){
+                if (needToBootom == true) {
                     //移动到listview的底部
                     chatToListView.setSelection(chatToListView.getBottom());
                 }
@@ -173,21 +229,21 @@ public class ChatMenuActivity extends ListActivity {
 
                     int i;
                     //查找链表中是否有该用户
-                    for(i = 0; i < messageItems.size(); i++){
+                    for (i = 0; i < messageItems.size(); i++) {
                         MessageItem messageItem = messageItems.get(i);
-                        if (messageItem.getOtherName().equals(otherId)){
-                                //先将该Item添加到链表头部
-                                MessageItem item = messageItems.get(i);
-                                //set msg
-                                item.setNewMsg(chatContent);
-                                messageItems.add(0, item);
-                                //再移除掉原来的Item
-                                messageItems.remove(i + 1);
-                                break;
+                        if (messageItem.getOtherName().equals(otherId)) {
+                            //先将该Item添加到链表头部
+                            MessageItem item = messageItems.get(i);
+                            //set msg
+                            item.setNewMsg(chatContent);
+                            messageItems.add(0, item);
+                            //再移除掉原来的Item
+                            messageItems.remove(i + 1);
+                            break;
                         }
                     }
                     //此时表示没有查找到
-                    if(i == messageItems.size()){
+                    if (i == messageItems.size()) {
                         //添加到链表头部
                         messageItems.add(0, new MessageItem(myId, otherId, chatContent, "13:12", 3));
                     }
@@ -234,4 +290,40 @@ public class ChatMenuActivity extends ListActivity {
             }
         }
     };
+
+//    //得到软键盘的高度
+//    public static int getKeyboardHeight(Activity paramActivity) {
+//        int height = SystemUtils.getScreenHeight(paramActivity) - SystemUtils.getStatusBarHeight(paramActivity)
+//                - SystemUtils.getAppHeight(paramActivity);
+//        if (height == 0) {
+//            height = SharedPreferencesUtils.getIntShareData("KeyboardHeight", 787);//787为默认软键盘高度 基本差不离
+//        } else {
+//            SharedPreferencesUtils.putIntShareData("KeyboardHeight", height);
+//        }
+//        return height;
+//    }
+
+
+    public void onClick_RandomFace(View view) {
+        //  随机产生1至9的整数
+        try {
+            //  根据随机产生的1至9的整数从R.drawable类中获得相应资源ID（静态变量）的Field对象
+            Field field = R.drawable.class.getDeclaredField("emo" + id);
+            //  获得资源ID的值，也就是静态变量的值
+            int resourceId = Integer.parseInt(field.get(null).toString());
+            //  根据资源ID获得资源图像的Bitmap对象
+            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), resourceId);
+            //  根据Bitmap对象创建ImageSpan对象
+            ImageSpan imageSpan = new ImageSpan(this, bitmap);
+            //  创建一个SpannableString对象，以便插入用ImageSpan对象封装的图像
+            SpannableString spannableString = new SpannableString("emo");
+            //  用ImageSpan对象替换face
+            spannableString.setSpan(imageSpan, 0, 4, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            //  将随机获得的图像追加到EditText控件的最后
+            chatContentEdit.append(spannableString);
+        } catch (Exception e) {
+        }
+    }
+
+
 }
