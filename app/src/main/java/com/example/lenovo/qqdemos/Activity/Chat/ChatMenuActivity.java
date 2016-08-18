@@ -2,7 +2,6 @@ package com.example.lenovo.qqdemos.Activity.Chat;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.hardware.input.InputManager;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -45,7 +44,6 @@ import cn.bmob.v3.listener.FindListener;
 public class ChatMenuActivity extends Activity {
 
     String TAG = "ChatMenuActivity";
-    InputManager mInputManager;
 
     public  EditText chatEdit;
     private ListView chatToListView;
