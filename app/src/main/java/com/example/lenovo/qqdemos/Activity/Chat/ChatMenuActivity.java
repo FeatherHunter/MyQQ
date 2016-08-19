@@ -2,8 +2,10 @@ package com.example.lenovo.qqdemos.Activity.Chat;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -82,26 +84,33 @@ public class ChatMenuActivity extends Activity {
         chatEmotionImageView = (ImageView) findViewById(R.id.chat_emotion_imageView);  //点击"表情"
         emotionList = (ListView) findViewById(R.id.emotion_list);  //表情的链表
 
-        EmotionId emotionId1 = new EmotionId(1, R.drawable.emo1);
-        EmotionId emotionId2 = new EmotionId(2, R.drawable.emo2);
-        EmotionId emotionId3 = new EmotionId(3, R.drawable.emo3);
-        EmotionId emotionId4 = new EmotionId(4, R.drawable.emo4);
-        EmotionId emotionId5 = new EmotionId(5, R.drawable.emo5);
-        EmotionId emotionId6 = new EmotionId(6, R.drawable.emo6);
-        EmotionId emotionId7 = new EmotionId(7, R.drawable.emo7);
+        //获得列表
+        TypedArray ar = this.getResources().obtainTypedArray(R.array.emotions);
+        int len = ar.length();
+        int[] resIds = new int[len];
+        for (int i = 0; i < len; i++)
+            resIds[i] = ar.getResourceId(i, 0);
+        ar.recycle();
 
-        EmotionId emotionId8 = new EmotionId(8, R.drawable.emo8);
-        EmotionId emotionId9 = new EmotionId(9, R.drawable.emo9);
-        EmotionId emotionId10 = new EmotionId(10, R.drawable.emo10);
-        EmotionId emotionId11 = new EmotionId(11, R.drawable.emo11);
-        EmotionId emotionId12 = new EmotionId(12, R.drawable.emo12);
-        EmotionId emotionId13 = new EmotionId(13, R.drawable.emo13);
-        EmotionId emotionId14 = new EmotionId(14, R.drawable.emo14);
+        int groupCount = resIds.length /7;
+        int resCount = resIds.length % 7;
 
-        emotionItems.add(new EmotionItem(emotionId1, emotionId2, emotionId3, emotionId4, emotionId5,
-                emotionId6, emotionId7));
-        emotionItems.add(new EmotionItem(emotionId8, emotionId9, emotionId10, emotionId11, emotionId12,
-                emotionId13, emotionId14));
+        //多少组，一组7个
+        for(int i = 0; i < groupCount ; i ++){
+            EmotionId[] emotionIds = new EmotionId[7];//一组，放入 emotionItems
+            for(int j = 0; j < 7; j++){
+                emotionIds[j] = new EmotionId(1, resIds[i*7 + j]);
+            }
+            emotionItems.add(new EmotionItem(emotionIds));
+        }
+        //剩下resCount个为最后一组
+        EmotionId[] emotionIds = new EmotionId[7];
+        for(int i = 0; i < resCount; i++){
+            emotionIds[i] = new EmotionId(1, resIds[groupCount * 7 + i]);
+        }
+        emotionItems.add(new EmotionItem(emotionIds));
+
+
         //表情adapter
         emotionAdapter = new ChatEmotionAdapter(ChatMenuActivity.this, R.layout.emotion_chat_item, emotionItems,
                 ChatMenuActivity.this);
@@ -411,19 +420,37 @@ public class ChatMenuActivity extends Activity {
             Field field = R.drawable.class.getDeclaredField("emo" + id);
             //  获得资源ID的值，也就是静态变量的值
             int resourceId = Integer.parseInt(field.get(null).toString());
-            //  根据资源ID获得资源图像的Bitmap对象
+
             Bitmap bitmap = BitmapFactory.decodeResource(getResources(), resourceId);
+            //缩小x倍
+            bitmap = scale(bitmap, 2);
+
             //  根据Bitmap对象创建ImageSpan对象
             ImageSpan imageSpan = new ImageSpan(this, bitmap);
             //  创建一个SpannableString对象，以便插入用ImageSpan对象封装的图像
-            SpannableString spannableString = new SpannableString("emo");
+            String emoStr = "[emo"+id+"]";
+            SpannableString spannableString = new SpannableString(emoStr);
             //  用ImageSpan对象替换face
-            spannableString.setSpan(imageSpan, 0, 3, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spannableString.setSpan(imageSpan, 0, emoStr.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             //  将随机获得的图像追加到EditText控件的最后
             chatEdit.append(spannableString);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /*----------------------------
+     * 将表情缩小x倍
+     *-------------------------*/
+    private Bitmap scale(Bitmap bitmap, float x){
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        // 取得想要缩放的matrix参数
+        Matrix matrix = new Matrix();
+        matrix.postScale(1/x, 1/x);
+        // 得到新的图片
+        return  Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix,
+                true);
     }
 
 

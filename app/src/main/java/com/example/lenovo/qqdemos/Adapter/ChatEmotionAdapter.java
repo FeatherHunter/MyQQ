@@ -6,7 +6,6 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.lenovo.qqdemos.Activity.Chat.ChatMenuActivity;
@@ -45,41 +44,36 @@ public class ChatEmotionAdapter extends ArrayAdapter<EmotionItem> {
                 ViewGroup.LayoutParams.MATCH_PARENT, 140);
         convertView.setLayoutParams(layoutParams);
 
-        ImageView emotion1 = (ImageView) convertView.findViewById(R.id.emotion1);
-        ImageView emotion2 = (ImageView) convertView.findViewById(R.id.emotion2);
-        ImageView emotion3 = (ImageView) convertView.findViewById(R.id.emotion3);
-        ImageView emotion4 = (ImageView) convertView.findViewById(R.id.emotion4);
-        ImageView emotion5 = (ImageView) convertView.findViewById(R.id.emotion5);
-        ImageView emotion6 = (ImageView) convertView.findViewById(R.id.emotion6);
-        ImageView emotion7 = (ImageView) convertView.findViewById(R.id.emotion7);
+        ImageView[] emotions = new ImageView[7];
+        int[] emotionids = new int[]{R.id.emotion1,R.id.emotion2,R.id.emotion3,R.id.emotion4,
+                R.id.emotion5,R.id.emotion6,R.id.emotion7};
 
-        emotion1.setImageResource(emotionItem.getEmotion1().getEmotion());
-        emotion2.setImageResource(emotionItem.getEmotion2().getEmotion());
-        emotion3.setImageResource(emotionItem.getEmotion3().getEmotion());
-        emotion4.setImageResource(emotionItem.getEmotion4().getEmotion());
-        emotion5.setImageResource(emotionItem.getEmotion5().getEmotion());
-        emotion6.setImageResource(emotionItem.getEmotion6().getEmotion());
-        emotion7.setImageResource(emotionItem.getEmotion7().getEmotion());
-
-        emotion1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                id = position * 7 + 1;
-                //id = emotionItem.getEmotion1().getEmotioId();
-                Toast.makeText(getContext(), "the first" + "" + id+":"+position, Toast.LENGTH_SHORT).show();
-                activity.onClick_RandomFace(id);
+        for(int i = 0; i < 7; i++){
+            if(emotionItem.getEmotion(i) != null){
+                emotions[i] = (ImageView) convertView.findViewById(emotionids[i]);
+                emotions[i].setImageResource(emotionItem.getEmotion(i).getEmotion());
+                //设置监听器
+                emotions[i].setOnClickListener(new EmotionClickListener(position, i));
+            }else{
+                break;
             }
-        });
-        emotion2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                id = emotionItem.getEmotion2().getEmotioId();
-                id = position * 7 + 2;
-                activity.onClick_RandomFace(id);
-                Toast.makeText(getContext(), "the second" + "" + id, Toast.LENGTH_SHORT).show();
-            }
-        });
+        }
         return convertView;
+    }
+
+    class EmotionClickListener implements View.OnClickListener{
+        int groupPosition;
+        int childPosition;
+        public EmotionClickListener(int groupPosition ,int childPosition){
+            this.groupPosition = groupPosition;
+            this.childPosition = childPosition;
+        }
+        @Override
+        public void onClick(View v) {
+            id = groupPosition * 7 + (childPosition+1);
+            Toast.makeText(getContext(), "the first" + "" + id + ":" + groupPosition, Toast.LENGTH_SHORT).show();
+            activity.onClick_RandomFace(id);
+        }
     }
 
     @Override
