@@ -11,12 +11,12 @@ import android.text.TextUtils;
 import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.example.lenovo.qqdemos.Adapter.ChatEmotionAdapter;
 import com.example.lenovo.qqdemos.Adapter.ChatListAdapter;
@@ -52,7 +52,7 @@ public class ChatMenuActivity extends Activity {
 
     String TAG = "ChatMenuActivity";
 
-    public  EditText chatEdit;
+    public EditText chatEdit;
     private ListView chatToListView;
     private Button sendMsgButton;
     private ImageView chatEmotionImageView;
@@ -94,9 +94,10 @@ public class ChatMenuActivity extends Activity {
         EmotionId emotionId9 = new EmotionId(9, R.drawable.emo9);
         EmotionId emotionId10 = new EmotionId(10, R.drawable.emo10);
         EmotionId emotionId11 = new EmotionId(11, R.drawable.emo11);
-        EmotionId emotionId12= new EmotionId(12, R.drawable.emo12);
+        EmotionId emotionId12 = new EmotionId(12, R.drawable.emo12);
         EmotionId emotionId13 = new EmotionId(13, R.drawable.emo13);
         EmotionId emotionId14 = new EmotionId(14, R.drawable.emo14);
+
         emotionItems.add(new EmotionItem(emotionId1, emotionId2, emotionId3, emotionId4, emotionId5,
                 emotionId6, emotionId7));
         emotionItems.add(new EmotionItem(emotionId8, emotionId9, emotionId10, emotionId11, emotionId12,
@@ -105,19 +106,6 @@ public class ChatMenuActivity extends Activity {
         emotionAdapter = new ChatEmotionAdapter(ChatMenuActivity.this, R.layout.emotion_chat_item, emotionItems,
                 ChatMenuActivity.this);
         emotionList.setAdapter(emotionAdapter);
-
-        chatEmotionImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (emotionList.getVisibility() == View.GONE) {
-                    emotionList.setVisibility(View.VISIBLE);
-                } else {
-                    emotionList.setVisibility(View.GONE);
-                }
-//           Intent intent = new Intent(ChatMenuActivity.this, TestChatActivity.class);
-//                startActivity(intent);
-            }
-        });
 
         //创建数据库对象
 //        messageDB = new MessageDB(this);
@@ -147,19 +135,48 @@ public class ChatMenuActivity extends Activity {
         //设置发送的监听器
         sendMsgButton.setOnClickListener(new sendMsgOnClickListenner());
 
+        chatEdit.setOnClickListener(new View.OnClickListener() {   //点击输入时的表情框的状态的改变
+            @Override
+            public void onClick(View v) {
+                if (emotionList.getVisibility() == View.VISIBLE) {  //表情框可见就设置成不可见
+                    emotionList.setVisibility(View.GONE);
+                } else {
+
+                }
+            }
+        });
+
+        chatEmotionImageView.setOnClickListener(new View.OnClickListener() {   //点击“表情”按钮
+            @Override
+            public void onClick(View v) {
+                //1.得到InputMethodManager对象
+                InputMethodManager imm = (InputMethodManager) getSystemService(ChatMenuActivity.this.INPUT_METHOD_SERVICE);
+                //获取状态信息
+                if (imm.isActive()) {     //表示输入法打开
+                    //首先要关闭输入法
+                    imm.hideSoftInputFromWindow(chatEdit.getWindowToken(), 0); //强制隐藏键盘
+                    //切换表情
+                    changeEmotion();
+                } else {                //输入法未打开
+                    changeEmotion();
+                }
+            }
+        });
+
         Thread thread = new Thread(runable);
         thread.start();
     }
 
-    public EditText getChatEdit() {
-        return chatEdit;
+    //表情框的切换
+    public void changeEmotion() {
+        if (emotionList.getVisibility() == View.GONE) {
+            emotionList.setVisibility(View.VISIBLE);
+        } else {
+            emotionList.setVisibility(View.GONE);
+        }
     }
 
-    public void setChatEdit(EditText chatEdit) {
-        this.chatEdit = chatEdit;
-    }
-
-    public void queryHeadUrl(){
+    public void queryHeadUrl() {
         /*------------------------------------------
          *    根据本人ID查询头像
          *    查询到：动态加载到ImageView
@@ -174,19 +191,19 @@ public class ChatMenuActivity extends Activity {
         query.findObjects(new FindListener<UserInfo>() {
             @Override
             public void done(List<UserInfo> object, BmobException e) {
-                if(e==null){
-                    ToastUtil.toast(ChatMenuActivity.this, "查询成功：共"+object.size()+"条数据。");
+                if (e == null) {
+                    ToastUtil.toast(ChatMenuActivity.this, "查询成功：共" + object.size() + "条数据。");
 
-                    if(object.size() >= 1){//查询到头像
+                    if (object.size() >= 1) {//查询到头像
                         //得到头像
                         BmobFile head = object.get(0).getHead();
                         //得到URL
                         myHeadUrl = head.getFileUrl();
-                    }else{//使用默认头像
+                    } else {//使用默认头像
                         myHeadUrl = null;
                     }
-                }else{
-                    Log.i(TAG,"失败："+e.getMessage()+","+e.getErrorCode());
+                } else {
+                    Log.i(TAG, "失败：" + e.getMessage() + "," + e.getErrorCode());
                     myHeadUrl = null;
                 }
             }
@@ -205,19 +222,19 @@ public class ChatMenuActivity extends Activity {
         query.findObjects(new FindListener<UserInfo>() {
             @Override
             public void done(List<UserInfo> object, BmobException e) {
-                if(e==null){
-                    ToastUtil.toast(ChatMenuActivity.this, "查询成功：共"+object.size()+"条数据。");
+                if (e == null) {
+                    ToastUtil.toast(ChatMenuActivity.this, "查询成功：共" + object.size() + "条数据。");
 
-                    if(object.size() >= 1){//查询到头像
+                    if (object.size() >= 1) {//查询到头像
                         //得到头像
                         BmobFile head = object.get(0).getHead();
                         //得到URL
                         otherHeadUrl = head.getFileUrl();
-                    }else{//使用默认头像
+                    } else {//使用默认头像
                         otherHeadUrl = null;
                     }
-                }else{
-                    Log.i(TAG,"失败："+e.getMessage()+","+e.getErrorCode());
+                } else {
+                    Log.i(TAG, "失败：" + e.getMessage() + "," + e.getErrorCode());
                     otherHeadUrl = null;
                 }
             }
@@ -313,21 +330,21 @@ public class ChatMenuActivity extends Activity {
 
                     int i;
                     //查找链表中是否有该用户
-                    for(i = 0; i < messageItems.size(); i++){
+                    for (i = 0; i < messageItems.size(); i++) {
                         MessageItem messageItem = messageItems.get(i);
-                        if (messageItem.getOtherName().equals(otherId)){
-                                //先将该Item添加到链表头部
-                                MessageItem item = messageItems.get(i);
-                                //set msg
-                                item.setNewMsg(chatContent);
-                                messageItems.add(0, item);
-                                //再移除掉原来的Item
-                                messageItems.remove(i + 1);
-                                break;
+                        if (messageItem.getOtherName().equals(otherId)) {
+                            //先将该Item添加到链表头部
+                            MessageItem item = messageItems.get(i);
+                            //set msg
+                            item.setNewMsg(chatContent);
+                            messageItems.add(0, item);
+                            //再移除掉原来的Item
+                            messageItems.remove(i + 1);
+                            break;
                         }
                     }
                     //此时表示没有查找到
-                    if(i == messageItems.size()){
+                    if (i == messageItems.size()) {
                         //添加到链表头部
                         messageItems.add(0, new MessageItem(myId, otherId, chatContent, "13:12", 3));
                     }

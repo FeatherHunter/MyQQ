@@ -97,7 +97,7 @@
         <activity android:name=".Activity.Chat.ChatPersonalActivity"></activity>
         <activity
             android:name=".Activity.Chat.ChatMenuActivity"
-            android:windowSoftInputMode="adjustResize"></activity>
+            android:windowSoftInputMode="adjustResize|stateHidden"></activity>
         <activity android:name=".Activity.Start.PastDoorActivity"></activity>
         <activity android:name=".Activity.Login.SignUpActivity"></activity>
         <activity android:name=".Activity.Friend.AddContactActivity"></activity>
