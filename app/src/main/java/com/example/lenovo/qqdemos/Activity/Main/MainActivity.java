@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.lenovo.qqdemos.Activity.Friend.AddContactActivity;
+import com.example.lenovo.qqdemos.CustomView.TopBar;
 import com.example.lenovo.qqdemos.Service.QQService;
 import com.example.lenovo.qqdemos.Fragment.ContactFragment;
 import com.example.lenovo.qqdemos.Fragment.MsgFragment;
@@ -37,9 +38,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private ImageView contactImage;
     private ImageView msgImage;
     private ImageView trendImage;
-    private ImageView title_head;
-    private TextView title_center;
-    private Button title_button;
 
     private TextView textView1 = null;
     private TextView textView2 = null;
@@ -53,6 +51,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private FragmentTransaction fragmentTransaction;
 
     MyHorizontalScrollView myHorizontalScrollView;
+
+    private TopBar topbar;
 
     //表示是哪个Fragment
     int fragment_tag = 0; //默认是消息
@@ -75,6 +75,16 @@ public class MainActivity extends Activity implements View.OnClickListener {
         myHorizontalScrollView = (MyHorizontalScrollView) findViewById(R.id.myHorizontalScrollView);
         myHorizontalScrollView.closeMenu();
 
+        //顶层菜单
+        topbar = (TopBar) findViewById(R.id.main_topbar);
+        topbar.getmHeadImage().setVisibility(View.VISIBLE); //显示头像
+        topbar.getmHeadImage().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myHorizontalScrollView.toggle();
+            }
+        });
+
         initViews();
         fragmentManager = getFragmentManager();
         // 第一次启动时选中第0个tab
@@ -85,6 +95,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         serviceIntent = new Intent();
         serviceIntent.setClass(MainActivity.this, QQService.class);
         startService(serviceIntent);
+
     }
 
     @Override
@@ -101,10 +112,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
         //动态
         trendImage = (ImageView) findViewById(R.id.tab_plugin);
 
-        //标题栏
-        title_head = (ImageView) findViewById(R.id.title_head);
-        title_center = (TextView) findViewById(R.id.title_center);
-        title_button = (Button) findViewById(R.id.title_button);
+//        //标题栏
+//        title_head = (ImageView) findViewById(R.id.title_head);
+//        title_center = (TextView) findViewById(R.id.title_center);
+//        title_button = (Button) findViewById(R.id.title_button);
 
         contactImage.setOnClickListener(this);
         msgImage.setOnClickListener(this);
@@ -156,20 +167,34 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 contactImage.setImageResource(R.drawable.skin_tab_icon_contact_normal);
                 trendImage.setImageResource(R.drawable.skin_tab_icon_plugin_normal);
 
-                //设置标题
-                title_center.setText("");
-                title_button.setText("");
-                title_button.setBackgroundResource(R.drawable.oye);
-                title_button.setOnClickListener(new View.OnClickListener() {
+                //标题栏
+                topbar.getmTitleText().setText("");
+                topbar.getmRightRightImage().setVisibility(View.VISIBLE);
+                topbar.getmRightText().setVisibility(View.INVISIBLE);
+                topbar.getmRightRightImage().setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if (popupWindow.isShowing()) {  //检测PopupWindow的状态
                             popupWindow.dismiss();   //关闭PopupWindow
                         } else {
-                            popupWindow.showAsDropDown(title_button); //显示PopupWindow
+                            popupWindow.showAsDropDown(topbar.getmRightRightImage()); //显示PopupWindow
                         }
                     }
                 });
+//                //设置标题
+//                title_center.setText("");
+//                title_button.setText("");
+//                title_button.setBackgroundResource(R.drawable.oye);
+//                title_button.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        if (popupWindow.isShowing()) {  //检测PopupWindow的状态
+//                            popupWindow.dismiss();   //关闭PopupWindow
+//                        } else {
+//                            popupWindow.showAsDropDown(title_button); //显示PopupWindow
+//                        }
+//                    }
+//                });
 
                 //标记
                 fragment_tag = FRAGMENT_TAB_MSG;
@@ -181,11 +206,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 msgImage.setImageResource(R.drawable.skin_tab_icon_conversation_normal);
                 trendImage.setImageResource(R.drawable.skin_tab_icon_plugin_normal);
 
-                //设置标题
-                title_center.setText("联系人");
-                title_button.setBackgroundResource(0);
-                title_button.setText("添加");
-                title_button.setOnClickListener(new View.OnClickListener() {
+                //标题栏
+                topbar.getmTitleText().setText("联系人");
+                topbar.getmRightRightImage().setVisibility(View.INVISIBLE);
+                topbar.getmRightText().setVisibility(View.VISIBLE);
+                topbar.getmRightText().setText("添加");
+                topbar.getmRightText().setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         //点击"添加好友"
@@ -193,6 +219,18 @@ public class MainActivity extends Activity implements View.OnClickListener {
                         startActivity(addIntent);
                     }
                 });
+//                //设置标题
+//                topbar.getmTitleText().setText("联系人");
+//                title_button.setBackgroundResource(0);
+//                title_button.setText("添加");
+//                title_button.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        //点击"添加好友"
+//                        Intent addIntent = new Intent(MainActivity.this, AddContactActivity.class);
+//                        startActivity(addIntent);
+//                    }
+//                });
 
                 fragment_tag = FRAGMENT_TAB_CONTACT;
                 break;
@@ -203,16 +241,17 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 contactImage.setImageResource(R.drawable.skin_tab_icon_contact_normal);
                 msgImage.setImageResource(R.drawable.skin_tab_icon_conversation_normal);
 
-                //设置标题
-                title_center.setText("动态");
-                title_button.setText("更多");
-
-                title_button.setOnClickListener(new View.OnClickListener() {
+                //标题栏
+                topbar.getmTitleText().setText("动态");
+                topbar.getmRightText().setText("更多");
+                topbar.getmRightText().setVisibility(View.VISIBLE);
+                topbar.getmRightText().setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Log.i("MainActivity", "动态");
+
                     }
                 });
+                topbar.getmRightRightImage().setVisibility(View.INVISIBLE);
 
                 fragment_tag = FRAGMENT_TAB_PLUGIN;
                 break;

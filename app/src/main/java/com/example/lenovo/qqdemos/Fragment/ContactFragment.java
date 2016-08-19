@@ -45,7 +45,7 @@ public class ContactFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.contact_fragment,container,false);
+        View view = inflater.inflate(R.layout.fragment_contact,container,false);
 
         newFriendFlag = (TextView) view.findViewById(R.id.new_friend_flag);
         newFriend = (LinearLayout) view.findViewById(R.id.new_friend);  //新朋友

@@ -117,13 +117,13 @@ public class MyHorizontalScrollView extends HorizontalScrollView {
             listView.setAdapter(adapter);
 
             myContent = (ViewGroup) linearLayout.getChildAt(1);// HorizontalScrollView下LinearLayout的第二个子元素
-            ImageView imageView = (ImageView) myContent.findViewById(R.id.title_head);
-            imageView.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    toggle();
-                }
-            });
+//            ImageView imageView = (ImageView) myContent.findViewById(R.id.title_head);
+//            imageView.setOnClickListener(new OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    toggle();
+//                }
+//            });
 
             // 设置子View的宽高，高于屏幕一致
             myMenuWidth = myMenu.getLayoutParams().width = screenWidth
@@ -190,11 +190,13 @@ public class MyHorizontalScrollView extends HorizontalScrollView {
     //打开菜单
     public void openMenu() {
         this.smoothScrollTo(0, 0);
+        isOpen = true;
     }
 
     //关闭菜单
     public void closeMenu() {
         this.smoothScrollTo(myMenuWidth, 0);
+        isOpen = false;
     }
 
     public void toggle() {

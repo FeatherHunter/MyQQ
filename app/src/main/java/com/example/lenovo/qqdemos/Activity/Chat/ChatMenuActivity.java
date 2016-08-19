@@ -26,6 +26,7 @@ import com.example.lenovo.qqdemos.Beans.Emotion.EmotionId;
 import com.example.lenovo.qqdemos.Beans.Emotion.EmotionItem;
 import com.example.lenovo.qqdemos.Beans.MessageItem;
 import com.example.lenovo.qqdemos.Beans.UserInfo;
+import com.example.lenovo.qqdemos.CustomView.TopBar;
 import com.example.lenovo.qqdemos.DB.MessageDB;
 import com.example.lenovo.qqdemos.R;
 import com.example.lenovo.qqdemos.Util.ToastUtil;
@@ -76,10 +77,28 @@ public class ChatMenuActivity extends Activity {
     private ListView emotionList;
     ChatEmotionAdapter emotionAdapter;
 
+    TopBar topBar; //标题栏
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_menu);
+
+        /*-----------------------------------------------
+         *         顶层标题栏
+         *------------------------------------------------*/
+        topBar = (TopBar) findViewById(R.id.chat_menu_topbar);
+        topBar.setLeftTextVisibility(View.VISIBLE);
+        topBar.setLeftText("消息");
+        topBar.setLeftTextOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ChatMenuActivity.this.finish();
+            }
+        });
+        topBar.setRightRightImage(R.drawable.skin_chat_menu_header_normal);
+        topBar.setRightLeftImage(R.drawable.skin_chat_menu_audio_normal);
+
 
         chatEmotionImageView = (ImageView) findViewById(R.id.chat_emotion_imageView);  //点击"表情"
         emotionList = (ListView) findViewById(R.id.emotion_list);  //表情的链表

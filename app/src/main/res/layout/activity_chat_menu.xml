@@ -6,44 +6,51 @@
     android:background="@color/gray1"
     android:weightSum="20">
 
-    <RelativeLayout
-        android:id="@+id/chat_menu_head_panel"
+    <com.example.lenovo.qqdemos.CustomView.TopBar
+        android:id="@+id/chat_menu_topbar"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@android:color/holo_blue_light">
+        android:layout_height="55dp">
+
+    </com.example.lenovo.qqdemos.CustomView.TopBar>
+
+    <!--<RelativeLayout-->
+        <!--android:id="@+id/chat_menu_head_panel"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="50dp"-->
+        <!--android:background="@android:color/holo_blue_light">-->
 
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="《消息"
-            android:gravity="center"
-            android:textSize="20dp"
-            android:paddingLeft="2dp"
-            android:textColor="@color/white"/>
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:text="《消息"-->
+            <!--android:gravity="center"-->
+            <!--android:textSize="20dp"-->
+            <!--android:paddingLeft="2dp"-->
+            <!--android:textColor="@color/white"/>-->
 
 
-        <TextView
-            android:id="@+id/chat_menu_othername_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="男神"
-            android:textColor="@android:color/white"
-            android:textSize="20dp" />
+        <!--<TextView-->
+            <!--android:id="@+id/chat_menu_othername_text"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerInParent="true"-->
+            <!--android:text="男神"-->
+            <!--android:textColor="@android:color/white"-->
+            <!--android:textSize="20dp" />-->
 
-        <TextView
-            android:id="@+id/add_friend_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
-            android:text="添加"
-            android:textColor="@android:color/white"
-            android:textSize="18dp" />
+        <!--<TextView-->
+            <!--android:id="@+id/add_friend_button"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_marginRight="10dp"-->
+            <!--android:text="添加"-->
+            <!--android:textColor="@android:color/white"-->
+            <!--android:textSize="18dp" />-->
 
-    </RelativeLayout>
+    <!--</RelativeLayout>-->
 
     <LinearLayout
         android:id="@+id/chat_menu_bottom_panel"
@@ -149,6 +156,6 @@
         android:layout_height="wrap_content"
         android:divider="#00000000"
         android:dividerHeight="0dp"
-        android:layout_below="@id/chat_menu_head_panel"
+        android:layout_below="@id/chat_menu_topbar"
         android:layout_above="@id/chat_menu_bottom_panel"></ListView>
 </RelativeLayout>
