@@ -39,8 +39,6 @@ import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.datatype.BmobFile;
@@ -459,34 +457,6 @@ public class ChatMenuActivity extends Activity {
         // 得到新的图片
         return  Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix,
                 true);
-    }
-
-    public int judgeEmotion(String text){
-        //正则表达式判断出表情
-        String re1="(\\[)";	// Any Single Character 1
-        String re2="(e)";	// Any Single Word Character (Not Whitespace) 1
-        String re3="(m)";	// Any Single Character 2
-        String re4="(o)";	// Any Single Character 3
-        String re5="(.)";	// Any Single Character 4
-        String re6="(.)";	// Any Single Character 5
-        String re7="(\\])";	// Any Single Character 6
-
-        Pattern p = Pattern.compile(re1 + re2 + re3 + re4 + re5 + re6 + re7, Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
-        Matcher m = p.matcher(text);
-        if (m.find()) {
-            String c1 = m.group(1);
-            String w1 = m.group(2);
-            String c2=m.group(3);
-            String c3=m.group(4);
-            String c4=m.group(5);
-            String c5=m.group(6);
-            String c6=m.group(7);
-            Log.i(TAG,c1.toString() + w1.toString() + c2.toString() + c3.toString() + c4.toString() +  c5.toString() +  c6.toString());
-
-            strEmotionId = c4.toString() + c5.toString();
-        }
-
-        return Integer.parseInt(strEmotionId); //得到了发送的表情的id
     }
 
 }
