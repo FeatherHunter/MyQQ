@@ -97,6 +97,9 @@ public class TopBar extends LinearLayout{
 //                mListener.rightTextClick();
 //            }
 //        });
+
+        //避免重新创建时的错误
+        typedArray.recycle();
     }
 
     /*-----------------------------------------------------------

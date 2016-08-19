@@ -25,7 +25,7 @@
                 <com.example.lenovo.qqdemos.CustomView.TopBar
                     android:id="@+id/main_topbar"
                     android:layout_width="match_parent"
-                    android:layout_height="55dp">
+                    android:layout_height="50dp">
 
                 </com.example.lenovo.qqdemos.CustomView.TopBar>
 

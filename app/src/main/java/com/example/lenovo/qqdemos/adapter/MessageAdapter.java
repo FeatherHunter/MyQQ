@@ -30,7 +30,7 @@ public class MessageAdapter extends ArrayAdapter<MessageItem> {
 
         MessageItem messageItem = getItem(position); //每一条好友信息
 
-        convertView = View.inflate(getContext(), R.layout.tab_item_msg, null);
+        convertView = View.inflate(getContext(), R.layout.fragment_msg_item, null);
 
        TextView msgNameTextView = (TextView) convertView.findViewById(R.id.msg_name_textView); //好友的名字
        TextView msgChattextView = (TextView) convertView.findViewById(R.id.msg_chat_textView); //聊天内容

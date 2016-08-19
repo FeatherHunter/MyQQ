@@ -45,15 +45,21 @@ public class ChatEmotionAdapter extends ArrayAdapter<EmotionItem> {
         convertView.setLayoutParams(layoutParams);
 
         ImageView[] emotions = new ImageView[7];
+        //imageView的 ID
         int[] emotionids = new int[]{R.id.emotion1,R.id.emotion2,R.id.emotion3,R.id.emotion4,
                 R.id.emotion5,R.id.emotion6,R.id.emotion7};
+
+        //布局
+        int[] emotionLayouts = new int[]{R.id.emotion_layout1,R.id.emotion_layout2,R.id.emotion_layout3,R.id.emotion_layout4,
+                R.id.emotion_layout5,R.id.emotion_layout6,R.id.emotion_layout7};
 
         for(int i = 0; i < 7; i++){
             if(emotionItem.getEmotion(i) != null){
                 emotions[i] = (ImageView) convertView.findViewById(emotionids[i]);
                 emotions[i].setImageResource(emotionItem.getEmotion(i).getEmotion());
-                //设置监听器
-                emotions[i].setOnClickListener(new EmotionClickListener(position, i));
+//                emotions[i].setOnClickListener(new EmotionClickListener(position, i));
+                //给图片外布局设置监听器
+                convertView.findViewById(emotionLayouts[i]).setOnClickListener(new EmotionClickListener(position, i));
             }else{
                 break;
             }
@@ -71,7 +77,6 @@ public class ChatEmotionAdapter extends ArrayAdapter<EmotionItem> {
         @Override
         public void onClick(View v) {
             id = groupPosition * 7 + (childPosition+1);
-            Toast.makeText(getContext(), "the first" + "" + id + ":" + groupPosition, Toast.LENGTH_SHORT).show();
             activity.onClick_RandomFace(id);
         }
     }

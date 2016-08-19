@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -435,8 +436,16 @@ public class ChatMenuActivity extends Activity {
             SpannableString spannableString = new SpannableString(emoStr);
             //  用ImageSpan对象替换face
             spannableString.setSpan(imageSpan, 0, emoStr.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            //  将随机获得的图像追加到EditText控件的最后
-            chatEdit.append(spannableString);
+
+//            //  将随机获得的图像追加到EditText控件的最后
+//            chatEdit.append(spannableString);
+            /*--------------------------------------------
+             *     将获得的表情插入到光标处
+             * ------------------------------------------*/
+            int index = chatEdit.getSelectionStart(); //当前光标处
+            Editable editable = chatEdit.getText();
+            editable.insert(index, spannableString);
+
         } catch (Exception e) {
             e.printStackTrace();
         }

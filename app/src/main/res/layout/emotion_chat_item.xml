@@ -14,8 +14,8 @@
 
         <ImageView
             android:id="@+id/emotion1"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:scaleType="fitCenter"
             android:layout_centerInParent="true" />
 
@@ -29,8 +29,8 @@
 
         <ImageView
             android:id="@+id/emotion2"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:scaleType="fitCenter"
             android:layout_centerInParent="true" />
 
@@ -45,8 +45,8 @@
 
         <ImageView
             android:id="@+id/emotion3"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:scaleType="fitCenter"
             android:layout_centerInParent="true" />
 
@@ -60,8 +60,8 @@
 
         <ImageView
             android:id="@+id/emotion4"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:scaleType="fitCenter"
             android:layout_centerInParent="true" />
 
@@ -75,8 +75,8 @@
 
         <ImageView
             android:id="@+id/emotion5"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:scaleType="fitCenter"
             android:layout_centerInParent="true" />
 
@@ -90,8 +90,8 @@
 
         <ImageView
             android:id="@+id/emotion6"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:scaleType="fitCenter"
             android:layout_centerInParent="true" />
 
@@ -105,8 +105,8 @@
 
         <ImageView
             android:id="@+id/emotion7"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:scaleType="fitCenter"
             android:layout_centerInParent="true" />
 

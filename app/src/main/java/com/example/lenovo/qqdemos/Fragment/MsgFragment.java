@@ -42,7 +42,7 @@ public class MsgFragment extends Fragment {
         //得到自己的ID
         myId = EMClient.getInstance().getCurrentUser();
         messageItems = messageDB.getMessage(myId);
-        adapter = new MessageAdapter(getActivity(), R.layout.tab_item_msg, messageItems);
+        adapter = new MessageAdapter(getActivity(), R.layout.fragment_msg_item, messageItems);
         msg_listView.setAdapter(adapter);
 
         //给listView的每一个Item设置点击事件监听
