@@ -95,98 +95,99 @@ public class SignUpActivity extends Activity {
                  *   保存失败：提示网络错误
                  * -----------------------------------------------*/
                 userInfo = new UserInfo(account);
-
-                //得到文件File
-                DrawableToFile drawableToFile = new DrawableToFile(SignUpActivity.this);
-                File picFile = drawableToFile.resToFile(R.drawable.default_user_head, "head_"+account);
-                //创建BmobFile
-                bmobFile = new BmobFile(picFile);
-                //上传头像
-                bmobFile.upload(new UploadFileListener() {
+                //保存用户
+                userInfo.save(new SaveListener<String>() {
                     @Override
-                    public void done(BmobException e) {
-                        /*---------------------------------------------------
-                         *   必须先对bmobFile进行upload
-                         *  成功后：才能执行userInfo.save对用户数据上传
-                          * -------------------------------------------------*/
-                        if(e == null){ //头像上传成功
+                    public void done(String objectId, BmobException e) {
+                        if(e==null){
+                            Log.i("bmob","创建数据成功：" + objectId);
 
-                            Log.i("bmob","upload 成功");
-                            userInfo.setHead(bmobFile);
-                            userInfo.save(new SaveListener<String>() {
+                            Thread thread = new Thread(new Runnable() {
                                 @Override
-                                public void done(String objectId, BmobException e) {
-                                    if(e==null){
-                                        Log.i("bmob","创建数据成功：" + objectId);
+                                public void run() {
+                                    //进行注册
+                                    try {
+                                        EMClient.getInstance().createAccount(account, passwd);
 
-                                        Thread thread = new Thread(new Runnable() {
+                                        runOnUiThread(new Runnable() {
                                             @Override
                                             public void run() {
-                                                //进行注册
-                                                try {
-                                                    EMClient.getInstance().createAccount(account, passwd);
+                                                Toast.makeText(SignUpActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
+                                            }
 
-                                                    runOnUiThread(new Runnable() {
-                                                        @Override
-                                                        public void run() {
-                                                            Toast.makeText(SignUpActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
-                                                        }
-
-                                                    });
+                                        });
 
                                                     /*---------------------------
                                                      *    注册成功
                                                      * --------------------------*/
-                                                    Intent sign_up_successIntent = new Intent();
-                                                    sign_up_successIntent.putExtra("account", account);
-                                                    sign_up_successIntent.putExtra("passwd", passwd);
-                                                    setResult(ResUtil.SIGN_UP_SUCCESS, sign_up_successIntent);
-                                                    SignUpActivity.this.finish();
+                                        Intent sign_up_successIntent = new Intent();
+                                        sign_up_successIntent.putExtra("account", account);
+                                        sign_up_successIntent.putExtra("passwd", passwd);
+                                        setResult(ResUtil.SIGN_UP_SUCCESS, sign_up_successIntent);
+                                        SignUpActivity.this.finish();
 
-                                                } catch (final HyphenateException he) {
-                                                    //注册失败
-                                                    he.printStackTrace();
+                                    } catch (final HyphenateException he) {
+                                        //注册失败
+                                        he.printStackTrace();
 
-                                                    runOnUiThread(new Runnable() {
-                                                        public void run() {
-                                                            int errorCode = he.getErrorCode();
-                                                            if (errorCode == EMError.NETWORK_ERROR) {
-                                                                Toast.makeText(getApplicationContext(), getResources().getString(R.string.network_anomalies), Toast.LENGTH_SHORT).show();
-                                                            } else if (errorCode == EMError.USER_ALREADY_EXIST) {
-                                                                Toast.makeText(getApplicationContext(), getResources().getString(R.string.User_already_exists), Toast.LENGTH_SHORT).show();
-                                                            } else if (errorCode == EMError.USER_AUTHENTICATION_FAILED) {
-                                                                Toast.makeText(getApplicationContext(), getResources().getString(R.string.registration_failed_without_permission), Toast.LENGTH_SHORT).show();
-                                                            } else if (errorCode == EMError.USER_ILLEGAL_ARGUMENT) {
-                                                                Toast.makeText(getApplicationContext(), getResources().getString(R.string.illegal_user_name), Toast.LENGTH_SHORT).show();
-                                                            } else {
-                                                                Toast.makeText(getApplicationContext(), getResources().getString(R.string.Registration_failed), Toast.LENGTH_SHORT).show();
-                                                            }
-                                                            ToastUtil.toast(getApplicationContext(), account+passwd);
-                                                        }
-                                                    });
+                                        runOnUiThread(new Runnable() {
+                                            public void run() {
+                                                int errorCode = he.getErrorCode();
+                                                if (errorCode == EMError.NETWORK_ERROR) {
+                                                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.network_anomalies), Toast.LENGTH_SHORT).show();
+                                                } else if (errorCode == EMError.USER_ALREADY_EXIST) {
+                                                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.User_already_exists), Toast.LENGTH_SHORT).show();
+                                                } else if (errorCode == EMError.USER_AUTHENTICATION_FAILED) {
+                                                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.registration_failed_without_permission), Toast.LENGTH_SHORT).show();
+                                                } else if (errorCode == EMError.USER_ILLEGAL_ARGUMENT) {
+                                                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.illegal_user_name), Toast.LENGTH_SHORT).show();
+                                                } else {
+                                                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.Registration_failed), Toast.LENGTH_SHORT).show();
                                                 }
+                                                ToastUtil.toast(getApplicationContext(), account+passwd);
                                             }
                                         });
-                                        thread.start();
-                                    }else{//用户信息上传失败
-                                        ToastUtil.toast(SignUpActivity.this, signUpErr);
-                                        Log.i("bmob","失败："+e.getMessage()+","+e.getErrorCode());
                                     }
                                 }
                             });
-
-                        }else//头像上传失败
-                        {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    ToastUtil.toast(SignUpActivity.this, signUpErr);
-                                }
-                            });
-                            Log.i("bmob",TAG+" upload 失败："+e.getMessage()+","+e.getErrorCode());
+                            thread.start();
+                        }else{//用户信息上传失败
+                            ToastUtil.toast(SignUpActivity.this, signUpErr);
+                            Log.i("bmob","失败："+e.getMessage()+","+e.getErrorCode());
                         }
                     }
                 });
+
+//                //得到文件File
+//                DrawableToFile drawableToFile = new DrawableToFile(SignUpActivity.this);
+//                File picFile = drawableToFile.resToFile(R.drawable.default_user_head, "head_"+account);
+//                //创建BmobFile
+//                bmobFile = new BmobFile(picFile);
+//                //上传头像
+//                bmobFile.upload(new UploadFileListener() {
+//                    @Override
+//                    public void done(BmobException e) {
+//                        /*---------------------------------------------------
+//                         *   必须先对bmobFile进行upload
+//                         *  成功后：才能执行userInfo.save对用户数据上传
+//                          * -------------------------------------------------*/
+//                        if(e == null){ //头像上传成功
+//
+//                            Log.i("bmob","upload 成功");
+//                            userInfo.setHead(bmobFile);
+//
+//                        }else//头像上传失败
+//                        {
+//                            runOnUiThread(new Runnable() {
+//                                @Override
+//                                public void run() {
+//                                    ToastUtil.toast(SignUpActivity.this, signUpErr);
+//                                }
+//                            });
+//                            Log.i("bmob",TAG+" upload 失败："+e.getMessage()+","+e.getErrorCode());
+//                        }
+//                    }
+//                });
 
 
             } else {

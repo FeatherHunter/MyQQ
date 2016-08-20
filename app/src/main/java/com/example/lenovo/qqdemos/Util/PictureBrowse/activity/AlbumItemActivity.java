@@ -58,7 +58,8 @@ public class AlbumItemActivity extends Activity implements OnClickListener{
 				photoUpImageBucket.getImageList().get(position).setSelected(
 						!checkBox.isChecked());
 				adapter.notifyDataSetChanged();
-				
+
+				//得到是第几幅图片
 				Toast.makeText(AlbumItemActivity.this, "postion="+position, 
 						Toast.LENGTH_SHORT).show();
 //				photoUpImageBucket.getImageList().get(position).setSelected(

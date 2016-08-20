@@ -33,6 +33,10 @@ public class TopBar extends LinearLayout{
     float mTitleTextSize;
     //左侧头像
     float mHeadImageSize;
+    //左侧文本
+    String mLeftTextStr;
+    int mLeftTextColor;
+    float mLeftTextSize;
     //右侧文本
     String mRightTextStr;
     int mRightTextColor;
@@ -81,6 +85,13 @@ public class TopBar extends LinearLayout{
 //                mListener.leftImageClick();
 //            }
 //        });
+        //左侧文本
+        mLeftTextStr = typedArray.getString(R.styleable.TopBar_LeftText);
+        mLeftTextColor = typedArray.getColor(R.styleable.TopBar_LeftTextColor, Color.WHITE);
+        mLeftTextSize = typedArray.getDimension(R.styleable.TopBar_LeftTextSize, 20);
+        if(mLeftTextStr != null) mLeftText.setText(mLeftTextStr);
+        mLeftText.setTextColor(mLeftTextColor);
+        mLeftText.setTextSize(mLeftTextSize);
         /*-----------------------------------------------------------
          *   右侧文本-根据属性初始化
          * ----------------------------------------------------------*/

@@ -154,7 +154,7 @@ public class QQService extends Service {
                 //得到信息的时间戳
                 long timeStamp = message.getMsgTime();
                 //时间戳转换为时间String
-                SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+                SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
                 final String time = formatter.format(timeStamp);
 
 

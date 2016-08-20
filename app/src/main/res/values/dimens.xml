@@ -4,8 +4,8 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="head_panel_title">25dp</dimen>
-    <dimen name="user_info_head_length">80dp</dimen>
-    <dimen name="user_info_head_length_2">-40dp</dimen>
+    <dimen name="user_info_head_length">100dp</dimen>
+    <dimen name="user_info_head_length_2">-50dp</dimen>
     <dimen name="user_info_nickname">30dp</dimen>
 
     <!--imagebrowse-->

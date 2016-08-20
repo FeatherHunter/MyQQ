@@ -4,6 +4,10 @@
     <!--image browse-->
     <color name="focus_color">#7f33b5e5</color>
 
+    <!--user info popwindow-->
+    <color name="user_info_white">#44ffffff</color>
+    <color name="user_info_gray">#55cccccc</color>
+
     <color name="colorBlue">#1FBAF3</color>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>

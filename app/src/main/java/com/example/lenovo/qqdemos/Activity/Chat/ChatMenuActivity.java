@@ -30,6 +30,7 @@ import com.example.lenovo.qqdemos.Beans.UserInfo;
 import com.example.lenovo.qqdemos.CustomView.TopBar;
 import com.example.lenovo.qqdemos.DB.MessageDB;
 import com.example.lenovo.qqdemos.R;
+import com.example.lenovo.qqdemos.Util.BitmapUtil;
 import com.example.lenovo.qqdemos.Util.ToastUtil;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
@@ -65,6 +66,7 @@ public class ChatMenuActivity extends Activity {
 
     public String myHeadUrl = null;
     public String otherHeadUrl = null;
+
     private String strEmotionId;
 
     ChatListAdapter adapter;
@@ -95,8 +97,11 @@ public class ChatMenuActivity extends Activity {
                 ChatMenuActivity.this.finish();
             }
         });
+        topBar.setTitleTextVisibility(View.VISIBLE);
         topBar.setRightRightImage(R.drawable.skin_chat_menu_header_normal);
         topBar.setRightLeftImage(R.drawable.skin_chat_menu_audio_normal);
+        topBar.getmRightRightImage().setVisibility(View.VISIBLE);
+        topBar.getmRightLeftImage().setVisibility(View.VISIBLE);
 
 
         chatEmotionImageView = (ImageView) findViewById(R.id.chat_emotion_imageView);  //点击"表情"
@@ -290,7 +295,8 @@ public class ChatMenuActivity extends Activity {
                         //获得消息的时间戳
                         long timeStamp = message.getMsgTime();
                         //时间戳转换为时间String
-                        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+//                        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+                        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
                         String time = formatter.format(timeStamp);
                         //得到一条EMTextMessageBody类型消息
                         EMTextMessageBody msgBody = (EMTextMessageBody) message.getBody();
@@ -420,14 +426,13 @@ public class ChatMenuActivity extends Activity {
 
     public void onClick_RandomFace(int id) {
         try {
-            //  根据随机产生的1至9的整数从R.drawable类中获得相应资源ID（静态变量）的Field对象
             Field field = R.drawable.class.getDeclaredField("emo" + id);
             //  获得资源ID的值，也就是静态变量的值
             int resourceId = Integer.parseInt(field.get(null).toString());
 
             Bitmap bitmap = BitmapFactory.decodeResource(getResources(), resourceId);
             //缩小x倍
-            bitmap = scale(bitmap, 2);
+            bitmap = BitmapUtil.scale(bitmap, 2);
 
             //  根据Bitmap对象创建ImageSpan对象
             ImageSpan imageSpan = new ImageSpan(this, bitmap);
@@ -451,21 +456,5 @@ public class ChatMenuActivity extends Activity {
         }
     }
 
-
-
-
-    /*----------------------------
-     * 将表情缩小x倍
-     *-------------------------*/
-    public Bitmap scale(Bitmap bitmap, float x){
-        int width = bitmap.getWidth();
-        int height = bitmap.getHeight();
-        // 取得想要缩放的matrix参数
-        Matrix matrix = new Matrix();
-        matrix.postScale(1/x, 1/x);
-        // 得到新的图片
-        return  Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix,
-                true);
-    }
 
 }

@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.example.lenovo.qqdemos.Activity.Friend.AddContactActivity;
 import com.example.lenovo.qqdemos.CustomView.TopBar;
+import com.example.lenovo.qqdemos.GGIMHelper;
 import com.example.lenovo.qqdemos.Service.QQService;
 import com.example.lenovo.qqdemos.Fragment.ContactFragment;
 import com.example.lenovo.qqdemos.Fragment.MsgFragment;
@@ -27,6 +28,7 @@ import com.example.lenovo.qqdemos.Fragment.TrendFragment;
 import com.example.lenovo.qqdemos.CustomView.MyHorizontalScrollView;
 import com.example.lenovo.qqdemos.R;
 import com.example.lenovo.qqdemos.Application.SysApplication;
+import com.hyphenate.chat.EMClient;
 
 /**
  * Created by feather on 2016/8/18.
@@ -38,6 +40,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private ImageView contactImage;
     private ImageView msgImage;
     private ImageView trendImage;
+
+    private ImageView headImage; //左侧头像
 
     private TextView textView1 = null;
     private TextView textView2 = null;
@@ -62,6 +66,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     String TAG = getClass().toString();
 
+    String myID = EMClient.getInstance().getCurrentUser();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,18 +83,25 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         //顶层菜单
         topbar = (TopBar) findViewById(R.id.main_topbar);
-        topbar.getmHeadImage().setVisibility(View.VISIBLE); //显示头像
-        topbar.getmHeadImage().setOnClickListener(new View.OnClickListener() {
+        headImage = topbar.getmHeadImage();
+        headImage.setVisibility(View.VISIBLE); //显示头像
+        headImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 myHorizontalScrollView.toggle();
             }
         });
 
+        /*----------------------------------------------
+        *  GGIMHelper:自定义帮助类
+        *    用于加载头像
+        * ---------------------------------------------*/
+        GGIMHelper.getInstance().loadHeadImage(myID, headImage);
+
         initViews();
         fragmentManager = getFragmentManager();
         // 第一次启动时选中第0个tab
-        setTabSelection(0);
+        setTabSwitch(0);
 
         iniPopupWindow();  //初始化popupWindow
 
@@ -101,7 +114,13 @@ public class MainActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onStart() {
         super.onStart();
-        //        myHorizontalScrollView.closeMenu();
+        /*----------------------------------------------
+        *  GGIMHelper:自定义帮助类
+        *    用于加载头像
+        * ---------------------------------------------*/
+        GGIMHelper.getInstance().loadHeadImage(myID, headImage);
+
+        myHorizontalScrollView.refreshHeadImage();//侧滑菜单也刷新头像
     }
 
     private void initViews() {
@@ -143,12 +162,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }
     }
 
-    /**
-     * 根据传入的index参数来设置选中的tab页。
-     *
-     * @param index 每个tab页对应的下标。0表示消息，1表示联系人，2表示动态
-     */
-    private void setTabSelection(int index) {
+    private void setTabSwitch(int index){
+
         // 开启一个Fragment事务
         fragmentTransaction = fragmentManager.beginTransaction();
 
@@ -260,6 +275,19 @@ public class MainActivity extends Activity implements View.OnClickListener {
         //切换fragment
         switchFragment(fragment_tag);
         myHorizontalScrollView.closeMenu();
+    }
+
+    /**
+     * 根据传入的index参数来设置选中的tab页。
+     *
+     * @param index 每个tab页对应的下标。0表示消息，1表示联系人，2表示动态
+     */
+    private void setTabSelection(int index) {
+
+        if(index == fragment_tag){
+            return;
+        }
+        setTabSwitch(index);
     }
 
     private void switchFragment(int tag) {

@@ -16,7 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.lenovo.qqdemos.DB.MessageDB;
-import com.example.lenovo.qqdemos.Adapter.ExpandListViewAdapter;
+import com.example.lenovo.qqdemos.Adapter.ContactExpandAdapter;
 import com.example.lenovo.qqdemos.Beans.ContactGroup;
 import com.example.lenovo.qqdemos.Beans.ContactItem;
 import com.example.lenovo.qqdemos.Activity.Chat.ChatPersonalActivity;
@@ -35,7 +35,7 @@ public class ContactFragment extends Fragment{
     private ExpandableListView expandListView;
     //存放“好友组”，每个好友组内部还有一个好友列表
     private ArrayList<ContactGroup> contactGroups;
-    private ExpandListViewAdapter adapter;
+    private ContactExpandAdapter adapter;
     private LinearLayout newFriend;
     private TextView newFriendFlag;
     String myId;
@@ -68,7 +68,7 @@ public class ContactFragment extends Fragment{
         //设置Adapter
         expandListView = (ExpandableListView) view.findViewById(R.id.expandListView);
         //设置适配器（分成两行写，adapter需要设置为全局变量方便后面刷新列表）
-        adapter = new ExpandListViewAdapter(getActivity(),contactGroups);
+        adapter = new ContactExpandAdapter(getActivity(),contactGroups);
         expandListView.setAdapter(adapter);
 
         expandListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
@@ -141,14 +141,14 @@ public class ContactFragment extends Fragment{
                                     //一个管理员好友，用于调试
                                     contactItems.add(new ContactItem("admin", //好友ID
                                             "管理员",//昵称
-                                            R.drawable.feather,//头像
+                                            R.drawable.default_user_head,//头像
                                             "我是管理员哦"));//好友动态
                                     //创建好友信息
                                     for (String names : frinednames) {
                                         //创建一个好友的信息
                                         contactItems.add(new ContactItem(names, //好友ID
                                                 "帅猎羽",//昵称
-                                                R.drawable.feather,//头像
+                                                R.drawable.default_user_head,//头像
                                                 "最近分享：今日头条"));//好友动态
                                     }
                                     //加入到好友组中

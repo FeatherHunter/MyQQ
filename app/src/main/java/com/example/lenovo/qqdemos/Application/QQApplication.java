@@ -4,6 +4,8 @@ import android.app.Application;
 
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import cn.bmob.v3.Bmob;
 
@@ -53,6 +55,14 @@ public class QQApplication extends Application {
 //		Bmob.initialize(config);
         //第二：默认初始化
         Bmob.initialize(this, BMOB_APPID);
+
+
+        /*-----------------------------------------------------------------
+         *      ImageLoader库初始化：Android-Universal-Image-Loader
+         * Create global configuration and initialize ImageLoader with this config
+         *---------------------------------------------------------*/
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this).build();
+        ImageLoader.getInstance().init(config);
 
     }
 }

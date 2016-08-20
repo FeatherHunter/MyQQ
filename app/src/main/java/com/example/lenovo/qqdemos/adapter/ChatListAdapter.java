@@ -13,10 +13,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.lenovo.qqdemos.Activity.Chat.ChatMenuActivity;
 import com.example.lenovo.qqdemos.Beans.ChatItem;
+import com.example.lenovo.qqdemos.GGIMHelper;
 import com.example.lenovo.qqdemos.R;
 import com.example.lenovo.qqdemos.Util.ImageLoader.ImageLoader;
+import com.example.lenovo.qqdemos.Util.SpanUtil;
 import com.hyphenate.chat.EMClient;
 
 import java.lang.reflect.Field;
@@ -55,43 +58,115 @@ public class ChatListAdapter extends ArrayAdapter<ChatItem> {
     public View getView(int position, View convertView, ViewGroup parent) {
         ChatItem chatItem = getItem(position);
 
+        ViewHolder holder= new ViewHolder();
+
         if (chatItem.getSendName().equals(myId)) {       //自己
-            convertView = View.inflate(getContext(), my_chat_layout, null);
+                convertView = View.inflate(getContext(), my_chat_layout, null);
         } else {            //other
-            convertView = View.inflate(getContext(), other_chat_layout, null);
+                convertView = View.inflate(getContext(), other_chat_layout, null);
         }
+        holder.id = chatItem.getSendName();
+        holder.timeText = (TextView) convertView.findViewById(R.id.chat_time_text);
+        holder.headView = (ImageView) convertView.findViewById(R.id.chat_head_image);
+        holder.contentText = (TextView) convertView.findViewById(R.id.chat_content_text);
 
-        TextView timeText = (TextView) convertView.findViewById(R.id.chat_time_text);
-        final ImageView imageView = (ImageView) convertView.findViewById(R.id.chat_head_image);
-        TextView contentText = (TextView) convertView.findViewById(R.id.chat_content_text);
 
-        timeText.setText(chatItem.getTime());
+        holder.timeText.setText(chatItem.getTime());
         String text = chatItem.getContent();
         try {
-            contentText.setText(strToSmiley(text));
+            //文本、表情混排
+            holder.contentText.setText(SpanUtil.strToSmiley(getContext(), text, 2));
         } catch (NoSuchFieldException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
 
-        ImageLoader imageLoader = new ImageLoader(getContext());
-        //自己ID
-        if (chatItem.getSendName().equals(myId)) {
-            if (activity.myHeadUrl == null) {//没有查询到，使用默认头像
-                imageView.setImageResource(R.drawable.default_user_head);
-            } else {
-                imageLoader.DisplayImage(getContext(), activity.myHeadUrl, imageView, "ImageView");
-            }
-        } else {//他人ID
-            if (activity.otherHeadUrl == null) {//没有查询到，使用默认头像
-                imageView.setImageResource(R.drawable.default_user_head);
-            } else {
-                imageLoader.DisplayImage(getContext(), activity.otherHeadUrl, imageView, "ImageView");
-            }
+        if (chatItem.getSendName().equals(myId)) {       //自己
+
+            GGIMHelper.getInstance().loadImageUrl(activity.myHeadUrl, holder.headView);
+        } else {
+            //other
+            GGIMHelper.getInstance().loadImageUrl(activity.otherHeadUrl, holder.headView);
         }
 
+//        if(convertView == null){
+//            holder = new ViewHolder();
+//
+//            if (chatItem.getSendName().equals(myId)) {       //自己
+//                convertView = View.inflate(getContext(), my_chat_layout, null);
+//            } else {            //other
+//                convertView = View.inflate(getContext(), other_chat_layout, null);
+//            }
+//            holder.id = chatItem.getSendName();
+//            holder.timeText = (TextView) convertView.findViewById(R.id.chat_time_text);
+//            holder.headView = (ImageView) convertView.findViewById(R.id.chat_head_image);
+//            holder.contentText = (TextView) convertView.findViewById(R.id.chat_content_text);
+//
+//            convertView.setTag(holder);
+//        }else{
+//            holder = (ViewHolder) convertView.getTag();
+//        }
+//
+//        holder.timeText.setText(chatItem.getTime());
+//        String text = chatItem.getContent();
+//        try {
+//            //文本、表情混排
+//            holder.contentText.setText(SpanUtil.strToSmiley(getContext(), text, 2));
+//        } catch (NoSuchFieldException e) {
+//            e.printStackTrace();
+//        } catch (IllegalAccessException e) {
+//            e.printStackTrace();
+//        }
+//
+//        if (chatItem.getSendName().equals(myId)) {       //自己
+//
+//            Glide.with(getContext()).
+//                    load(activity.myHeadUrl).
+//                    into(holder.headView);//显示到目标View中
+//        } else {
+//            //other
+//            Glide.with(getContext()).
+//                    load(activity.otherHeadUrl).
+//                    into(holder.headView);//显示到目标View中
+//        }
+
+//        /*----------------------------------------------
+//         *  GGIMHelper:自定义帮助类
+//         *    用于加载头像
+//         *
+//         *    (glide)
+//         * -------------------------------------------------*/
+
+
+
+
+
+//
+//        ImageLoader imageLoader = new ImageLoader(getContext());
+//        //自己ID
+//        if (chatItem.getSendName().equals(myId)) {
+//            if (activity.myHeadUrl == null) {//没有查询到，使用默认头像
+//                imageView.setImageResource(R.drawable.default_user_head);
+//            } else {
+//                imageLoader.DisplayImage(getContext(), activity.myHeadUrl, imageView, "ImageView");
+//            }
+//        } else {//他人ID
+//            if (activity.otherHeadUrl == null) {//没有查询到，使用默认头像
+//                imageView.setImageResource(R.drawable.default_user_head);
+//            } else {
+//                imageLoader.DisplayImage(getContext(), activity.otherHeadUrl, imageView, "ImageView");
+//            }
+//        }
+
         return convertView;
+    }
+
+    public final class ViewHolder{
+        public String id;
+        public TextView timeText;
+        public ImageView headView;
+        public TextView contentText;
     }
 
     @Override
@@ -104,39 +179,4 @@ public class ChatListAdapter extends ArrayAdapter<ChatItem> {
         return chatItems.size();
     }
 
-    public CharSequence strToSmiley(String text) throws NoSuchFieldException, IllegalAccessException {
-
-        SpannableStringBuilder builder = new SpannableStringBuilder(text);
-
-//        //正则表达式判断出表情
-//        String re1 = "\\[";    // Any Single Character 1
-//        String re2 = "e";    // Any Single Word Character (Not Whitespace) 1
-//        String re3 = "m";    // Any Single Character 2
-//        String re4 = "o";    // Any Single Character 3
-//        String re5 = ".";    // Any Single Character 4
-//        String re6 = "*";    // Any Single Character 5
-//        String re7 = "(?)";    // Any Single Character 5
-//        String re8 = "(\\])";    // Any Single Character 6
-//
-        Pattern p = Pattern.compile("\\[emo.*?\\]");
-//        Pattern p = Pattern.compile(re1 + re2 + re3 + re4 + re5 + re6 + re7+re8, Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
-        Matcher m = p.matcher(text);
-
-        while (m.find()) {
-            //获取其中的ID号，string
-            String result = m.group();
-            String strEmotionId = result.substring(4, result.length() - 1);
-
-            int emotioId = Integer.parseInt(strEmotionId);
-
-            Field field = R.drawable.class.getDeclaredField("emo" + emotioId);
-            int resourceId = Integer.parseInt(field.get(null).toString());
-            Bitmap bitmap = BitmapFactory.decodeResource(getContext().getResources(), resourceId);
-            bitmap = activity.scale(bitmap, 2);
-            ImageSpan imageSpan = new ImageSpan(getContext(), bitmap);
-            builder.setSpan(imageSpan, m.start(),
-                    m.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        }
-        return builder;
-    }
 }

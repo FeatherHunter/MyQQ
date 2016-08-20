@@ -10,19 +10,21 @@ import android.widget.TextView;
 
 import com.example.lenovo.qqdemos.Beans.ContactGroup;
 import com.example.lenovo.qqdemos.Beans.ContactItem;
+import com.example.lenovo.qqdemos.GGIMHelper;
 import com.example.lenovo.qqdemos.R;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
 
 /**
  * Created by feather on 2016/8/16.
  */
-public class ExpandListViewAdapter extends BaseExpandableListAdapter {
+public class ContactExpandAdapter extends BaseExpandableListAdapter {
 
     private Context context;
     private ArrayList<ContactGroup> contactGroups;
 
-    public ExpandListViewAdapter(Context context, ArrayList<ContactGroup> contactGroups) {
+    public ContactExpandAdapter(Context context, ArrayList<ContactGroup> contactGroups) {
         this.context = context;
         this.contactGroups = contactGroups;
     }
@@ -126,6 +128,10 @@ public class ExpandListViewAdapter extends BaseExpandableListAdapter {
             //用户状态
             itemHolder.userState = (TextView) convertView.findViewById(R.id.expandlistview_user_sate_textview);
             itemHolder.userImage = (ImageView) convertView.findViewById(R.id.imageview);
+            //加载头像
+            GGIMHelper.getInstance().loadHeadImage(contactItem.getUserName(), itemHolder.userImage);
+
+
             convertView.setTag(itemHolder);
         } else {
             itemHolder = (ItemHolder) convertView.getTag();
@@ -134,8 +140,11 @@ public class ExpandListViewAdapter extends BaseExpandableListAdapter {
         itemHolder.userName.setText(contactItem.getUserName());
         //用户状态
         itemHolder.userState.setText(contactItem.getDynamicMsg());
+
         //用户头像
-        itemHolder.userImage.setImageResource(contactItem.getHead());
+        if(contactItem.getUserName().equals("admin")){
+                    itemHolder.userImage.setImageResource(contactItem.getHead());
+        }
 
         return convertView;
     }
