@@ -7,4 +7,8 @@
     <dimen name="user_info_head_length">80dp</dimen>
     <dimen name="user_info_head_length_2">-40dp</dimen>
     <dimen name="user_info_nickname">30dp</dimen>
+
+    <!--imagebrowse-->
+    <dimen name="item_h_w">80dp</dimen>
+    <dimen name="column_width">120dp</dimen>
 </resources>

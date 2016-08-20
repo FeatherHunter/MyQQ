@@ -44,4 +44,7 @@ dependencies {
     //3.5.0：请务必查看下面注释[1]
     compile 'cn.bmob.android:bmob-sdk:3.5.0'
 
+    //图片异步加载并缓存
+    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
+
 }

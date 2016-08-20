@@ -41,6 +41,12 @@
     <!-- 允许读取手机状态 用于创建BmobInstallation -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
+    <!--Android-Universal-Image-Loader-->
+    <!-- Include following permission if you load images from Internet -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Include following permission if you want to cache images on SD card -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:name=".Application.QQApplication"
         android:allowBackup="true"
@@ -103,6 +109,11 @@
         <activity android:name=".Activity.Friend.AddContactActivity"></activity>
         <activity android:name=".Activity.Friend.NewFriendActivity"></activity>
         <activity android:name=".Activity.UserInfoActivity"></activity>
+
+        <!--相册浏览的activity-->
+        <activity android:name=".Util.PictureBrowse.activity.AlbumItemActivity"></activity>
+        <activity android:name=".Util.PictureBrowse.activity.AlbumsActivity"></activity>
+        <activity android:name=".Util.PictureBrowse.activity.SelectedImagesActivity"></activity>
     </application>
 
 </manifest>
